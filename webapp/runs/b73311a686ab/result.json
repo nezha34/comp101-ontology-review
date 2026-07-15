@@ -1,0 +1,369 @@
+{
+  "name": "COMP101_OOP",
+  "source_path": "/home/asmae/Downloads/poster/validation/webapp/runs/b73311a686ab/source.owl",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/oop#",
+  "timestamp": "2026-07-14T15:08:08.679084",
+  "triple_count": 694,
+  "parse_error": null,
+  "structural": {
+    "has_ontology_declaration": true,
+    "issues": [
+      "Dangling reference: L10 <http://comp101.sase.um6p.ma/ontology/oop#L10> (target of taught_in)"
+    ],
+    "warnings": []
+  },
+  "consistency": {
+    "ok": true,
+    "consistent": true,
+    "unsatisfiable_classes": [],
+    "error": null
+  },
+  "oops": {
+    "ok": true,
+    "error": null,
+    "pitfalls": [
+      {
+        "code": "P04",
+        "name": "Creating unconnected ontology elements",
+        "description": "Ontology elements (classes, object properties and datatype properties) are created isolated, with no relation to the rest of the ontology.",
+        "severity": "Minor",
+        "affected_elements": [
+          "http://comp101.sase.um6p.ma/ontology/oop#DesignAbstraction",
+          "http://comp101.sase.um6p.ma/ontology/oop#ClassMember",
+          "http://comp101.sase.um6p.ma/ontology/oop#BuiltInFunction",
+          "http://comp101.sase.um6p.ma/ontology/oop#Skill",
+          "http://comp101.sase.um6p.ma/ontology/oop#MethodRole",
+          "http://comp101.sase.um6p.ma/ontology/oop#Encoding"
+        ]
+      }
+    ],
+    "warnings": [],
+    "suggestions": [
+      {
+        "name": "SUGGESTION: symmetric or transitive object properties.",
+        "description": "The domain and range axioms are equal for each of the following object properties. Could they be symmetric or transitive?",
+        "affected_elements": [
+          "http://comp101.sase.um6p.ma/ontology/oop#isUsedBy",
+          "http://comp101.sase.um6p.ma/ontology/oop#enabledBy",
+          "http://comp101.sase.um6p.ma/ontology/oop#usesConcept",
+          "http://comp101.sase.um6p.ma/ontology/oop#enables"
+        ]
+      }
+    ]
+  },
+  "ontoqa": {
+    "source": "/home/asmae/Downloads/poster/validation/webapp/runs/b73311a686ab/source.owl",
+    "schema": {
+      "class_count": 15,
+      "object_property_count": 17,
+      "datatype_property_count": 5,
+      "subclass_edges": 0,
+      "root_classes": 15,
+      "leaf_classes": 15,
+      "relationship_richness": 1.0,
+      "attribute_richness": 0.3333,
+      "inheritance_richness": 0.0,
+      "max_inheritance_depth": 0,
+      "avg_inheritance_depth": 0.0
+    },
+    "instance": {
+      "individual_count": 60,
+      "class_richness": 0.8,
+      "average_population": 4.0,
+      "classes_with_instances": 12
+    },
+    "per_class": [
+      {
+        "class": "BuiltInFunction",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#BuiltInFunction",
+        "direct": 3,
+        "inherited": 3,
+        "depth": 0
+      },
+      {
+        "class": "ClassMember",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ClassMember",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "Concept",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Concept",
+        "direct": 11,
+        "inherited": 11,
+        "depth": 0
+      },
+      {
+        "class": "DataType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#DataType",
+        "direct": 3,
+        "inherited": 3,
+        "depth": 0
+      },
+      {
+        "class": "DesignAbstraction",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#DesignAbstraction",
+        "direct": 7,
+        "inherited": 7,
+        "depth": 0
+      },
+      {
+        "class": "Encoding",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Encoding",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "ErrorType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ErrorType",
+        "direct": 2,
+        "inherited": 2,
+        "depth": 0
+      },
+      {
+        "class": "ImplementorType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ImplementorType",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "LanguageConstruct",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#LanguageConstruct",
+        "direct": 1,
+        "inherited": 1,
+        "depth": 0
+      },
+      {
+        "class": "Lecture",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Lecture",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "Method",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Method",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "MethodRole",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#MethodRole",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "OOPMechanism",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#OOPMechanism",
+        "direct": 7,
+        "inherited": 7,
+        "depth": 0
+      },
+      {
+        "class": "PythonInternals",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#PythonInternals",
+        "direct": 6,
+        "inherited": 6,
+        "depth": 0
+      },
+      {
+        "class": "Skill",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Skill",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      }
+    ],
+    "property_usage": {
+      "is_used_by": 0,
+      "implements": 0,
+      "contrasts_with": 12,
+      "enables": 11,
+      "is_required_by": 0,
+      "is_thrown_by": 0,
+      "depends_on": 19,
+      "taught_in": 60,
+      "implemented_by": 3,
+      "throws_error": 2,
+      "part_of": 23,
+      "uses_concept": 27,
+      "enabled_by": 0,
+      "is_produced_by": 0,
+      "has_part": 0,
+      "teaches": 0,
+      "produces_type": 4
+    }
+  },
+  "sparql_cqs": [
+    {
+      "id": "CQ_OOP_01",
+      "question": "Which entities does 'Design a class to model a real entity' use?",
+      "results": 3,
+      "expected_min": 5,
+      "passed": false,
+      "sample": [
+        "OM_OOP03",
+        "MR_OOP01",
+        "MR_OOP02"
+      ]
+    },
+    {
+      "id": "CQ_OOP_02",
+      "question": "What are the prerequisite skills before 'Apply polymorphism'?",
+      "results": 1,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "SKOOP001"
+      ]
+    },
+    {
+      "id": "CQ_OOP_03",
+      "question": "Which mechanisms enable 'Data Hiding'?",
+      "results": 4,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "OM_OOP03",
+        "MR_OOP02",
+        "MR_OOP01",
+        "PI_OOP02"
+      ]
+    },
+    {
+      "id": "CQ_OOP_04",
+      "question": "Which concepts are taught in L10?",
+      "results": 11,
+      "expected_min": 5,
+      "passed": true,
+      "sample": [
+        "COOP_STATIC",
+        "COOP009",
+        "COOP002",
+        "COOP019",
+        "COOP_ENC"
+      ]
+    },
+    {
+      "id": "CQ_OOP_05",
+      "question": "What does Inheritance depend on?",
+      "results": 1,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "COOP001"
+      ]
+    },
+    {
+      "id": "CQ_OOP_06",
+      "question": "Which errors can be thrown in the OOP ontology?",
+      "results": 2,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "E_OOP_ATTR",
+        "E_OOP_TYPE"
+      ]
+    },
+    {
+      "id": "CQ_OOP_07",
+      "question": "Which entities are part_of the Class concept?",
+      "results": 8,
+      "expected_min": 3,
+      "passed": true,
+      "sample": [
+        "CM_OOP02",
+        "MR_OOP05",
+        "PI_OOP06",
+        "LC_OOP_CLASS",
+        "MR_OOP04"
+      ]
+    }
+  ],
+  "skill_graph": {
+    "issues": [],
+    "skills": [
+      {
+        "name": "Writing Dunder Methods",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Dunder Method"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Implementing Encapsulation",
+        "depends_on": [],
+        "uses_concept": [
+          "Name Mangling",
+          "Getter Method",
+          "Setter Method"
+        ],
+        "is_root": true
+      },
+      {
+        "name": "Applying Inheritance",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Subclass",
+          "super() Call"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Applying Polymorphism",
+        "depends_on": [
+          "Applying Inheritance"
+        ],
+        "uses_concept": [
+          "Method Overriding",
+          "Duck Typing"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Enforcing Class Invariants",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Setter Method",
+          "Inheritance"
+        ],
+        "is_root": false
+      }
+    ]
+  },
+  "semantic": {
+    "ok": false,
+    "error": "skipped (pass --semantic to enable)",
+    "model": null,
+    "phase1_total_claims": 0,
+    "phase1_flagged": 0,
+    "phase2_resolved": [],
+    "issues": []
+  },
+  "summary": {
+    "structural_issues": 1,
+    "structural_warnings": 0,
+    "oops_critical": 0,
+    "oops_important": 0,
+    "oops_minor": 1,
+    "cq_passed": 6,
+    "cq_failed": 1,
+    "cq_total": 7,
+    "skill_issues": 0,
+    "semantic_flagged": 0,
+    "semantic_issues": 0
+  },
+  "original_filename": "comp101_oop.owl"
+}

@@ -1,0 +1,515 @@
+{
+  "name": "COMP101_OOP",
+  "source_path": "/home/asmae/Downloads/poster/validation/webapp/runs/2e8afed01b2f/source.owl",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/oop#",
+  "timestamp": "2026-07-14T15:17:52.646487",
+  "triple_count": 694,
+  "parse_error": null,
+  "structural": {
+    "has_ontology_declaration": true,
+    "issues": [
+      "Dangling reference: L10 <http://comp101.sase.um6p.ma/ontology/oop#L10> (target of taught_in)"
+    ],
+    "warnings": []
+  },
+  "consistency": {
+    "ok": false,
+    "consistent": null,
+    "unsatisfiable_classes": [],
+    "error": "skipped (--no-reasoner)"
+  },
+  "oops": {
+    "ok": false,
+    "error": "skipped (--no-oops)",
+    "pitfalls": [],
+    "warnings": [],
+    "suggestions": []
+  },
+  "ontoqa": {
+    "source": "/home/asmae/Downloads/poster/validation/webapp/runs/2e8afed01b2f/source.owl",
+    "schema": {
+      "class_count": 15,
+      "object_property_count": 17,
+      "datatype_property_count": 5,
+      "subclass_edges": 0,
+      "root_classes": 15,
+      "leaf_classes": 15,
+      "relationship_richness": 1.0,
+      "attribute_richness": 0.3333,
+      "inheritance_richness": 0.0,
+      "max_inheritance_depth": 0,
+      "avg_inheritance_depth": 0.0
+    },
+    "instance": {
+      "individual_count": 60,
+      "class_richness": 0.8,
+      "average_population": 4.0,
+      "classes_with_instances": 12
+    },
+    "per_class": [
+      {
+        "class": "BuiltInFunction",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#BuiltInFunction",
+        "direct": 3,
+        "inherited": 3,
+        "depth": 0
+      },
+      {
+        "class": "ClassMember",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ClassMember",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "Concept",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Concept",
+        "direct": 11,
+        "inherited": 11,
+        "depth": 0
+      },
+      {
+        "class": "DataType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#DataType",
+        "direct": 3,
+        "inherited": 3,
+        "depth": 0
+      },
+      {
+        "class": "DesignAbstraction",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#DesignAbstraction",
+        "direct": 7,
+        "inherited": 7,
+        "depth": 0
+      },
+      {
+        "class": "Encoding",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Encoding",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "ErrorType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ErrorType",
+        "direct": 2,
+        "inherited": 2,
+        "depth": 0
+      },
+      {
+        "class": "ImplementorType",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#ImplementorType",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "LanguageConstruct",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#LanguageConstruct",
+        "direct": 1,
+        "inherited": 1,
+        "depth": 0
+      },
+      {
+        "class": "Lecture",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Lecture",
+        "direct": 0,
+        "inherited": 0,
+        "depth": 0
+      },
+      {
+        "class": "Method",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Method",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "MethodRole",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#MethodRole",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      },
+      {
+        "class": "OOPMechanism",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#OOPMechanism",
+        "direct": 7,
+        "inherited": 7,
+        "depth": 0
+      },
+      {
+        "class": "PythonInternals",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#PythonInternals",
+        "direct": 6,
+        "inherited": 6,
+        "depth": 0
+      },
+      {
+        "class": "Skill",
+        "uri": "http://comp101.sase.um6p.ma/ontology/oop#Skill",
+        "direct": 5,
+        "inherited": 5,
+        "depth": 0
+      }
+    ],
+    "property_usage": {
+      "has_part": 0,
+      "taught_in": 60,
+      "is_thrown_by": 0,
+      "produces_type": 4,
+      "contrasts_with": 12,
+      "is_required_by": 0,
+      "enables": 11,
+      "is_produced_by": 0,
+      "implements": 0,
+      "enabled_by": 0,
+      "is_used_by": 0,
+      "teaches": 0,
+      "throws_error": 2,
+      "depends_on": 19,
+      "uses_concept": 27,
+      "part_of": 23,
+      "implemented_by": 3
+    }
+  },
+  "sparql_cqs": [
+    {
+      "id": "CQ_OOP_01",
+      "question": "Which entities does 'Design a class to model a real entity' use?",
+      "results": 3,
+      "expected_min": 5,
+      "passed": false,
+      "sample": [
+        "OM_OOP03",
+        "MR_OOP01",
+        "MR_OOP02"
+      ]
+    },
+    {
+      "id": "CQ_OOP_02",
+      "question": "What are the prerequisite skills before 'Apply polymorphism'?",
+      "results": 1,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "SKOOP001"
+      ]
+    },
+    {
+      "id": "CQ_OOP_03",
+      "question": "Which mechanisms enable 'Data Hiding'?",
+      "results": 4,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "OM_OOP03",
+        "MR_OOP02",
+        "MR_OOP01",
+        "PI_OOP02"
+      ]
+    },
+    {
+      "id": "CQ_OOP_04",
+      "question": "Which concepts are taught in L10?",
+      "results": 11,
+      "expected_min": 5,
+      "passed": true,
+      "sample": [
+        "COOP_STATIC",
+        "COOP009",
+        "COOP002",
+        "COOP019",
+        "COOP_ENC"
+      ]
+    },
+    {
+      "id": "CQ_OOP_05",
+      "question": "What does Inheritance depend on?",
+      "results": 1,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "COOP001"
+      ]
+    },
+    {
+      "id": "CQ_OOP_06",
+      "question": "Which errors can be thrown in the OOP ontology?",
+      "results": 2,
+      "expected_min": 1,
+      "passed": true,
+      "sample": [
+        "E_OOP_ATTR",
+        "E_OOP_TYPE"
+      ]
+    },
+    {
+      "id": "CQ_OOP_07",
+      "question": "Which entities are part_of the Class concept?",
+      "results": 8,
+      "expected_min": 3,
+      "passed": true,
+      "sample": [
+        "CM_OOP02",
+        "MR_OOP05",
+        "PI_OOP06",
+        "LC_OOP_CLASS",
+        "MR_OOP04"
+      ]
+    }
+  ],
+  "skill_graph": {
+    "issues": [],
+    "skills": [
+      {
+        "name": "Writing Dunder Methods",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Dunder Method"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Implementing Encapsulation",
+        "depends_on": [],
+        "uses_concept": [
+          "Name Mangling",
+          "Getter Method",
+          "Setter Method"
+        ],
+        "is_root": true
+      },
+      {
+        "name": "Applying Inheritance",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Subclass",
+          "super() Call"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Applying Polymorphism",
+        "depends_on": [
+          "Applying Inheritance"
+        ],
+        "uses_concept": [
+          "Method Overriding",
+          "Duck Typing"
+        ],
+        "is_root": false
+      },
+      {
+        "name": "Enforcing Class Invariants",
+        "depends_on": [
+          "Implementing Encapsulation"
+        ],
+        "uses_concept": [
+          "Setter Method",
+          "Inheritance"
+        ],
+        "is_root": false
+      }
+    ]
+  },
+  "semantic": {
+    "ok": true,
+    "error": "10 of 15 batch(es) failed after retries and were skipped (see skipped_batches) | 3 of 9 flagged claim(s) failed re-verification after retries and were skipped",
+    "model": "gemma4:26b",
+    "phase1_total_claims": 25,
+    "phase1_flagged": 9,
+    "phase2_resolved": [],
+    "issues": [
+      {
+        "predicate": "contrastsWith",
+        "subject": "Superclass",
+        "object": "Subclass",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#CM_OOP04",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#CM_OOP03",
+        "phase1_verdict": "questionable",
+        "phase1_reasoning": "Superclass and Subclass represent the same relationship viewed from different ends; they aren't necessarily 'contrasting' concepts in the way the relation implies.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.85,
+        "evidence": "The 'contrastsWith' relation is used to a student need to be able to distinguish between two concepts. In the context of 'Superclass' and 'Subclass', these are two sides of one single inheritance relationship; they is no logical distinction or confusion possible without the presence of both.",
+        "proposed_fix_action": "remove_triple",
+        "proposed_fix_rationale": "Removing this triple eliminates an incorrect use of the 'contrastsWith' relation by replacing it with a more appropriate structural link like 'partOf'."
+      },
+      {
+        "predicate": "contrastsWith",
+        "subject": "Global State Problem",
+        "object": "Abstraction",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#DA_OOP07",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP012",
+        "phase1_verdict": "uncertain",
+        "phase1_reasoning": "\"Global State Problem\" is a specific issue/consequence, whereas \"Abstraction\" is a very broad concept; they don't clearly contrast in a pedagogical sense.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.9,
+        "evidence": "The 'contrastsWith' relation is used to denote pedagogical confusion between concepts. While both are taught in L10, 'Global State Problem' is a defined anti-pattern/issue (is a DesignAbstraction), and 'Abstraction' is a broad concept. They do not share a pedagogical relationship of being confused for one another.",
+        "proposed_fix_action": "remove_triple",
+        "proposed_fix_rationale": "Removing the triple eliminates an incorrect pedagogical contrast that lacks conceptual or structural alignment."
+      },
+      {
+        "predicate": "contrastsWith",
+        "subject": "Interface",
+        "object": "Inheritance",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#DA_OOP02",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP013",
+        "phase1_verdict": "questionable",
+        "phase1_reasoning": "\"Interface\" and \"Inheritance\" are related via object-oriented principles but aren't typically taught as 'contrasting' or 'confusable' pairs.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.85,
+        "evidence": "The 'contrastsWith' relation is used for concepts that are a confusing pair of opposites (e.g., 'Composition vs Inheritance'). The Here, 'Interface' and 'implements' 'Inheritance' are both part of the L10 curriculum, and while they are related via polymorphism, they'ry not opposing/confating-able pairs.",
+        "proposed_fix_action": "remove_triple",
+        "proposed_fix_rationale": "Removing this triple eliminates an incorrect semantic relationship between two distinct OOP principles that do not function as direct conceptual contrasts in teaching logic."
+      },
+      {
+        "predicate": "contrastsWith",
+        "subject": "Abstraction",
+        "object": "Encapsulation",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP012",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP_ENC",
+        "phase1_verdict": "questionable",
+        "phase1_reasoning": "\"Abstraction\" and \"Encapsulation\" are frequently confused by beginners, but they aren't strictly contrasting concepts; they are complementary features of OOP.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.85,
+        "evidence": "The triple '\"Abstraction\" --contrastsWith--> \"Encapsulation\"' remains problematic because both concepts are interconnected via 'dependsOn' and 'partOf' relationships within the same lesson (L10), reinforcing their complementary nature rather than a/an 'opposing' relationship.",
+        "proposed_fix_action": "remove_triple",
+        "proposed_fix_rationale": "Removing this triple eliminates the incorrect implication of that these two core OOP principles are opposites, which aligns with theability to distinguish them as distinct but interdependent features."
+      },
+      {
+        "predicate": "dependsOn",
+        "subject": "Mixin",
+        "object": "Multiple Inheritance",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#DA_OOP04",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#OM_OOP06",
+        "phase1_verdict": "questionable",
+        "phase1_reasoning": "While Mixins often rely on multiple inheritance, they can be implemented via other mechanisms; however, in many curricula, multiple inheritance is a prerequisite for the concept of mixins.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.85,
+        "evidence": "The 'dependsOn' edge is logically inconsistent with the provided definitions. The Mixin definition explicitly states they are implemented 'via multiple inheritance', making the dependency on Multiple Inheritance a redundant and circular dependency within the same lesson (L10).",
+        "proposed_fix_triple": "Remove the triple \"Mixin\" --dependsOn--> \"Multiple Inheritance\"",
+        "proposed_fix_rationale": "Removing this edge removes the redundancy/circularity in L10; if both are taught in L10, one cannot be a prerequisite for the other."
+      },
+      {
+        "predicate": "dependsOn",
+        "subject": "Abstraction",
+        "object": "Encapsulation",
+        "subject_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP012",
+        "object_uri": "http://comp101.sase.um6p.ma/ontology/oop#COOP_ENC",
+        "phase1_verdict": "incorrect",
+        "phase1_reasoning": "Abstraction and Encapsulation are distinct pillars of OOP that do not necessarily have a dependency relationship where one must precede the other in learning.",
+        "resolved": false,
+        "resolution_explanation": "",
+        "confidence": 0.85,
+        "evidence": "The 'dependsOn' edge between Abstraction and Encapsulation contradicts the 'contrastsWith' edges present for both nodes. Since they are a sibling relationship of distinction rather\ub85c than dependency, the 'dependsOn' triple must be removed.",
+        "proposed_fix_triple": "Remove the triple: \"Abstraction\" --dependsOn--> \"Encapsulation\""
+      }
+    ],
+    "skipped_batches": [
+      {
+        "relation": "enables",
+        "batch_start": 0,
+        "batch_size": 11,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "partOf",
+        "batch_start": 0,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "partOf",
+        "batch_start": 15,
+        "batch_size": 8,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "taughtIn",
+        "batch_start": 0,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "taughtIn",
+        "batch_start": 15,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "taughtIn",
+        "batch_start": 30,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "taughtIn",
+        "batch_start": 45,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "dependsOn",
+        "batch_start": 0,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "usesConcept",
+        "batch_start": 0,
+        "batch_size": 15,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "relation": "usesConcept",
+        "batch_start": 15,
+        "batch_size": 12,
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      }
+    ],
+    "skipped_claims": [
+      {
+        "predicate": "throwsError",
+        "subject": "Data Hiding",
+        "object": "AttributeError",
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "predicate": "contrastsWith",
+        "subject": "Subclass",
+        "object": "Superclass",
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      },
+      {
+        "predicate": "implementedBy",
+        "subject": "Class",
+        "object": "class definition",
+        "error": "model returned unparsable JSON (0 chars) on attempt 3/3: Expecting value: line 1 column 1 (char 0). Tail: ...''"
+      }
+    ]
+  },
+  "summary": {
+    "structural_issues": 1,
+    "structural_warnings": 0,
+    "oops_critical": 0,
+    "oops_important": 0,
+    "oops_minor": 0,
+    "cq_passed": 6,
+    "cq_failed": 1,
+    "cq_total": 7,
+    "skill_issues": 0,
+    "semantic_flagged": 9,
+    "semantic_issues": 6
+  },
+  "original_filename": "comp101_oop.owl"
+}

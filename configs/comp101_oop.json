@@ -1,0 +1,73 @@
+{
+  "name": "COMP101_OOP",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/oop#",
+  "id_property": "courseId",
+  "relation_semantics": {
+    "dependsOn": "The subject cannot be reasonably understood or performed by a student until the object has already been learned. A prerequisite edge in the teaching sequence.",
+    "partOf": "The subject is a genuine conceptual sub-component of the object, not merely related to it.",
+    "hasPart": "The subject genuinely contains the object as one of its conceptual sub-components (inverse of partOf).",
+    "usesConcept": "Performing or explaining the subject skill genuinely requires knowledge of the object concept — the concept is load-bearing, not incidental.",
+    "isUsedBy": "The subject concept is genuinely needed by the object skill/operation to be understood or performed (inverse of usesConcept).",
+    "enables": "The subject is a mechanism or language feature that makes the object concept/goal achievable — a means-to-end relationship.",
+    "enabledBy": "The subject (a goal or concept) becomes achievable specifically because of the object mechanism/feature (inverse of enables).",
+    "implements": "The subject is a concrete mechanism/construct that realizes the object, which is an abstract concept or interface.",
+    "implementedBy": "The subject (an abstract concept/interface) is concretely realized by the object (a specific mechanism/construct) in this language (inverse of implements).",
+    "throwsError": "Performing the subject operation can, under realistic conditions covered by this course, actually raise the named object error/exception.",
+    "isThrownBy": "The subject error can actually be raised by performing the object operation (inverse of throwsError).",
+    "producesType": "Performing the subject operation actually yields a result of the object type.",
+    "isProducedBy": "The subject (a value/type/error) is what results from performing the object operation (inverse of producesType).",
+    "isRequiredBy": "The subject must already be understood before the object can be correctly performed or understood.",
+    "contrastsWith": "The subject and object are commonly confused or juxtaposed concepts that a student needs to actively learn to distinguish from each other.",
+    "taughtIn": "The subject concept/skill is actually introduced or covered in the named object lecture, not merely tangentially related to it.",
+    "teaches": "The subject lecture actually introduces or covers the object concept/skill (inverse of taughtIn)."
+  },
+  "skill_graph": {
+    "class": "Skill",
+    "depends_on": "dependsOn",
+    "uses_concept": "usesConcept"
+  },
+  "competency_questions": [
+    {
+      "id": "CQ_OOP_01",
+      "question": "Which entities does 'Design a class to model a real entity' use?",
+      "sparql": "SELECT ?entity WHERE {{ <{ns}SKOOP001> <{ns}usesConcept> ?entity . }}",
+      "expect_min": 5
+    },
+    {
+      "id": "CQ_OOP_02",
+      "question": "What are the prerequisite skills before 'Apply polymorphism'?",
+      "sparql": "SELECT ?prereq WHERE {{ <{ns}SKOOP004> <{ns}dependsOn>+ ?prereq . ?prereq a <{ns}Skill> . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_OOP_03",
+      "question": "Which mechanisms enable 'Data Hiding'?",
+      "sparql": "SELECT ?mech WHERE {{ ?mech <{ns}enables> <{ns}COOP009> . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_OOP_04",
+      "question": "Which concepts are taught in L10?",
+      "sparql": "SELECT ?c WHERE {{ ?c <{ns}taughtIn> <{ns}L10> . ?c a <{ns}Concept> . }}",
+      "expect_min": 5
+    },
+    {
+      "id": "CQ_OOP_05",
+      "question": "What does Inheritance depend on?",
+      "sparql": "SELECT ?dep WHERE {{ <{ns}COOP013> <{ns}dependsOn> ?dep . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_OOP_06",
+      "question": "Which errors can be thrown in the OOP ontology?",
+      "sparql": "SELECT DISTINCT ?err WHERE {{ ?x <{ns}throwsError> ?err . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_OOP_07",
+      "question": "Which entities are part_of the Class concept?",
+      "sparql": "SELECT ?part WHERE {{ ?part <{ns}partOf> <{ns}COOP001> . }}",
+      "expect_min": 3
+    }
+  ]
+}
