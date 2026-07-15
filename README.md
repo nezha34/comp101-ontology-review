@@ -48,10 +48,12 @@ ontology_review/
   pipeline.py          shared validate / compare
   web/                 drag-drop UI (FastAPI)
   lib/                 validation layers + vocab_diff
-  configs/             per-module CQ + skill_graph (oop, ics, …)
+  semantic/            LLM lane stubs (neighbors → review)
+  configs/             per-module CQ + skill_graph (oop, ics, generic, …)
   baselines/           shared COMP101 T-Box for diff
 examples/              sample OWL modules
 results/               generated reports (gitignored)
+uploads/               UI drops (gitignored)
 ```
 
 ### UI modes
