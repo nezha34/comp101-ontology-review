@@ -1,0 +1,54 @@
+{
+  "name": "COMP101_ICS",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/ics#",
+  "id_property": "courseId",
+  "skill_graph": {
+    "class": "Skill",
+    "depends_on": "dependsOn",
+    "uses_concept": "usesConcept"
+  },
+  "competency_questions": [
+    {
+      "id": "CQ_ICS_01",
+      "question": "Which skills depend on 'Understand a process'?",
+      "sparql": "SELECT ?skill WHERE {{ ?skill <{ns}dependsOn> <{ns}SK_ICS01> . ?skill a <{ns}Skill> . }}",
+      "expect_min": 2
+    },
+    {
+      "id": "CQ_ICS_02",
+      "question": "What does 'Diagnose a bug by tracing it to its layer' depend on?",
+      "sparql": "SELECT ?dep WHERE {{ <{ns}SK_ICS07> <{ns}dependsOn> ?dep . }}",
+      "expect_min": 5
+    },
+    {
+      "id": "CQ_ICS_03",
+      "question": "Which entities are managed by the OS (SL_ICS01)?",
+      "sparql": "SELECT ?entity WHERE {{ ?entity <{ns}managedBy> <{ns}SL_ICS01> . }}",
+      "expect_min": 5
+    },
+    {
+      "id": "CQ_ICS_04",
+      "question": "What errors can be thrown in the ICS ontology?",
+      "sparql": "SELECT DISTINCT ?err WHERE {{ ?x <{ns}throwsError> ?err . }}",
+      "expect_min": 2
+    },
+    {
+      "id": "CQ_ICS_05",
+      "question": "Which entities are part_of the Process (RE_ICS01)?",
+      "sparql": "SELECT ?part WHERE {{ ?part <{ns}partOf> <{ns}RE_ICS01> . }}",
+      "expect_min": 3
+    },
+    {
+      "id": "CQ_ICS_06",
+      "question": "Which concepts does 'Convert between bytes and text' use?",
+      "sparql": "SELECT ?concept WHERE {{ <{ns}SK_ICS05> <{ns}usesConcept> ?concept . }}",
+      "expect_min": 4
+    },
+    {
+      "id": "CQ_ICS_07",
+      "question": "What is taught in L11?",
+      "sparql": "SELECT ?entity WHERE {{ ?entity <{ns}taughtIn> <{ns}L11> . ?entity a <{ns}Concept> . }}",
+      "expect_min": 5
+    }
+  ]
+}

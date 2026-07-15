@@ -1,0 +1,114 @@
+ONTOLOGY VALIDATION PIPELINE — WHAT EACH CHECK DOES
+=====================================================
+Pipeline: validation/validate.py  (run with python3.11)
+Six layers run per ontology file. Layers 1-3 are structural/logical
+(catch a broken ontology). Layers 4-6 are pedagogical/domain checks
+(catch a valid-but-wrong-for-this-course ontology). Layers 5-6 only
+run if a config exists for that ontology's namespace (configs/*.json).
+
+
+1. PARSE / SYNTAX VALIDATION  (lib/graph_utils.py)
+---------------------------------------------------
+Tries to load the .owl/.ttl/.rdf file with rdflib. If the file isn't
+valid RDF at all (malformed XML, broken Turtle syntax, etc.), this
+fails immediately and every other check is skipped. First line of
+defense — catches "the file is broken," not "the file is wrong."
+
+
+2. STRUCTURAL INTEGRITY  (lib/structural.py)
+---------------------------------------------
+Offline, rule-based checks against the raw triples:
+  - Ontology declaration    — does the file declare itself as an owl:Ontology?
+  - Dangling references     — a URI in this ontology's namespace is used
+                               (e.g. as the target of a property) but never
+                               declared as a class/property/individual.
+                               Example we caught: "L10" referenced 30+ times
+                               via taughtIn but never defined anywhere.
+  - Self-loops               — X --property--> X, where the property was
+                               never declared owl:ReflexiveProperty.
+  - Punning                  — the same URI is declared as both a Class
+                               and a NamedIndividual (ambiguous meaning).
+  - Missing labels           — classes/individuals with no rdfs:label.
+  - Orphan individuals       — an individual with no relationships at all
+                               beyond its rdf:type (dead weight in the graph).
+  - Duplicate identifiers    — two individuals sharing the same value for
+                               a configured ID property (e.g. courseId).
+"Issues" = things that are likely wrong. "Warnings" = things worth a look
+but not necessarily broken.
+
+
+3. OWL DL CONSISTENCY  (lib/reasoner.py — HermiT via owlready2)
+------------------------------------------------------------------
+Runs an actual OWL DL reasoner (HermiT, needs a JVM) against the
+ontology. This is the check that pure structural rules can't do:
+it verifies the axioms are logically *satisfiable*, not just
+well-formed RDF. Reports:
+  - Whether the ontology is logically consistent at all.
+  - Any "unsatisfiable" classes — classes that reasoning proves are
+    forced to be empty (equivalent to owl:Nothing), which usually means
+    contradictory restrictions somewhere in the class hierarchy.
+
+
+4. OOPS! PITFALL SCAN  (lib/oops_client.py — live REST API)
+----------------------------------------------------------------
+Sends the ontology to the real OOPS! (OntOlogy Pitfall Scanner!) web
+service (oops.linkeddata.es) — the standard academic tool for ontology
+engineering mistakes. Checks against its full published catalogue
+(P01–P41: things like wrong inverse relationships, missing disjointness,
+untyped classes, ambiguous namespaces, no license declared, etc.).
+Each pitfall comes back with a severity: Critical / Important / Minor,
+plus the exact elements affected. Requires internet; the pipeline
+degrades gracefully (reports "unavailable") if the API can't be reached.
+
+
+5. ONTOQA METRICS  (lib/metrics.py → ontometrics/ontology_metrics.py)
+--------------------------------------------------------------------------
+Not pass/fail — these are quality *metrics* (Tartir et al. OntoQA /
+OntoMetrics-style), useful for comparing versions of the same ontology
+over time or against a target profile:
+  Schema metrics:
+    - Relationship Richness (RR) — object properties vs. subclass edges;
+      low RR means the ontology is mostly a class taxonomy with few
+      real relationships between things.
+    - Attribute Richness (AR)   — average datatype properties per class.
+    - Inheritance Richness (IR) — average subclasses per class (how
+      "bushy" vs. "flat" the hierarchy is).
+    - Max/avg inheritance depth.
+  Instance metrics:
+    - Class Richness (CR)       — fraction of classes that actually have
+      individuals (unused classes drag this down).
+    - Average population        — individuals per class.
+    - Per-class instance counts.
+
+
+6. SPARQL COMPETENCY QUESTIONS  (lib/sparql_cq.py — config-driven)
+-------------------------------------------------------------------------
+Runs a list of "the ontology must be able to answer this" queries
+defined per-ontology in configs/*.json (e.g. "What does Inheritance
+depend on?", "Which concepts are taught in L10?"). Each CQ declares a
+minimum expected result count; pass/fail = did the ontology actually
+return enough results. Catches *content* regressions — the schema is
+fine, but expected facts are missing or got deleted.
+
+
+7. SKILL GRAPH CHECKS  (lib/skill_graph.py — config-driven)
+------------------------------------------------------------------
+Only runs if the config declares a "skill_graph" block (class name +
+dependsOn/uses_concept property names). Checks:
+  - The dependsOn graph among Skills is a DAG (no circular prerequisites).
+  - Every Skill links to at least one Concept via uses_concept.
+  - Every dependsOn target actually is a Skill (not a dangling/wrong type).
+
+
+WHAT THIS PIPELINE DOES NOT CATCH (yet)
+-----------------------------------------
+Everything above checks that the ontology is *structurally* and
+*logically* valid, or that it matches a hand-written expected-content
+list. None of it checks whether an asserted relationship is actually
+TRUE in the domain — e.g. "SKOOP004 dependsOn COOP013" can be perfectly
+well-formed, pass every check above, and still be pedagogically wrong.
+That's a separate, planned layer: an LLM-as-judge pass that (1) screens
+every edge individually, then (2) re-checks anything flagged against its
+full graph context before writing up a detailed, evidence-based proposed
+fix for a human to accept or reject. Not yet implemented — this file
+covers what's live in validate.py today.

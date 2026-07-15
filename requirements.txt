@@ -1,0 +1,8 @@
+rdflib>=7.0
+owlready2>=0.46
+requests>=2.31
+fastapi>=0.115
+uvicorn[standard]>=0.30
+python-multipart>=0.0.9
+# HermiT (via owlready2) needs a JVM on PATH. OOPS! needs network unless --no-oops.
+# UI: python -m ontology_review.web.app  →  http://127.0.0.1:8765

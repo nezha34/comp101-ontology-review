@@ -1,0 +1,217 @@
+{
+  "id": "comp101_shared_tbox",
+  "version": "2025.20",
+  "label": "Shared COMP101 T-Box (classes + object properties) for vocab diff",
+  "comment": "Authors may add module-local classes; anything not listed here shows up as only-in-upload. Core merge vocabulary lives here.",
+  "classes": [
+    {
+      "id": "Lecture",
+      "subclass_of": "owl:Thing",
+      "comment": "A week or unit in the course schedule."
+    },
+    {
+      "id": "Concept",
+      "subclass_of": "owl:Thing",
+      "comment": "An idea to understand, not a keyword (e.g. Indexing)."
+    },
+    {
+      "id": "Pattern",
+      "subclass_of": "Concept",
+      "comment": "A common loop or problem-solving pattern (e.g. Accumulator)."
+    },
+    {
+      "id": "ConceptCarrier",
+      "subclass_of": "owl:Thing",
+      "comment": "Python surface that can implement or use curriculum concepts (syntax, methods, builtins). Groups LanguageConstruct with invokables for T-box connectivity."
+    },
+    {
+      "id": "Invokable",
+      "subclass_of": "ConceptCarrier",
+      "comment": "Callable Python API: type-bound methods and global built-in functions."
+    },
+    {
+      "id": "DataType",
+      "subclass_of": "owl:Thing",
+      "comment": "A Python built-in type used in code (e.g. list, dict)."
+    },
+    {
+      "id": "ErrorType",
+      "subclass_of": "owl:Thing",
+      "comment": "An exception students may encounter (e.g. IndexError)."
+    },
+    {
+      "id": "LanguageConstruct",
+      "subclass_of": "ConceptCarrier",
+      "comment": "Python syntax such as a for loop or the [] operator."
+    },
+    {
+      "id": "Method",
+      "subclass_of": "Invokable",
+      "comment": "A function bound to a data type (e.g. list.append())."
+    },
+    {
+      "id": "BuiltInFunction",
+      "subclass_of": "Invokable",
+      "comment": "A global built-in function such as len() or sorted() (adopted from the shared OOP T-Box; cleaner than modelling these as LanguageConstructs)."
+    },
+    {
+      "id": "Skill",
+      "subclass_of": "owl:Thing",
+      "comment": "A learning outcome the student should achieve."
+    }
+  ],
+  "object_properties": [
+    {
+      "id": "taughtIn",
+      "domain": "owl:Thing",
+      "range": "Lecture",
+      "comment": "Week where an entity is first introduced (primary teaching). Use revisitedIn for reinforcement in a later week."
+    },
+    {
+      "id": "revisitedIn",
+      "domain": "owl:Thing",
+      "range": "Lecture",
+      "comment": "Week where a concept introduced earlier is reinforced in a new context \u2014 not first taught here."
+    },
+    {
+      "id": "dependsOn",
+      "domain": "owl:Thing",
+      "range": "owl:Thing",
+      "characteristics": [
+        "transitive"
+      ],
+      "comment": "Strict prerequisite: the source should be learned after the target. Transitive, so prerequisite chains close automatically (adopted from the OOP T-Box)."
+    },
+    {
+      "id": "recommendedBefore",
+      "domain": "owl:Thing",
+      "range": "owl:Thing",
+      "comment": "Pedagogical soft ordering: the source is usually taught before the target. Non-transitive; skippable when the learner has already mastered the target."
+    },
+    {
+      "id": "implementsConcept",
+      "domain": "ConceptCarrier",
+      "range": "Concept",
+      "comment": "Syntax-level coding of a concept (LanguageConstruct). BuiltInFunctions use usesConcept instead \u2014 do not attach implementsConcept to builtins."
+    },
+    {
+      "id": "usesConcept",
+      "domain": "ConceptCarrier",
+      "range": "Concept",
+      "comment": "A method, construct, or built-in function relies on / carries out a concept or abstract operation (create, access, remove, ...). Shared name with the OOP module (replaces the earlier performsOperation)."
+    },
+    {
+      "id": "producesType",
+      "domain": "Invokable",
+      "range": "DataType",
+      "comment": "The data type a method or built-in function returns (adopted from the OOP module; richer than the returnsNone boolean, which is kept as a shortcut)."
+    },
+    {
+      "id": "contrastsWith",
+      "domain": "owl:Thing",
+      "range": "owl:Thing",
+      "characteristics": [
+        "symmetric"
+      ],
+      "comment": "Two entities that students often confuse and should compare (e.g. list vs tuple, shallow vs deep copy). Symmetric; shared with the OOP module."
+    },
+    {
+      "id": "methodOf",
+      "domain": "Method",
+      "range": "owl:Thing",
+      "comment": "A method belongs to a type or class. Range widened to owl:Thing to also cover user-defined classes in the OOP module."
+    },
+    {
+      "id": "throwsError",
+      "domain": "owl:Thing",
+      "range": "ErrorType",
+      "comment": "An entity can raise this error type."
+    },
+    {
+      "id": "requiresConcept",
+      "domain": "Skill",
+      "range": "Concept",
+      "comment": "A skill requires understanding of a concept."
+    },
+    {
+      "id": "teaches",
+      "domain": "Lecture",
+      "range": "owl:Thing",
+      "inverse_of": "taughtIn",
+      "comment": "Inverse of taughtIn: a lecture first introduces this entity."
+    },
+    {
+      "id": "revisits",
+      "domain": "Lecture",
+      "range": "owl:Thing",
+      "inverse_of": "revisitedIn",
+      "comment": "Inverse of revisitedIn: a lecture reinforces this entity from an earlier week."
+    },
+    {
+      "id": "enables",
+      "domain": "owl:Thing",
+      "range": "owl:Thing",
+      "inverse_of": "dependsOn",
+      "comment": "Inverse of dependsOn: the source is a prerequisite that enables the target."
+    },
+    {
+      "id": "precedes",
+      "domain": "owl:Thing",
+      "range": "owl:Thing",
+      "inverse_of": "recommendedBefore",
+      "comment": "Inverse of recommendedBefore: the source normally comes later in the teaching sequence."
+    },
+    {
+      "id": "implementedBy",
+      "domain": "Concept",
+      "range": "ConceptCarrier",
+      "inverse_of": "implementsConcept",
+      "comment": "Inverse of implementsConcept: a concept is coded by this language construct, method, or built-in."
+    },
+    {
+      "id": "isUsedBy",
+      "domain": "Concept",
+      "range": "ConceptCarrier",
+      "inverse_of": "usesConcept",
+      "comment": "Inverse of usesConcept: this concept/operation is used by the given method, construct, or built-in function."
+    },
+    {
+      "id": "isProducedBy",
+      "domain": "DataType",
+      "range": "Invokable",
+      "inverse_of": "producesType",
+      "comment": "Inverse of producesType: this data type is produced by the given method or built-in function."
+    },
+    {
+      "id": "hasMethod",
+      "domain": "owl:Thing",
+      "range": "Method",
+      "inverse_of": "methodOf",
+      "comment": "Inverse of methodOf: a type or class has this method."
+    },
+    {
+      "id": "raisedBy",
+      "domain": "ErrorType",
+      "range": "owl:Thing",
+      "inverse_of": "throwsError",
+      "comment": "Inverse of throwsError: this error is raised by the given entity."
+    },
+    {
+      "id": "requiredBy",
+      "domain": "Concept",
+      "range": "Skill",
+      "inverse_of": "requiresConcept",
+      "comment": "Inverse of requiresConcept: this concept is required by the given skill."
+    }
+  ],
+  "disjoint_classes": [
+    "Lecture",
+    "Concept",
+    "DataType",
+    "ErrorType",
+    "LanguageConstruct",
+    "Method",
+    "BuiltInFunction",
+    "Skill"
+  ]
+}
