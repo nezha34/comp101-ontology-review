@@ -51,7 +51,7 @@ ontology_review/
   semantic/            LLM lane stubs (neighbors → review)
   configs/             per-module CQ + skill_graph (oop, ics, generic, …)
   baselines/           shared COMP101 T-Box for diff
-examples/              sample OWL modules
+examples/              sample OWL modules (oop, ics, **w5–w6**) + PATH spine JSON
 results/               generated reports (gitignored)
 uploads/               UI drops (gitignored)
 ```
@@ -67,6 +67,7 @@ uploads/               UI drops (gitignored)
 
 | Pack | When to use |
 |------|-------------|
+| `comp101_w5_w6` | COMP101 lists/dicts/sets OWL (`examples/comp101_w5_w6.owl`) |
 | `comp101_oop` | Only the OOP module (hardcodes `SKOOP001`, `L10`, …) |
 | `comp101_ics` | Only the ICS module |
 | `comp101_generic` | **Any** week OWL — shape checks (`Concept`/`Skill`/`dependsOn`/…), no instance IDs |

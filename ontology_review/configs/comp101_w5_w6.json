@@ -1,0 +1,54 @@
+{
+  "name": "COMP101_W5_W6",
+  "namespace": "http://gnosis.local/ontologies/comp101#",
+  "id_property": null,
+  "skill_graph": {
+    "class": "Skill",
+    "depends_on": "dependsOn",
+    "uses_concept": "usesConcept"
+  },
+  "competency_questions": [
+    {
+      "id": "CQ_W56_01",
+      "question": "Which entities are taughtIn W5_lists?",
+      "sparql": "SELECT ?e WHERE {{ ?e <{ns}taughtIn> <{ns}W5_lists> . }}",
+      "expect_min": 20
+    },
+    {
+      "id": "CQ_W56_02",
+      "question": "Which entities are taughtIn W6_dicts_sets?",
+      "sparql": "SELECT ?e WHERE {{ ?e <{ns}taughtIn> <{ns}W6_dicts_sets> . }}",
+      "expect_min": 20
+    },
+    {
+      "id": "CQ_W56_03",
+      "question": "Does W6_dicts_sets depend on W5_lists?",
+      "sparql": "SELECT ?w WHERE {{ <{ns}W6_dicts_sets> <{ns}dependsOn> <{ns}W5_lists> . BIND(<{ns}W5_lists> AS ?w) }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_W56_04",
+      "question": "Are list / indexing concepts present in W5?",
+      "sparql": "SELECT ?c WHERE {{ VALUES ?c {{ <{ns}list> <{ns}indexing> <{ns}list_append> }} ?c <{ns}taughtIn> <{ns}W5_lists> . }}",
+      "expect_min": 2
+    },
+    {
+      "id": "CQ_W56_05",
+      "question": "Are dict / set concepts present in W6?",
+      "sparql": "SELECT ?c WHERE {{ VALUES ?c {{ <{ns}dict> <{ns}set> <{ns}key_value_pair> }} ?c <{ns}taughtIn> <{ns}W6_dicts_sets> . }}",
+      "expect_min": 2
+    },
+    {
+      "id": "CQ_W56_06",
+      "question": "Do skills declare requiresConcept?",
+      "sparql": "SELECT ?s WHERE {{ ?s a <{ns}Skill> . ?s <{ns}requiresConcept> ?c . }}",
+      "expect_min": 5
+    },
+    {
+      "id": "CQ_W56_07",
+      "question": "Are there dependsOn edges among curriculum entities?",
+      "sparql": "SELECT ?a WHERE {{ ?a <{ns}dependsOn> ?b . }}",
+      "expect_min": 10
+    }
+  ]
+}
