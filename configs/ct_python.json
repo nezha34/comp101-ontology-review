@@ -1,0 +1,21 @@
+{
+  "name": "CT_Python_KnowledgeGraph_v4",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/ctpython#",
+  "relation_semantics": {
+    "taughtIn": "The subject concept/skill is actually introduced or covered in the named object lecture, not merely tangentially related to it.",
+    "prerequisiteOf": "The subject must be understood before the object can be reasonably understood or performed — a prerequisite edge in a teaching sequence.",
+    "dependsOn": "The subject cannot be reasonably understood without the object already having been learned.",
+    "contrastsWith": "The subject and object are alternative approaches to the same kind of problem that a student needs to actively learn to distinguish or choose between.",
+    "usesConcept": "Performing or explaining the subject genuinely requires knowledge of the object concept — load-bearing, not incidental.",
+    "operatesOnType": "The subject construct commonly and directly operates on values of the object data type.",
+    "producesType": "Evaluating or calling the subject construct/method actually yields a value of the object type.",
+    "acceptsType": "The subject construct accepts a value of the object type as one of its inputs.",
+    "methodOf": "The subject method is genuinely defined on/callable on values of the object type.",
+    "throwsError": "Using the subject construct/concept can, under realistic conditions, actually raise the named object error.",
+    "exampleOf": "The subject is a concrete worked example that illustrates the object concept.",
+    "implementedBy": "The subject skill/concept is concretely realized by the object language construct in this course's material.",
+    "timeComplexity": "The subject algorithm's cost is genuinely characterized by the object complexity concept as taught in this course.",
+    "solvesProblem": "The subject skill is the applicable technique for addressing the object problem/concept.",
+    "bestPractice": "The object is a recommended practice genuinely associated with applying the subject skill/concept."
+  }
+}

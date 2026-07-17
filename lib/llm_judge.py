@@ -17,7 +17,14 @@ backend is actually answering.
 
 from __future__ import annotations
 
+import hashlib
+import json
+import os
+import threading
+import time
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 from rdflib import RDF, RDFS, Graph
 from rdflib.term import BNode
@@ -37,11 +44,60 @@ from .prompts import (
 BATCH_SIZE = 15
 CONTEXT_LIMIT = 20  # max neighborhood lines shown per node in phase 2
 
+# Parallel LLM calls. Hosted endpoints (NIM) benefit fully; a local Ollama
+# server queues them GPU-side, which is still fine. Override with the
+# SEMANTIC_WORKERS env var; 1 restores the old strictly-serial behaviour.
+WORKERS = max(1, int(os.environ.get("SEMANTIC_WORKERS", "6")))
+
+# On-disk verdict cache: reruns only pay LLM calls for claims whose content
+# (or, in phase 2, whose local neighborhood) actually changed since the last
+# run — the same incremental idea as course_genx beat hashes. Delete the file
+# or bump PROMPT_VERSION (e.g. after editing prompts.py) to force a full
+# re-judge. Keyed by model, so switching models also re-judges everything.
+CACHE_PATH = Path(__file__).resolve().parent.parent / "results" / ".semantic_cache.json"
+PROMPT_VERSION = "1"
+
+
+class _VerdictCache:
+    """Thread-safe {content-hash: verdict-dict} store, one JSON file."""
+
+    def __init__(self, path: Path):
+        self.path = Path(path)
+        self.lock = threading.Lock()
+        try:
+            self.data = json.loads(self.path.read_text())
+        except Exception:
+            self.data = {}
+        self.dirty = False
+
+    def get(self, key: str):
+        return self.data.get(key)
+
+    def put(self, key: str, value: dict):
+        with self.lock:
+            self.data[key] = value
+            self.dirty = True
+
+    def flush(self):
+        with self.lock:
+            if not self.dirty:
+                return
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.path.write_text(json.dumps(self.data))
+            self.dirty = False
+
+
+def _cache_key(*parts) -> str:
+    return hashlib.sha256(
+        json.dumps(parts, sort_keys=True, default=str).encode()
+    ).hexdigest()[:24]
+
 
 def _call_llm(provider: LLMProvider, system: str, user: str, schema: dict, retries: int = 2) -> dict:
     """Some models (local ones especially) occasionally return empty or
     malformed JSON even when the request is well-formed — retry a couple
-    of times before giving up, regardless of which provider is behind it."""
+    of times before giving up, regardless of which provider is behind it.
+    Backs off between attempts (longer on HTTP 429 rate limits)."""
     last_error = None
     for attempt in range(retries + 1):
         try:
@@ -50,6 +106,8 @@ def _call_llm(provider: LLMProvider, system: str, user: str, schema: dict, retri
             last_error = RuntimeError(
                 f"{provider.label} call failed on attempt {attempt+1}/{retries+1}: {e}"
             )
+            if attempt < retries:
+                time.sleep(15.0 * (attempt + 1) if "429" in str(e) else 2.0 * (attempt + 1))
     raise last_error
 
 
@@ -107,43 +165,88 @@ def collect_claims(g: Graph, config: dict) -> dict:
     return dict(by_relation)
 
 
-def run_phase1(g: Graph, config: dict, provider: LLMProvider) -> dict:
-    """Screen every claim, batch by batch. A batch that fails (even after
-    retries) is skipped, not fatal — one flaky relation shouldn't discard
-    every other successfully-judged claim. Returns
-    {ok, error, all_claims, flagged, skipped_batches}."""
+def _p1_key(provider: LLMProvider, rel_name: str, meaning: str, c: dict) -> str:
+    return _cache_key("p1", PROMPT_VERSION, provider.label, rel_name, meaning,
+                      c["subject_uri"], c["object_uri"],
+                      c["subject_label"], c["object_label"],
+                      c["subject_types"], c["object_types"])
+
+
+def run_phase1(g: Graph, config: dict, provider: LLMProvider,
+               cache: _VerdictCache | None = None, workers: int = WORKERS) -> dict:
+    """Screen every claim. Cached verdicts are reused without an LLM call;
+    only cache misses are re-batched and judged, with batches running in
+    parallel. A batch that fails (even after retries) is skipped, not
+    fatal — one flaky relation shouldn't discard every other
+    successfully-judged claim. Returns
+    {ok, error, all_claims, flagged, skipped_batches, cache_hits}."""
     by_relation = collect_claims(g, config)
     all_claims = []
     flagged = []
     skipped_batches = []
+    cache_hits = 0
 
+    def record(claim: dict, verdict: dict, meaning: str):
+        enriched = {**claim, **verdict, "relation_meaning": meaning}
+        all_claims.append(enriched)
+        if verdict["verdict"] != "correct":
+            flagged.append(enriched)
+
+    # split into cache hits (recorded immediately) and pending batches
+    tasks = []  # (rel_name, meaning, [(key, claim), ...])
     for rel_name, claims in by_relation.items():
         meaning = _relation_meaning(rel_name, config)
-        for batch_start in range(0, len(claims), BATCH_SIZE):
-            batch = claims[batch_start:batch_start + BATCH_SIZE]
-            user_prompt = build_phase1_user_prompt(rel_name, meaning, batch)
-            try:
-                result = _call_llm(provider, PHASE1_SYSTEM, user_prompt, PHASE1_SCHEMA)
-            except Exception as e:
-                skipped_batches.append({"relation": rel_name, "batch_start": batch_start,
-                                         "batch_size": len(batch), "error": str(e)})
-                continue
+        pending = []
+        for c in claims:
+            key = _p1_key(provider, rel_name, meaning, c)
+            hit = cache.get(key) if cache else None
+            if hit is not None:
+                record(c, hit, meaning)
+                cache_hits += 1
+            else:
+                pending.append((key, c))
+        for batch_start in range(0, len(pending), BATCH_SIZE):
+            tasks.append((rel_name, meaning, pending[batch_start:batch_start + BATCH_SIZE]))
 
-            by_index = {c["index"]: c for c in batch}
+    def judge_batch(task):
+        rel_name, meaning, keyed_batch = task
+        user_prompt = build_phase1_user_prompt(rel_name, meaning, [c for _, c in keyed_batch])
+        return _call_llm(provider, PHASE1_SYSTEM, user_prompt, PHASE1_SCHEMA)
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(judge_batch, t): t for t in tasks}
+        for fut in as_completed(futures):
+            rel_name, meaning, keyed_batch = futures[fut]
+            try:
+                result = fut.result()
+            except Exception as e:
+                skipped_batches.append({"relation": rel_name,
+                                         "batch_start": keyed_batch[0][1]["index"],
+                                         "batch_size": len(keyed_batch), "error": str(e)})
+                continue
+            by_index = {c["index"]: (k, c) for k, c in keyed_batch}
             for v in result.get("verdicts", []):
-                claim = by_index.get(v.get("index"))
-                if claim is None:
+                entry = by_index.get(v.get("index"))
+                if entry is None:
                     continue
-                enriched = {**claim, "verdict": v["verdict"], "confidence": v["confidence"],
-                            "reasoning": v["reasoning"], "relation_meaning": meaning}
-                all_claims.append(enriched)
-                if v["verdict"] != "correct":
-                    flagged.append(enriched)
+                key, claim = entry
+                verdict = {"verdict": v["verdict"], "confidence": v["confidence"],
+                           "reasoning": v["reasoning"]}
+                if cache:
+                    cache.put(key, verdict)
+                record(claim, verdict, meaning)
+
+    if cache:
+        cache.flush()
+    # parallel completion order is nondeterministic — restore a stable order
+    all_claims.sort(key=lambda c: (c["predicate"], c["index"]))
+    flagged.sort(key=lambda c: (c["predicate"], c["index"]))
 
     error = None
     if skipped_batches:
-        error = f"{len(skipped_batches)} of {sum((len(c)+BATCH_SIZE-1)//BATCH_SIZE for c in by_relation.values())} batch(es) failed after retries and were skipped (see skipped_batches)"
-    return {"ok": True, "error": error, "all_claims": all_claims, "flagged": flagged, "skipped_batches": skipped_batches}
+        error = f"{len(skipped_batches)} of {len(tasks)} batch(es) failed after retries and were skipped (see skipped_batches)"
+    return {"ok": True, "error": error, "all_claims": all_claims, "flagged": flagged,
+            "skipped_batches": skipped_batches, "cache_hits": cache_hits}
 
 
 def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> list[str]:
@@ -173,19 +276,35 @@ def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> list[st
     return lines[:CONTEXT_LIMIT]
 
 
-def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvider) -> dict:
-    """Re-verify each phase-1 flag against local context. A claim whose LLM
-    call fails (even after retries) is skipped, not fatal — same
+def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvider,
+               cache: _VerdictCache | None = None, workers: int = WORKERS) -> dict:
+    """Re-verify each phase-1 flag against local context. Cached verdicts
+    (keyed on the claim AND its neighborhood, so editing a nearby edge
+    re-triggers the check) skip the LLM; the rest run in parallel. A claim
+    whose LLM call fails (even after retries) is skipped, not fatal — same
     per-item degradation as phase 1. Returns
-    {ok, error, resolved, issues, skipped_claims}."""
+    {ok, error, resolved, issues, skipped_claims, cache_hits}."""
     resolved = []
     issues = []
     skipped_claims = []
+    cache_hits = 0
 
-    for claim in flagged:
+    # neighborhoods and prompts are built serially — rdflib Graph reads are
+    # not guaranteed thread-safe; only the HTTP calls go to the pool
+    pending = []  # (key, claim, user_prompt), in flagged order
+    outcomes: dict[int, dict] = {}  # position in `flagged` -> llm/cached result
+    for pos, claim in enumerate(flagged):
         subj_ctx = _neighborhood(g, claim["subject_uri"], claim["predicate_uri"], claim["object_uri"])
         obj_ctx = _neighborhood(g, claim["object_uri"], claim["predicate_uri"], claim["subject_uri"])
-
+        key = _cache_key("p2", PROMPT_VERSION, provider.label, claim["predicate"],
+                         claim["subject_uri"], claim["object_uri"],
+                         claim["relation_meaning"], claim["verdict"], claim["reasoning"],
+                         subj_ctx, obj_ctx)
+        hit = cache.get(key) if cache else None
+        if hit is not None:
+            outcomes[pos] = hit
+            cache_hits += 1
+            continue
         user_prompt = build_phase2_user_prompt(
             relation_name=claim["predicate"],
             relation_meaning=claim["relation_meaning"],
@@ -196,15 +315,31 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
             subject_context=subj_ctx,
             object_context=obj_ctx,
         )
-        try:
-            result = _call_llm(provider, PHASE2_SYSTEM, user_prompt, PHASE2_SCHEMA)
-        except Exception as e:
-            skipped_claims.append({
-                "predicate": claim["predicate"], "subject": claim["subject_label"],
-                "object": claim["object_label"], "error": str(e),
-            })
-            continue
+        pending.append((pos, key, user_prompt))
 
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_call_llm, provider, PHASE2_SYSTEM, prompt, PHASE2_SCHEMA):
+                   (pos, key) for pos, key, prompt in pending}
+        for fut in as_completed(futures):
+            pos, key = futures[fut]
+            claim = flagged[pos]
+            try:
+                result = fut.result()
+            except Exception as e:
+                skipped_claims.append({
+                    "predicate": claim["predicate"], "subject": claim["subject_label"],
+                    "object": claim["object_label"], "error": str(e),
+                })
+                continue
+            if cache:
+                cache.put(key, result)
+            outcomes[pos] = result
+
+    if cache:
+        cache.flush()
+
+    for pos in sorted(outcomes):  # stable report order = phase-1 flag order
+        claim, result = flagged[pos], outcomes[pos]
         record = {
             "predicate": claim["predicate"],
             "subject": claim["subject_label"],
@@ -223,7 +358,8 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
     error = None
     if skipped_claims:
         error = f"{len(skipped_claims)} of {len(flagged)} flagged claim(s) failed re-verification after retries and were skipped"
-    return {"ok": True, "error": error, "resolved": resolved, "issues": issues, "skipped_claims": skipped_claims}
+    return {"ok": True, "error": error, "resolved": resolved, "issues": issues,
+            "skipped_claims": skipped_claims, "cache_hits": cache_hits}
 
 
 def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
@@ -240,7 +376,9 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
                 "phase1_total_claims": 0, "phase1_flagged": 0,
                 "phase2_resolved": [], "issues": [], "skipped_batches": [], "skipped_claims": []}
 
-    p1 = run_phase1(g, config, provider)
+    cache = _VerdictCache(CACHE_PATH)
+
+    p1 = run_phase1(g, config, provider, cache=cache)
     if not p1["ok"]:
         return {"ok": False, "error": p1["error"], "model": model, "provider": provider_type,
                 "phase1_total_claims": len(p1["all_claims"]), "phase1_flagged": len(p1["flagged"]),
@@ -249,9 +387,10 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
     if not p1["flagged"]:
         return {"ok": True, "error": p1["error"], "model": model, "provider": provider_type,
                 "phase1_total_claims": len(p1["all_claims"]), "phase1_flagged": 0,
+                "phase1_cache_hits": p1.get("cache_hits", 0),
                 "phase2_resolved": [], "issues": [], "skipped_batches": p1.get("skipped_batches", [])}
 
-    p2 = run_phase2(g, config, p1["flagged"], provider)
+    p2 = run_phase2(g, config, p1["flagged"], provider, cache=cache)
     combined_error = " | ".join(e for e in (p1["error"], p2["error"]) if e) or None
     return {
         "ok": p2["ok"],
@@ -260,6 +399,8 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
         "provider": provider_type,
         "phase1_total_claims": len(p1["all_claims"]),
         "phase1_flagged": len(p1["flagged"]),
+        "phase1_cache_hits": p1.get("cache_hits", 0),
+        "phase2_cache_hits": p2.get("cache_hits", 0),
         "phase2_resolved": p2["resolved"],
         "issues": p2["issues"],
         "skipped_batches": p1.get("skipped_batches", []),
