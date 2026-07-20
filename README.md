@@ -108,9 +108,6 @@ examples/               sample OWL modules to try the tool on
 results/                generated reports (gitignored)
 ```
 
-`ontology_review/` is an earlier prototype package, superseded by the
-above — nothing in `validate.py` or `webapp/app.py` imports from it.
-
 ## Adding a new ontology
 
 1. Drop your `.owl`/`.ttl` file anywhere and point the CLI/UI at it —
