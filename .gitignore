@@ -5,6 +5,7 @@ venv/
 results/
 uploads/
 webapp/runs/
+review/
 .env
 *.egg-info/
 .pytest_cache/

@@ -103,16 +103,15 @@ dependsOn/uses_concept property names). Checks:
   - Every dependsOn target actually is a Skill (not a dangling/wrong type).
 
 
-8. SEMANTIC / LOGICAL CORRECTNESS  (lib/llm_judge.py — local LLM, opt-in)
+8. SEMANTIC / LOGICAL CORRECTNESS  (lib/llm_judge.py — LLM, opt-in)
 ------------------------------------------------------------------------------
 Everything in layers 1-7 checks that the ontology is *structurally* and
 *logically* valid, or that it matches a hand-written expected-content
 list. None of it checks whether an asserted relationship is actually
 TRUE in the domain — e.g. "SKOOP004 dependsOn COOP013" can be perfectly
 well-formed, pass every check above, and still be pedagogically wrong.
-This layer catches that, via a local model (Ollama, default gemma4:26b —
-never sent anywhere over the network, and never writes to the ontology
-file; read-only, report-only):
+This layer catches that (never sent anywhere but the chosen backend,
+and never writes to the ontology file; read-only, report-only):
   Phase 1 — screen every asserted edge individually, batched by relation
   type (dependsOn, partOf, usesConcept, etc., each with its own
   natural-language definition from configs/*.json's relation_semantics
@@ -129,14 +128,41 @@ setters hiding state) doesn't actually require inheritance to work,
 the two are just co-taught in the same lecture (L10). Proposed fix:
 remove the edge.
 
+Backend (lib/llm_providers.py) — pick one, same behavior either way:
+  - Local Ollama (default) — free, fully offline, model tag via
+    --semantic-model (default gemma4:26b).
+  - NVIDIA NIM (hosted) — --semantic-provider nvidia_nim
+    --semantic-model <nim-model-id>, needs NVIDIA_API_KEY set in the
+    environment (never entered in the UI, never written to disk).
+
+Caching + parallelism (lib/llm_judge.py) — a reasonable full run used to
+take many minutes and re-judge everything from scratch every time:
+  - On-disk verdict cache (results/.semantic_cache.json), keyed by a
+    content hash of the claim (and, in phase 2, its neighborhood) plus
+    the model/provider — a rerun only pays for claims that actually
+    changed. Delete the file, or bump PROMPT_VERSION after editing
+    prompts.py, to force a full re-judge.
+  - LLM calls run in a thread pool (SEMANTIC_WORKERS env var, default
+    6; set to 1 to restore strictly-serial behavior).
+  - A batch/claim that fails even after retries is skipped, not fatal —
+    the report notes partial coverage rather than losing everything.
+
+Human review persistence (lib/review_store.py) — accepting or dismissing
+a finding in the web UI writes that decision to a per-namespace JSON
+store keyed on the exact triple. A later re-run of the same ontology
+skips (doesn't re-flag or re-argue) anything already reviewed.
+
 
 VIEWING RESULTS
 -----------------
 CLI: writes a JSON + self-contained HTML report to validation/results/.
-Web UI (validation/webapp/app.py): upload a file, then browse three
-views per run — the dashboard (all 8 layers), an interactive graph
-(vis-network) with edges implicated in a semantic issue colored red
-(confirmed) or amber (flagged then resolved by context) and a click
-panel showing the judge's write-up, and the raw source text with the
-same lines highlighted (heuristic line matching, not a byte-exact
-triple-to-line map).
+Web UI (validation/webapp/app.py): upload a file — layers 1-7 render in
+seconds; the semantic judge (layer 8) then runs in a background thread
+and streams its findings in once ready, so you're never blocked waiting
+on the slow LLM pass. Browse three views per run — the dashboard (all
+8 layers, plus accept/dismiss buttons on each semantic finding), an
+interactive graph (vis-network) with edges implicated in a semantic
+issue colored red (confirmed) or amber (flagged then resolved by
+context) and a click panel showing the judge's write-up, and the raw
+source text with the same lines highlighted (heuristic line matching,
+not a byte-exact triple-to-line map).
