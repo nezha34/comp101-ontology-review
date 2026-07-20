@@ -31,6 +31,7 @@ from rdflib.term import BNode
 
 from .graph_utils import label, object_properties
 from .llm_providers import LLMProvider, build_provider
+from .review_store import load_reviewed, triple_key
 from .prompts import (
     DEFAULT_RELATION_SEMANTICS,
     PHASE1_SCHEMA,
@@ -55,7 +56,18 @@ WORKERS = max(1, int(os.environ.get("SEMANTIC_WORKERS", "6")))
 # or bump PROMPT_VERSION (e.g. after editing prompts.py) to force a full
 # re-judge. Keyed by model, so switching models also re-judges everything.
 CACHE_PATH = Path(__file__).resolve().parent.parent / "results" / ".semantic_cache.json"
-PROMPT_VERSION = "1"
+# v2 (2026-07-17): fixed a graph_utils.label() bug that truncated every
+# literal `definition` shown as phase-2 context at its last "/" -- e.g.
+# "getter/setter" or "stdin/stdout/stderr" -- silently feeding the judge
+# half a sentence. Also added a phase-2 self-consistency check. Bumped so
+# stale verdicts built on corrupted context aren't reused from cache.
+# v3 (2026-07-20): added two phase-2 instructions after a run kept flagging
+# individually-defined siblings (stdin/stdout/stderr, Absolute Path) as
+# "redundant" with each other, sometimes citing a grouping node ("Standard
+# Streams") that doesn't exist anywhere in the ontology. Told the model that
+# sibling edges of the same relation are the normal graph shape, and that a
+# fix can't reference a node not actually present in the shown context.
+PROMPT_VERSION = "3"
 
 
 class _VerdictCache:
@@ -173,18 +185,27 @@ def _p1_key(provider: LLMProvider, rel_name: str, meaning: str, c: dict) -> str:
 
 
 def run_phase1(g: Graph, config: dict, provider: LLMProvider,
-               cache: _VerdictCache | None = None, workers: int = WORKERS) -> dict:
+               cache: _VerdictCache | None = None, workers: int = WORKERS,
+               reviewed: dict | None = None) -> dict:
     """Screen every claim. Cached verdicts are reused without an LLM call;
     only cache misses are re-batched and judged, with batches running in
     parallel. A batch that fails (even after retries) is skipped, not
     fatal — one flaky relation shouldn't discard every other
-    successfully-judged claim. Returns
-    {ok, error, all_claims, flagged, skipped_batches, cache_hits}."""
+    successfully-judged claim.
+
+    `reviewed`, if given, is the {triple_key: {status, ...}} store from
+    review_store.py — a triple a human has already dismissed or accepted
+    is skipped before it ever reaches the LLM (no call, not even a cache
+    lookup), so a settled call never gets re-litigated or re-paid-for.
+    Returns {ok, error, all_claims, flagged, skipped_batches, cache_hits,
+    reviewed_skipped}."""
     by_relation = collect_claims(g, config)
     all_claims = []
     flagged = []
     skipped_batches = []
+    reviewed_skipped = []
     cache_hits = 0
+    reviewed = reviewed or {}
 
     def record(claim: dict, verdict: dict, meaning: str):
         enriched = {**claim, **verdict, "relation_meaning": meaning}
@@ -198,6 +219,11 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
         meaning = _relation_meaning(rel_name, config)
         pending = []
         for c in claims:
+            rkey = triple_key(c["subject_uri"], rel_name, c["object_uri"])
+            if rkey in reviewed:
+                reviewed_skipped.append({**reviewed[rkey], "predicate": rel_name,
+                                          "subject": c["subject_label"], "object": c["object_label"]})
+                continue
             key = _p1_key(provider, rel_name, meaning, c)
             hit = cache.get(key) if cache else None
             if hit is not None:
@@ -230,8 +256,7 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
                 if entry is None:
                     continue
                 key, claim = entry
-                verdict = {"verdict": v["verdict"], "confidence": v["confidence"],
-                           "reasoning": v["reasoning"]}
+                verdict = {"verdict": v["verdict"], "reasoning": v["reasoning"]}
                 if cache:
                     cache.put(key, verdict)
                 record(claim, verdict, meaning)
@@ -246,7 +271,8 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
     if skipped_batches:
         error = f"{len(skipped_batches)} of {len(tasks)} batch(es) failed after retries and were skipped (see skipped_batches)"
     return {"ok": True, "error": error, "all_claims": all_claims, "flagged": flagged,
-            "skipped_batches": skipped_batches, "cache_hits": cache_hits}
+            "skipped_batches": skipped_batches, "cache_hits": cache_hits,
+            "reviewed_skipped": reviewed_skipped}
 
 
 def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> list[str]:
@@ -363,11 +389,17 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
 
 
 def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
-                        model: str = "gemma4:26b") -> dict:
+                        model: str = "gemma4:26b", ns_uri: str | None = None) -> dict:
     """Full two-phase pipeline. Never modifies `g` or any file.
 
     provider_type: "ollama" (local, default) or "nvidia_nim" (hosted,
     needs NVIDIA_API_KEY in the environment — see lib/llm_providers.py).
+
+    ns_uri, if given, loads that namespace's persistent review store
+    (results/reviewed/<slug>.json) so triples a human already dismissed or
+    accepted on a prior run are skipped entirely rather than re-judged and
+    re-argued every time. Generic across any ontology — keyed purely by
+    namespace + triple, nothing domain-specific baked in.
     """
     try:
         provider = build_provider(provider_type, model)
@@ -377,18 +409,21 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
                 "phase2_resolved": [], "issues": [], "skipped_batches": [], "skipped_claims": []}
 
     cache = _VerdictCache(CACHE_PATH)
+    reviewed = load_reviewed(ns_uri) if ns_uri else {}
 
-    p1 = run_phase1(g, config, provider, cache=cache)
+    p1 = run_phase1(g, config, provider, cache=cache, reviewed=reviewed)
     if not p1["ok"]:
         return {"ok": False, "error": p1["error"], "model": model, "provider": provider_type,
                 "phase1_total_claims": len(p1["all_claims"]), "phase1_flagged": len(p1["flagged"]),
-                "phase2_resolved": [], "issues": [], "skipped_batches": p1.get("skipped_batches", [])}
+                "phase2_resolved": [], "issues": [], "skipped_batches": p1.get("skipped_batches", []),
+                "reviewed_skipped": p1.get("reviewed_skipped", [])}
 
     if not p1["flagged"]:
         return {"ok": True, "error": p1["error"], "model": model, "provider": provider_type,
                 "phase1_total_claims": len(p1["all_claims"]), "phase1_flagged": 0,
                 "phase1_cache_hits": p1.get("cache_hits", 0),
-                "phase2_resolved": [], "issues": [], "skipped_batches": p1.get("skipped_batches", [])}
+                "phase2_resolved": [], "issues": [], "skipped_batches": p1.get("skipped_batches", []),
+                "reviewed_skipped": p1.get("reviewed_skipped", [])}
 
     p2 = run_phase2(g, config, p1["flagged"], provider, cache=cache)
     combined_error = " | ".join(e for e in (p1["error"], p2["error"]) if e) or None
@@ -405,4 +440,5 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
         "issues": p2["issues"],
         "skipped_batches": p1.get("skipped_batches", []),
         "skipped_claims": p2.get("skipped_claims", []),
+        "reviewed_skipped": p1.get("reviewed_skipped", []),
     }

@@ -141,8 +141,7 @@ def build_graph_html(g: Graph, result: dict, title: str) -> str:
       detail.innerHTML = '<div class="field"><b>Issue</b>' + esc(iss.issue_summary) + '</div>' +
         '<div class="field"><b>Evidence</b>' + esc(iss.evidence) + '</div>' +
         '<div class="field"><b>Reasoning</b>' + esc(iss.phase2_reasoning) + '</div>' +
-        '<div class="field"><b>Proposed fix (' + esc(iss.proposed_fix_action) + ')</b>' + esc(iss.proposed_fix_triple) + '<br><i>' + esc(iss.proposed_fix_rationale) + '</i></div>' +
-        '<div class="field"><b>Confidence</b>' + (iss.confidence !== undefined ? iss.confidence.toFixed(2) : '') + '</div>';
+        '<div class="field"><b>Proposed fix (' + esc(iss.proposed_fix_action) + ')</b>' + esc(iss.proposed_fix_triple) + '<br><i>' + esc(iss.proposed_fix_rationale) + '</i></div>';
     }}
   }});
 </script>

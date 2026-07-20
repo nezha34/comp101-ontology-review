@@ -102,8 +102,8 @@ def build_phase1_user_prompt(relation_name: str, relation_meaning: str, claims: 
     lines.append("")
     lines.append(
         "For every index above, return one verdict object with that index, "
-        "a verdict, a confidence from 0.0 to 1.0, and one concise sentence "
-        "of reasoning specific to that claim (not a generic justification)."
+        "a verdict, and one concise sentence of reasoning specific to that "
+        "claim (not a generic justification)."
     )
     return "\n".join(lines)
 
@@ -121,10 +121,9 @@ PHASE1_SCHEMA = {
                         "type": "string",
                         "enum": ["correct", "questionable", "incorrect", "uncertain"],
                     },
-                    "confidence": {"type": "number"},
                     "reasoning": {"type": "string"},
                 },
-                "required": ["index", "verdict", "confidence", "reasoning"],
+                "required": ["index", "verdict", "reasoning"],
             },
         }
     },
@@ -155,8 +154,38 @@ rationale for why that specific fix is right rather than some other one.
 Be argumentative and specific, never vague ("this seems off") — a human \
 is going to read only your fields and decide whether to accept or reject \
 your proposed fix, without re-examining the ontology themselves. If you \
-are not confident enough to defend the verdict in one paragraph, lower \
-your confidence rather than softening the verdict.
+are not confident enough to defend the verdict in one paragraph, that's a \
+sign it should be resolved=true, not a reason to soften the wording.
+
+Before you write resolved=false, re-read your own evidence field and ask: \
+does it actually argue for removing/changing this edge, or does it argue \
+the edge is correct? These are not the same thing, and conflating them is \
+the single most common mistake here — e.g. citing "the object's definition \
+explicitly relies on the subject" as evidence, then proposing to REMOVE the \
+edge that connects them, when that same evidence is a reason to KEEP it. \
+If your own cited evidence supports the edge rather than undermining it, \
+that means the concern IS resolved — set resolved=true and say so, don't \
+force a fix out of a flag that no longer holds up.
+
+The context below will often show several other edges of the SAME relation \
+from the SAME subject (e.g. a skill with many usesConcept edges). That is \
+the normal, expected shape of this graph, not evidence of clutter — do not \
+propose removing an edge just because siblings of the same relation exist \
+alongside it. Judge each edge only on its own merits: is the object \
+individually true and relevant per the subject's own definition text? \
+"This edge and its sibling are both about related things, so one is \
+redundant" is not a valid argument on its own — most of the edges you will \
+see flagged this way turn out to each be independently named in the \
+subject's definition, which makes them independently load-bearing, not \
+redundant with each other.
+
+Never justify a fix by referring to a broader/collapsed concept (a "group", \
+a "category", "the streams as a whole", etc.) unless that concept is an \
+actual node shown to you in the context below. If no such node exists, you \
+are inventing structure that isn't in the ontology — that is not grounds to \
+remove a real edge, and proposing add_triple/remove_triple based on a node \
+that doesn't exist makes the fix un-actionable. A human reading your fix \
+must be able to act on it using only what's actually in the ontology.
 
 Keep every text field SHORT: one or two plain sentences, under 40 words \
 each. Do not repeat yourself, do not pad, do not use filler or repeated \
@@ -207,7 +236,6 @@ PHASE2_SCHEMA = {
             "type": "string",
             "description": "If resolved=true, what in the context resolves it. If resolved=false, brief note on why context doesn't save it.",
         },
-        "confidence": {"type": "number"},
         "issue_summary": {"type": "string", "description": "One sentence. Only fill if resolved=false."},
         "evidence": {"type": "string", "description": "The exact triple and the specific contradicting/missing context. Only fill if resolved=false."},
         "phase2_reasoning": {"type": "string", "description": "The argumentative case, 1-2 sentences. Only fill if resolved=false."},
@@ -218,5 +246,5 @@ PHASE2_SCHEMA = {
         "proposed_fix_triple": {"type": "string", "description": "The specific triple to add/remove/modify. Only fill if action is not none."},
         "proposed_fix_rationale": {"type": "string", "description": "Why this exact fix, one sentence. Only fill if action is not none."},
     },
-    "required": ["resolved", "resolution_explanation", "confidence"],
+    "required": ["resolved", "resolution_explanation"],
 }

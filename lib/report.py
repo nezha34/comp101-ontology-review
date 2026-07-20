@@ -78,7 +78,7 @@ def _section(title: str, body: str) -> str:
     return f'<section><h2>{escape(title)}</h2>{body}</section>'
 
 
-def _render_one(result: dict) -> str:
+def _render_one(result: dict, run_id: str | None = None, decisions: dict | None = None) -> str:
     name = result["name"]
     verdict, color = overall_verdict(result)
     s = result["summary"]
@@ -222,13 +222,36 @@ def _render_one(result: dict) -> str:
     # Semantic judge (LLM, two-phase)
     semantic = result.get("semantic")
     if semantic is not None:
-        parts.append(_section("Semantic / Logical Correctness (LLM judge)", _render_semantic(semantic)))
+        parts.append(_section("Semantic / Logical Correctness (LLM judge)",
+                               _render_semantic(semantic, run_id, decisions)))
 
     parts.append("</div>")
     return "".join(parts)
 
 
-def _render_semantic(semantic: dict) -> str:
+def _render_review_controls(run_id: str, idx: int, status: str | None) -> str:
+    """Accept/dismiss controls for one semantic-judge finding. Accept queues
+    it into the changes-to-make store (see app.py); dismiss just records
+    that a human looked at it and disagreed with the model. `status` is the
+    previously-saved decision ('accepted'/'dismissed'/None), so a reload of
+    the results page reflects prior review instead of resetting the buttons."""
+    return (
+        f'<div class="review-row" data-run="{escape(run_id)}" data-idx="{idx}" '
+        f'data-status="{escape(status or "")}">'
+        f'<button type="button" class="review-btn accept-btn" '
+        f'onclick="reviewDecision(this,\'accept\')">Accept</button>'
+        f'<button type="button" class="review-btn dismiss-btn" '
+        f'onclick="reviewDecision(this,\'dismiss\')">Dismiss</button>'
+        f'<span class="review-status"></span>'
+        f'</div>'
+    )
+
+
+def _render_semantic(semantic: dict, run_id: str | None = None, decisions: dict | None = None) -> str:
+    if semantic.get("error") == "pending":
+        return ("<p class='warn'>Semantic judge is running in the background "
+                "(this can take a few minutes) — this page will refresh automatically "
+                "once it's done.</p>")
     if not semantic.get("ok") and semantic.get("error"):
         return f"<p class='warn'>Semantic judge not run: {escape(semantic['error'])}</p>"
 
@@ -246,11 +269,20 @@ def _render_semantic(semantic: dict) -> str:
             f"claim(s) failed after retries and were skipped — model flakiness, coverage is partial.)</span>"
         )
 
+    reviewed_skipped = semantic.get("reviewed_skipped", [])
+    reviewed_note = ""
+    if reviewed_skipped:
+        reviewed_note = (
+            f" <b>{len(reviewed_skipped)}</b> more were skipped entirely because a human already "
+            f"reviewed them on a prior run (see the review store) — not re-judged, not re-argued."
+        )
+
     provider_label = {"ollama": "Ollama (local)", "nvidia_nim": "NVIDIA NIM (hosted)"}.get(
         semantic.get("provider"), semantic.get("provider") or ""
     )
     body = (
-        f"<p>Phase 1 screened <b>{total}</b> asserted edges, flagged <b>{flagged}</b> for a closer look. "
+        f"<p>Phase 1 screened <b>{total}</b> asserted edges, flagged <b>{flagged}</b> for a closer look."
+        f"{reviewed_note} "
         f"Phase 2 re-checked each flag against its local context: <b>{len(resolved)}</b> were resolved by "
         f"context alone, <b>{len(issues)}</b> survived and are written up below. "
         f"Model: <code>{escape(semantic.get('model') or '')}</code> via {escape(provider_label)}. "
@@ -260,6 +292,7 @@ def _render_semantic(semantic: dict) -> str:
     if not issues:
         body += "<p class='ok'>No confirmed semantic issues.</p>"
     else:
+        decisions = decisions or {}
         for i, issue in enumerate(issues):
             fix_action = issue.get("proposed_fix_action", "none")
             fix_line = ""
@@ -269,16 +302,20 @@ def _render_semantic(semantic: dict) -> str:
                     f"<code>{escape(issue.get('proposed_fix_triple',''))}</code><br>"
                     f"<span class='meta'>{escape(issue.get('proposed_fix_rationale',''))}</span></p>"
                 )
+            review_line = ""
+            if run_id:
+                status = decisions.get(str(i))
+                review_line = _render_review_controls(run_id, i, status)
             body += (
                 f'<div class="issue-box" id="semantic-issue-{i}">'
-                f'<h3>{escape(issue["subject"])} <code>--{escape(issue["predicate"])}--&gt;</code> {escape(issue["object"])}'
-                f'<span class="sev" style="background:var(--warn)">conf {issue.get("confidence",0):.2f}</span></h3>'
+                f'<h3>{escape(issue["subject"])} <code>--{escape(issue["predicate"])}--&gt;</code> {escape(issue["object"])}</h3>'
                 f'<p><b>{escape(issue.get("issue_summary",""))}</b></p>'
                 f'<p><b>Evidence:</b> {escape(issue.get("evidence",""))}</p>'
                 f'<p><b>Reasoning:</b> {escape(issue.get("phase2_reasoning",""))}</p>'
                 f'{fix_line}'
                 f'<p class="meta">Phase 1 verdict: {escape(issue.get("phase1_verdict",""))} — '
                 f'{escape(issue.get("phase1_reasoning",""))}</p>'
+                f'{review_line}'
                 f'</div>'
             )
 
@@ -293,8 +330,8 @@ def _render_semantic(semantic: dict) -> str:
     return body
 
 
-def render_body(results: list[dict]) -> str:
-    return "".join(_render_one(r) for r in results)
+def render_body(results: list[dict], run_id: str | None = None, decisions: dict | None = None) -> str:
+    return "".join(_render_one(r, run_id, decisions) for r in results)
 
 
 REPORT_CSS = """
@@ -359,6 +396,15 @@ REPORT_CSS = """
   details { margin-top: .8rem; font-size: .85rem; }
   summary { cursor: pointer; color: var(--muted); }
   code { background: var(--code-bg); padding: .05rem .3rem; border-radius: 4px; }
+  .review-row { display: flex; align-items: center; gap: .5rem; margin-top: .7rem;
+                padding-top: .6rem; border-top: 1px dashed var(--border); }
+  .review-btn { border: 1px solid var(--border); border-radius: 6px; padding: .3rem .7rem;
+                font-size: .8rem; cursor: pointer; background: var(--bg); color: var(--fg); }
+  .review-btn:hover { opacity: .8; }
+  .review-btn.active-accept { background: var(--ok); color: white; border-color: var(--ok); }
+  .review-btn.active-dismiss { background: var(--muted); color: white; border-color: var(--muted); }
+  .review-btn:disabled { cursor: default; opacity: .55; }
+  .review-status { font-size: .8rem; color: var(--muted); }
 """
 
 REPORT_THEME_SCRIPT = """
@@ -379,6 +425,45 @@ REPORT_THEME_SCRIPT = """
         try { localStorage.setItem('oops-report-theme', next); } catch (e) {}
       });
     })();
+"""
+
+
+REVIEW_SCRIPT = """
+    function applyReviewStatus(row, status) {
+      var acceptBtn = row.querySelector('.accept-btn');
+      var dismissBtn = row.querySelector('.dismiss-btn');
+      var label = row.querySelector('.review-status');
+      row.setAttribute('data-status', status || '');
+      acceptBtn.classList.toggle('active-accept', status === 'accepted');
+      dismissBtn.classList.toggle('active-dismiss', status === 'dismissed');
+      if (status === 'accepted') label.textContent = 'Queued for changes.';
+      else if (status === 'dismissed') label.textContent = 'Dismissed — model disagreed with.';
+      else label.textContent = '';
+    }
+
+    function reviewDecision(btn, action) {
+      var row = btn.closest('.review-row');
+      var run = row.getAttribute('data-run');
+      var idx = row.getAttribute('data-idx');
+      var label = row.querySelector('.review-status');
+      label.textContent = 'Saving…';
+      fetch('/decision/' + encodeURIComponent(run) + '/' + encodeURIComponent(idx), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: action })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('request failed');
+        return r.json();
+      }).then(function (data) {
+        applyReviewStatus(row, data.status);
+      }).catch(function () {
+        label.textContent = 'Save failed — try again.';
+      });
+    }
+
+    document.querySelectorAll('.review-row').forEach(function (row) {
+      applyReviewStatus(row, row.getAttribute('data-status'));
+    });
 """
 
 
@@ -407,6 +492,7 @@ def render_page(title: str, meta_line: str, body: str, nav_links: list[tuple[str
   </div>
   {body}
   <script>{REPORT_THEME_SCRIPT}</script>
+  <script>{REVIEW_SCRIPT}</script>
 </body>
 </html>"""
 

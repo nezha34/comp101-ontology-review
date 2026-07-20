@@ -4,6 +4,7 @@ __pycache__/
 venv/
 results/
 uploads/
+webapp/runs/
 .env
 *.egg-info/
 .pytest_cache/

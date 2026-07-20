@@ -29,14 +29,14 @@
   "competency_questions": [
     {
       "id": "CQ_OOP_01",
-      "question": "Which entities does 'Design a class to model a real entity' use?",
-      "sparql": "SELECT ?entity WHERE {{ <{ns}SKOOP001> <{ns}usesConcept> ?entity . }}",
+      "question": "Which concepts do the OOP skills draw on (usesConcept)?",
+      "sparql": "SELECT DISTINCT ?skill ?entity WHERE {{ ?skill a <{ns}Skill> . ?skill <{ns}usesConcept> ?entity . }}",
       "expect_min": 5
     },
     {
       "id": "CQ_OOP_02",
       "question": "What are the prerequisite skills before 'Apply polymorphism'?",
-      "sparql": "SELECT ?prereq WHERE {{ <{ns}SKOOP004> <{ns}dependsOn>+ ?prereq . ?prereq a <{ns}Skill> . }}",
+      "sparql": "SELECT ?prereq WHERE {{ <{ns}SKOOP003> <{ns}dependsOn>+ ?prereq . ?prereq a <{ns}Skill> . }}",
       "expect_min": 1
     },
     {

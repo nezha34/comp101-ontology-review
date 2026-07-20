@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Optional
 
 from rdflib import OWL, RDF, RDFS, Graph, Namespace, URIRef
-from rdflib.term import BNode
+from rdflib.term import BNode, Literal
 
 FORMAT_BY_SUFFIX = {
     ".owl": "xml",
@@ -83,6 +83,15 @@ def detect_namespace(g: Graph) -> str:
 
 
 def label(g: Graph, node) -> str:
+    # A Literal (e.g. a free-text `definition` value used as context, not a
+    # node) has no local-name to strip -- the "#"/"/" split below is only
+    # correct for URIs. Applying it to prose truncated every definition at
+    # its last "/" (e.g. "getter/setter", "stdin/stdout/stderr"), silently
+    # feeding the semantic judge half a sentence. Bug found 2026-07-17 after
+    # several LLM-flagged "issues" turned out to cite evidence that had been
+    # chopped off before the model ever saw it.
+    if isinstance(node, Literal):
+        return str(node)
     l = g.value(node, RDFS.label)
     if l:
         return str(l)

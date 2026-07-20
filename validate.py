@@ -88,10 +88,14 @@ def collect_targets(paths: list[str]) -> list[Path]:
     return files
 
 
-def validate_one(path: Path, config_override: dict | None, use_oops: bool,
-                  use_reasoner: bool, oops_pitfalls: str,
-                  use_semantic: bool = False, semantic_model: str = "gemma4:26b",
-                  semantic_provider: str = "ollama") -> dict:
+def validate_fast(path: Path, config_override: dict | None, use_oops: bool,
+                   use_reasoner: bool, oops_pitfalls: str) -> dict:
+    """Steps 1-6 -- everything except the semantic judge. Seconds, not
+    minutes, so a caller can show this immediately while the (slow,
+    LLM-backed) semantic judge runs separately -- see run_semantic_only().
+    `result["semantic"]` is left as a 'pending' placeholder for the caller
+    to fill in; validate_one() below does that synchronously for the CLI,
+    the webapp does it in a background thread instead."""
     print(f"\n{'='*70}\n  {path}\n{'='*70}")
     ts = datetime.now().isoformat()
 
@@ -150,19 +154,9 @@ def validate_one(path: Path, config_override: dict | None, use_oops: bool,
     skill_graph = check_skill_graph(g, ns_uri, config["skill_graph"]) if config.get("skill_graph") else None
     print(f"{len(skill_graph['issues'])} issues" if skill_graph else "no config, skipped")
 
-    if use_semantic:
-        print(f"  [7/7] Semantic judge (LLM, {semantic_provider})...", end=" ", flush=True)
-        semantic = run_semantic_judge(g, config, provider_type=semantic_provider, model=semantic_model)
-        if semantic["ok"]:
-            print(f"{semantic['phase1_flagged']}/{semantic['phase1_total_claims']} flagged, "
-                  f"{len(semantic['issues'])} confirmed after re-check")
-        else:
-            print(f"unavailable ({semantic['error']})")
-    else:
-        semantic = {"ok": False, "error": "skipped (pass --semantic to enable)", "model": None,
-                    "provider": None, "phase1_total_claims": 0, "phase1_flagged": 0,
-                    "phase2_resolved": [], "issues": []}
-        print("  [7/7] Semantic judge... skipped")
+    semantic_pending = {"ok": False, "error": "pending", "model": None, "provider": None,
+                         "phase1_total_claims": 0, "phase1_flagged": 0,
+                         "phase2_resolved": [], "issues": []}
 
     result = {
         "name": name,
@@ -177,8 +171,58 @@ def validate_one(path: Path, config_override: dict | None, use_oops: bool,
         "ontoqa": ontoqa,
         "sparql_cqs": sparql_cqs,
         "skill_graph": skill_graph,
-        "semantic": semantic,
+        "semantic": semantic_pending,
     }
+    result["summary"] = summarize(result)
+    return result
+
+
+def run_semantic_only(path: Path, config_override: dict | None,
+                       semantic_model: str = "gemma4:26b",
+                       semantic_provider: str = "ollama") -> dict:
+    """Just the semantic judge, re-parsing the graph fresh. Kept separate
+    from validate_fast so a caller can run it in a background thread well
+    after the fast result was already shown -- rdflib Graph reads aren't
+    guaranteed thread-safe, so this re-parses rather than sharing a Graph
+    object across threads."""
+    g, err = load_graph(path)
+    if err:
+        return {"ok": False, "error": err, "model": semantic_model, "provider": semantic_provider,
+                "phase1_total_claims": 0, "phase1_flagged": 0, "phase2_resolved": [], "issues": []}
+    ns_uri = (config_override or {}).get("namespace") or detect_namespace(g)
+    config = config_override or find_config_for_namespace(ns_uri) or {}
+    return run_semantic_judge(g, config, provider_type=semantic_provider, model=semantic_model, ns_uri=ns_uri)
+
+
+def validate_one(path: Path, config_override: dict | None, use_oops: bool,
+                  use_reasoner: bool, oops_pitfalls: str,
+                  use_semantic: bool = False, semantic_model: str = "gemma4:26b",
+                  semantic_provider: str = "ollama") -> dict:
+    """CLI entry point: fast checks then (optionally) semantic, synchronously
+    in one call -- same blocking behaviour as before this was split. The
+    webapp instead calls validate_fast() + run_semantic_only() separately so
+    it can show fast results before semantic finishes."""
+    result = validate_fast(path, config_override, use_oops, use_reasoner, oops_pitfalls)
+    if result.get("parse_error"):
+        return result
+
+    if use_semantic:
+        print(f"  [7/7] Semantic judge (LLM, {semantic_provider})...", end=" ", flush=True)
+        semantic = run_semantic_only(path, config_override, semantic_model, semantic_provider)
+        if semantic["ok"]:
+            n_reviewed = len(semantic.get("reviewed_skipped", []))
+            reviewed_note = f", {n_reviewed} already reviewed (skipped)" if n_reviewed else ""
+            print(f"{semantic['phase1_flagged']}/{semantic['phase1_total_claims']} flagged, "
+                  f"{len(semantic['issues'])} confirmed after re-check{reviewed_note}")
+        else:
+            print(f"unavailable ({semantic['error']})")
+    else:
+        semantic = {"ok": False, "error": "skipped (pass --semantic to enable)", "model": None,
+                    "provider": None, "phase1_total_claims": 0, "phase1_flagged": 0,
+                    "phase2_resolved": [], "issues": []}
+        print("  [7/7] Semantic judge... skipped")
+
+    result["semantic"] = semantic
     result["summary"] = summarize(result)
     return result
 
