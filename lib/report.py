@@ -55,6 +55,7 @@ def summarize(result: dict) -> dict:
         "skill_issues": len(skill["issues"]) if skill else 0,
         "semantic_flagged": semantic.get("phase1_flagged", 0),
         "semantic_issues": len(semantic.get("issues", [])),
+        "semantic_unverifiable": len(semantic.get("phase2_unverifiable", [])),
     }
 
 
@@ -259,14 +260,22 @@ def _render_semantic(semantic: dict, run_id: str | None = None, decisions: dict 
     flagged = semantic.get("phase1_flagged", 0)
     issues = semantic.get("issues", [])
     resolved = semantic.get("phase2_resolved", [])
+    unverifiable = semantic.get("phase2_unverifiable", [])
 
     n_skip_batch = len(semantic.get("skipped_batches", []))
+    n_skip_batch_claims = sum(b.get("batch_size", 0) for b in semantic.get("skipped_batches", []))
     n_skip_claim = len(semantic.get("skipped_claims", []))
-    skip_note = ""
-    if n_skip_batch or n_skip_claim:
-        skip_note = (
-            f" <span class='warn'>({n_skip_batch} phase-1 batch(es) and {n_skip_claim} phase-2 "
-            f"claim(s) failed after retries and were skipped — model flakiness, coverage is partial.)</span>"
+    n_attempted = total + n_skip_batch_claims + n_skip_claim
+    coverage_pct = round(100 * total / n_attempted) if n_attempted else 100
+
+    gated = semantic.get("gated_count", 0)
+    gated_note = ""
+    if gated:
+        gated_note = (
+            f" <b>{gated}</b> more edge(s) weren't screened at all — their relation type "
+            f"(e.g. taughtIn) can only be verified against external material like lecture "
+            f"content, which isn't wired in yet, so asking the model would just manufacture "
+            f"unverifiable flags."
         )
 
     reviewed_skipped = semantic.get("reviewed_skipped", [])
@@ -280,14 +289,31 @@ def _render_semantic(semantic: dict, run_id: str | None = None, decisions: dict 
     provider_label = {"ollama": "Ollama (local)", "nvidia_nim": "NVIDIA NIM (hosted)"}.get(
         semantic.get("provider"), semantic.get("provider") or ""
     )
+
+    cards = "".join([
+        _card("Coverage", f"{coverage_pct}%", "var(--ok)" if coverage_pct == 100 else "var(--warn)"),
+        _card("Confirmed issues", len(issues), "var(--bad)" if issues else "var(--ok)"),
+        _card("Unverifiable", len(unverifiable), "var(--warn)" if unverifiable else "var(--ok)"),
+        _card("Resolved by context", len(resolved)),
+    ])
+
     body = (
+        f'<div class="cards">{cards}</div>'
         f"<p>Phase 1 screened <b>{total}</b> asserted edges, flagged <b>{flagged}</b> for a closer look."
-        f"{reviewed_note} "
+        f"{reviewed_note}{gated_note} "
         f"Phase 2 re-checked each flag against its local context: <b>{len(resolved)}</b> were resolved by "
-        f"context alone, <b>{len(issues)}</b> survived and are written up below. "
+        f"context alone, <b>{len(unverifiable)}</b> can't be judged from graph context alone (see below), "
+        f"<b>{len(issues)}</b> survived as confirmed issues and are written up below. "
         f"Model: <code>{escape(semantic.get('model') or '')}</code> via {escape(provider_label)}. "
-        f"These are proposals for human review, not auto-applied changes.{skip_note}</p>"
+        f"These are proposals for human review, not auto-applied changes."
     )
+    if n_skip_batch or n_skip_claim:
+        body += (
+            f" <span class='warn'>({n_skip_batch} phase-1 batch(es) covering ~{n_skip_batch_claims} claims "
+            f"and {n_skip_claim} phase-2 claim(s) failed after retries and were skipped — "
+            f"see the coverage figure above.)</span>"
+        )
+    body += "</p>"
 
     if not issues:
         body += "<p class='ok'>No confirmed semantic issues.</p>"
@@ -318,6 +344,18 @@ def _render_semantic(semantic: dict, run_id: str | None = None, decisions: dict 
                 f'{review_line}'
                 f'</div>'
             )
+
+    if unverifiable:
+        rows = "".join(
+            f"<li><b>{escape(u['subject'])} --{escape(u['predicate'])}--&gt; {escape(u['object'])}</b>: "
+            f"{escape(u.get('phase2_reasoning',''))}</li>"
+            for u in unverifiable
+        )
+        body += (
+            f"<details><summary>{len(unverifiable)} edge(s) unverifiable from graph context alone "
+            f"(needs a human check against real source material — syllabus, lecture notes, etc.)</summary>"
+            f"<ul>{rows}</ul></details>"
+        )
 
     if resolved:
         rows = "".join(

@@ -211,9 +211,13 @@ def validate_one(path: Path, config_override: dict | None, use_oops: bool,
         semantic = run_semantic_only(path, config_override, semantic_model, semantic_provider)
         if semantic["ok"]:
             n_reviewed = len(semantic.get("reviewed_skipped", []))
+            n_gated = semantic.get("gated_count", 0)
             reviewed_note = f", {n_reviewed} already reviewed (skipped)" if n_reviewed else ""
+            gated_note = f", {n_gated} gated (ungroundable relation)" if n_gated else ""
             print(f"{semantic['phase1_flagged']}/{semantic['phase1_total_claims']} flagged, "
-                  f"{len(semantic['issues'])} confirmed after re-check{reviewed_note}")
+                  f"{len(semantic['issues'])} confirmed, "
+                  f"{len(semantic.get('phase2_unverifiable', []))} unverifiable after re-check"
+                  f"{reviewed_note}{gated_note}")
         else:
             print(f"unavailable ({semantic['error']})")
     else:

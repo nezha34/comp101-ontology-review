@@ -41,8 +41,13 @@ class LLMProvider(ABC):
     label: str
 
     @abstractmethod
-    def chat_json(self, system: str, user: str, schema: dict) -> dict:
-        """Call the model and return the parsed JSON response object."""
+    def chat_json(self, system: str, user: str, schema: dict,
+                  temperature: float | None = None, seed: int | None = None) -> dict:
+        """Call the model and return the parsed JSON response object.
+
+        temperature/seed let a caller vary sampling on retry — a retry with
+        identical (temperature, seed) to the failed attempt tends to fail
+        the same way for a given prompt, especially on local models."""
 
 
 class OllamaProvider(LLMProvider):
@@ -54,7 +59,13 @@ class OllamaProvider(LLMProvider):
         self.url = base_url.rstrip("/") + "/api/chat"
         self.label = f"Ollama ({model})"
 
-    def chat_json(self, system: str, user: str, schema: dict) -> dict:
+    def chat_json(self, system: str, user: str, schema: dict,
+                  temperature: float | None = None, seed: int | None = None) -> dict:
+        options = {"temperature": temperature if temperature is not None else 0.6,
+                   "num_ctx": 8192, "num_predict": 1536,
+                   "repeat_penalty": 1.2, "repeat_last_n": 128, "min_p": 0.05}
+        if seed is not None:
+            options["seed"] = seed
         resp = requests.post(
             self.url,
             json={
@@ -65,8 +76,7 @@ class OllamaProvider(LLMProvider):
                 ],
                 "format": schema,
                 "stream": False,
-                "options": {"temperature": 0.2, "num_ctx": 8192, "num_predict": 1536,
-                            "repeat_penalty": 1.15, "repeat_last_n": 128},
+                "options": options,
             },
             timeout=300,
         )
@@ -94,23 +104,27 @@ class NvidiaNIMProvider(LLMProvider):
                 "are never read from the UI or written to disk by this app."
             )
 
-    def chat_json(self, system: str, user: str, schema: dict) -> dict:
+    def chat_json(self, system: str, user: str, schema: dict,
+                  temperature: float | None = None, seed: int | None = None) -> dict:
         user_with_hint = f"{user}\n\n{_schema_hint(schema)}"
+        payload = {
+            "model": self.model,
+            "messages": [
+                {"role": "system", "content": system + "\n\nRespond with a single JSON object only, no prose before or after it."},
+                {"role": "user", "content": user_with_hint},
+            ],
+            "max_tokens": 2048,
+            "temperature": temperature if temperature is not None else 0.2,
+            "top_p": 1.0,
+            "stream": False,
+            "response_format": {"type": "json_object"},
+        }
+        if seed is not None:
+            payload["seed"] = seed
         resp = requests.post(
             self.url,
             headers={"Authorization": f"Bearer {self.api_key}", "Accept": "application/json"},
-            json={
-                "model": self.model,
-                "messages": [
-                    {"role": "system", "content": system + "\n\nRespond with a single JSON object only, no prose before or after it."},
-                    {"role": "user", "content": user_with_hint},
-                ],
-                "max_tokens": 2048,
-                "temperature": 0.2,
-                "top_p": 1.0,
-                "stream": False,
-                "response_format": {"type": "json_object"},
-            },
+            json=payload,
             timeout=120,
         )
         resp.raise_for_status()

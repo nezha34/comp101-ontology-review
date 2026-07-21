@@ -36,10 +36,17 @@ def _index_issues(result: dict) -> dict:
     for rec in semantic.get("issues", []):
         key = (rec["subject_uri"], rec["predicate"], rec["object_uri"])
         index[key] = {"kind": "issue", **rec}
+    for rec in semantic.get("phase2_unverifiable", []):
+        key = (rec["subject_uri"], rec["predicate"], rec["object_uri"])
+        index.setdefault(key, {"kind": "unverifiable", **rec})
     for rec in semantic.get("phase2_resolved", []):
         key = (rec["subject_uri"], rec["predicate"], rec["object_uri"])
         index.setdefault(key, {"kind": "resolved", **rec})
     return index
+
+
+_KIND_COLOR = {"issue": "#f85149", "unverifiable": "#d29922", "resolved": "#58a6ff"}
+_KIND_WIDTH = {"issue": 3, "unverifiable": 2, "resolved": 1}
 
 
 def build_graph_html(g: Graph, result: dict, title: str) -> str:
@@ -66,12 +73,9 @@ def build_graph_html(g: Graph, result: dict, title: str) -> str:
                 "arrows": "to", "color": {"color": "#8b949e"}, "width": 1,
             }
             if match:
-                if match["kind"] == "issue":
-                    edge["color"] = {"color": "#f85149"}
-                    edge["width"] = 3
-                else:
-                    edge["color"] = {"color": "#d29922"}
-                    edge["width"] = 2
+                kind = match["kind"]
+                edge["color"] = {"color": _KIND_COLOR[kind]}
+                edge["width"] = _KIND_WIDTH[kind]
                 edge["issue"] = match
             edges.append(edge)
 
@@ -79,6 +83,7 @@ def build_graph_html(g: Graph, result: dict, title: str) -> str:
     edges_json = json.dumps(edges, default=str)
 
     n_issues = sum(1 for e in edges if e.get("issue", {}).get("kind") == "issue")
+    n_unverifiable = sum(1 for e in edges if e.get("issue", {}).get("kind") == "unverifiable")
     n_resolved = sum(1 for e in edges if e.get("issue", {}).get("kind") == "resolved")
 
     return f"""<!doctype html>
@@ -109,9 +114,10 @@ def build_graph_html(g: Graph, result: dict, title: str) -> str:
     <h2>{escape(title)}</h2>
     <div class="legend">
       <span><span class="dot" style="background:#f85149"></span>{n_issues} confirmed issue(s)</span>
-      <span><span class="dot" style="background:#d29922"></span>{n_resolved} resolved by context</span>
+      <span><span class="dot" style="background:#d29922"></span>{n_unverifiable} unverifiable</span>
+      <span><span class="dot" style="background:#58a6ff"></span>{n_resolved} resolved by context</span>
     </div>
-    <p id="detail">Click a red or amber edge to see the semantic judge's write-up. Other edges have no flagged issue.</p>
+    <p id="detail">Click a highlighted edge to see the semantic judge's write-up. Other edges have no flagged issue.</p>
   </div>
 <script>
   const nodes = new vis.DataSet({nodes_json});
@@ -137,6 +143,10 @@ def build_graph_html(g: Graph, result: dict, title: str) -> str:
       detail.innerHTML = '<div class="field"><b>Status</b>Flagged in phase 1, resolved by context in phase 2</div>' +
         '<div class="field"><b>Phase 1 verdict</b>' + esc(iss.phase1_verdict) + ' — ' + esc(iss.phase1_reasoning) + '</div>' +
         '<div class="field"><b>Resolution</b>' + esc(iss.resolution_explanation) + '</div>';
+    }} else if (iss.kind === 'unverifiable') {{
+      detail.innerHTML = '<div class="field"><b>Status</b>Can\\'t be judged from graph context alone — needs a human check against real source material</div>' +
+        '<div class="field"><b>Phase 1 verdict</b>' + esc(iss.phase1_verdict) + ' — ' + esc(iss.phase1_reasoning) + '</div>' +
+        '<div class="field"><b>Why unverifiable</b>' + esc(iss.evidence) + ' ' + esc(iss.phase2_reasoning) + '</div>';
     }} else {{
       detail.innerHTML = '<div class="field"><b>Issue</b>' + esc(iss.issue_summary) + '</div>' +
         '<div class="field"><b>Evidence</b>' + esc(iss.evidence) + '</div>' +
