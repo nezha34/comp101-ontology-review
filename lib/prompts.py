@@ -75,24 +75,42 @@ SCRATCHPAD_MARKERS: tuple[str, ...] = (
     "final decision:",
 )
 
-# Fallback natural-language meaning for common relation names, used only
-# when a config doesn't supply its own `relation_semantics` block.
+# Thin shared-core meanings. Course-specific predicates and policy belong in
+# configs/<module>.json → relation_semantics (+ optional authoring_policy).
+# Module overlay always wins over these defaults. Missing meaning must fail
+# loudly at judge time (see resolve_relation_meaning) — never invent gloss.
 DEFAULT_RELATION_SEMANTICS = {
     "dependsOn": (
-        "The subject cannot be reasonably understood or performed by a "
-        "student until the object has already been learned. This is a "
-        "prerequisite edge in a teaching sequence. Directionality check: "
-        "if A dependsOn B, then B is learned FIRST."
+        "Strict prerequisite: the subject is learned after the object; the "
+        "student cannot reasonably understand the subject without the object. "
+        "Direction: if A dependsOn B, then B is learned FIRST."
     ),
     "partOf": (
         "The subject is a genuine conceptual sub-component of the object — "
         "not merely related to it, and not a separate concept that is "
         "merely used alongside it."
     ),
+    # Methods / builtins / constructs — NOT skills. Skills use requiresConcept.
     "usesConcept": (
-        "Performing or explaining the subject skill genuinely requires "
-        "knowledge of the object concept — the concept is load-bearing, "
-        "not incidental."
+        "The subject method, builtin, or language construct relies on or "
+        "carries out the object concept in a load-bearing way. Domain is "
+        "Method / BuiltInFunction / LanguageConstruct (or similar carriers), "
+        "not Skill. Teaching footnotes and optional idioms do not count."
+    ),
+    # Skills — load-bearing concept requirements for a learning outcome.
+    "requiresConcept": (
+        "The subject Skill cannot be performed as taught without the object "
+        "concept. A skill may require several concepts; each edge is judged "
+        "independently. Optional patterns and language-general caveats do "
+        "not count."
+    ),
+    "implementsConcept": (
+        "Syntax-level coding of a concept by a LanguageConstruct (e.g. a for "
+        "loop implements Iteration). Not for Pattern nodes or trait concepts."
+    ),
+    "producesType": (
+        "The DataType individual returned by the method/builtin as modelled "
+        "in this ontology. Parametric types (list[str]) are out of scope."
     ),
     "enables": (
         "The subject is a mechanism or language feature that makes the "
@@ -105,15 +123,76 @@ DEFAULT_RELATION_SEMANTICS = {
     "managedBy": (
         "The subject is genuinely under the control/ownership of the "
         "object at runtime (e.g. an OS-managed resource) — not just "
-        "conceptually associated with it, and not merely an interface or "
-        "request handled by it."
+        "conceptually associated with it."
     ),
     "taughtIn": (
-        "The subject concept/skill is actually introduced or covered in "
-        "the named lecture, not merely tangentially related to it. This "
-        "can only be verified against lecture content, not graph shape."
+        "First introduction of the subject in the named lecture/week. "
+        "Verify against lecture content when available, not graph shape alone."
+    ),
+    "revisitedIn": (
+        "Reinforcement in a later week after taughtIn — not first "
+        "introduction. Valid when the curriculum actually revisits the entity."
+    ),
+    "recommendedBefore": (
+        "Authored soft teaching order: teach the subject before the object. "
+        "Pacing preference for PATH / skill pickup — not a strict prerequisite "
+        "(that is dependsOn) and not a peer-confusion link (contrastsWith). "
+        "A before B means A is usually introduced earlier; never 'backwards' "
+        "solely because B is safer or more advanced."
+    ),
+    "contrastsWith": (
+        "Entities students often confuse and should explicitly compare "
+        "(e.g. list vs tuple, set vs list). Not for parallel same-named methods "
+        "that differ only by caller type, and not for unrelated operations."
     ),
 }
+
+
+class UnknownRelationSemanticsError(KeyError):
+    """Raised when a judged predicate has no meaning in config or defaults."""
+
+
+def resolve_relation_meaning(
+    relation_name: str,
+    config: dict | None = None,
+    *,
+    strict: bool | None = None,
+) -> str:
+    """Return the gloss for a relation.
+
+    Precedence: config['relation_semantics'][name] → DEFAULT_RELATION_SEMANTICS.
+    If missing: raise when strict (default: config.strict_relation_semantics,
+    else True for judge safety). When strict is False, return a clearly
+    marked placeholder so callers can still log the gap.
+    """
+    config = config or {}
+    custom = config.get("relation_semantics") or {}
+    if relation_name in custom:
+        return custom[relation_name]
+    if relation_name in DEFAULT_RELATION_SEMANTICS:
+        return DEFAULT_RELATION_SEMANTICS[relation_name]
+    if strict is None:
+        strict = bool(config.get("strict_relation_semantics", True))
+    if strict:
+        raise UnknownRelationSemanticsError(
+            f"No relation_semantics for '{relation_name}'. "
+            f"Add it to the module config (or shared defaults) before judging."
+        )
+    return (
+        f'[MISSING SEMANTICS for "{relation_name}"] — do not invent a meaning; '
+        f'mark uncertain/unverifiable.'
+    )
+
+
+def relation_semantics_coverage(
+    relation_names: list[str] | set[str],
+    config: dict | None = None,
+) -> list[str]:
+    """Return sorted predicate names that lack a meaning (config or default)."""
+    config = config or {}
+    custom = set((config.get("relation_semantics") or {}).keys())
+    known = custom | set(DEFAULT_RELATION_SEMANTICS.keys())
+    return sorted(set(relation_names) - known)
 
 
 # --------------------------------------------------------------------------
@@ -162,12 +241,20 @@ add commentary outside them."""
 
 
 def build_phase1_user_prompt(
-    relation_name: str, relation_meaning: str, claims: list[dict]
+    relation_name: str,
+    relation_meaning: str,
+    claims: list[dict],
+    authoring_policy: str | None = None,
 ) -> str:
     """claims: list of {index, subject_label, object_label, subject_types, object_types}"""
     lines = [
         f'Relation being judged: "{relation_name}"',
         f"What this relation is supposed to mean in this ontology: {relation_meaning}",
+    ]
+    if authoring_policy:
+        lines.append("")
+        lines.append(f"Module authoring policy (do not contradict): {authoring_policy}")
+    lines += [
         "",
         "Claims to judge (judge each independently, referencing it by its index):",
     ]
@@ -303,6 +390,7 @@ def build_phase2_user_prompt(
     object_context: list[str],
     external_evidence: str | None = None,
     external_evidence_label: str = "Lecture content excerpt",
+    authoring_policy: str | None = None,
 ) -> str:
     """Build the phase-2 user prompt.
 
@@ -316,6 +404,10 @@ def build_phase2_user_prompt(
         f'Flagged claim: "{subject_label}" --{relation_name}--> "{object_label}"',
         f"What {relation_name} is supposed to mean here: {relation_meaning}",
         f'First-pass verdict: {phase1_verdict} — "{phase1_reasoning}"',
+    ]
+    if authoring_policy:
+        lines.append(f"Module authoring policy (do not contradict): {authoring_policy}")
+    lines += [
         "",
         f'Everything else "{subject_label}" connects to in the ontology:',
     ]

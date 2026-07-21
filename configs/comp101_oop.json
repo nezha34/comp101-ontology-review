@@ -6,9 +6,9 @@
     "dependsOn": "The subject cannot be reasonably understood or performed by a student until the object has already been learned. A prerequisite edge in the teaching sequence.",
     "partOf": "The subject is a genuine conceptual sub-component of the object, not merely related to it.",
     "hasPart": "The subject genuinely contains the object as one of its conceptual sub-components (inverse of partOf).",
-    "usesConcept": "Performing or explaining the subject skill genuinely requires knowledge of the object concept — the concept is load-bearing, not incidental.",
+    "usesConcept": "The subject method, builtin, operation, or (in this module's model) skill relies on the object concept in a load-bearing way \u2014 not incidental.",
     "isUsedBy": "The subject concept is genuinely needed by the object skill/operation to be understood or performed (inverse of usesConcept).",
-    "enables": "The subject is a mechanism or language feature that makes the object concept/goal achievable — a means-to-end relationship.",
+    "enables": "The subject is a mechanism or language feature that makes the object concept/goal achievable \u2014 a means-to-end relationship.",
     "enabledBy": "The subject (a goal or concept) becomes achievable specifically because of the object mechanism/feature (inverse of enables).",
     "implements": "The subject is a concrete mechanism/construct that realizes the object, which is an abstract concept or interface.",
     "implementedBy": "The subject (an abstract concept/interface) is concretely realized by the object (a specific mechanism/construct) in this language (inverse of implements).",
@@ -69,5 +69,6 @@
       "sparql": "SELECT ?part WHERE {{ ?part <{ns}partOf> <{ns}COOP001> . }}",
       "expect_min": 3
     }
-  ]
+  ],
+  "authoring_policy": "This module may link Skills via usesConcept (legacy). COMP101 W5\u2013W6 uses requiresConcept instead."
 }

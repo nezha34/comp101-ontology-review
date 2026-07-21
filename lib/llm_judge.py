@@ -36,6 +36,8 @@ from .llm_providers import LLMProvider, build_provider
 from .review_store import load_reviewed, triple_key
 from .prompts import (
     DEFAULT_RELATION_SEMANTICS,
+    UnknownRelationSemanticsError,
+    resolve_relation_meaning,
     EVIDENCE_EXTERNAL_RELATIONS,
     PHASE1_SCHEMA,
     PHASE1_SYSTEM,
@@ -75,7 +77,7 @@ CACHE_PATH = Path(__file__).resolve().parent.parent / "results" / ".semantic_cac
 # grammar-constrained decoding — higher baseline sampling temperature,
 # min_p, terser-reasoning-for-"correct" prompt change, tighter maxLength.
 # Bumped so verdicts built under old schema/prompts/sampling aren't reused.
-PROMPT_VERSION = "5"
+PROMPT_VERSION = "6"
 
 
 class _VerdictCache:
@@ -201,12 +203,8 @@ def _local_name(uri) -> str:
 
 
 def _relation_meaning(relation_name: str, config: dict) -> str:
-    custom = (config or {}).get("relation_semantics", {})
-    if relation_name in custom:
-        return custom[relation_name]
-    if relation_name in DEFAULT_RELATION_SEMANTICS:
-        return DEFAULT_RELATION_SEMANTICS[relation_name]
-    return f'No explicit definition given — judge "{relation_name}" by its plain English meaning.'
+    """Delegate to prompts.resolve_relation_meaning (strict by default)."""
+    return resolve_relation_meaning(relation_name, config)
 
 
 def _types_of(g: Graph, node) -> list[str]:
@@ -281,6 +279,23 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
     Returns {ok, error, all_claims, flagged, skipped_batches, cache_hits,
     reviewed_skipped, gated_count}."""
     by_relation, gated_count = collect_claims(g, config)
+    # Fail fast if any judged predicate lacks semantics (no plain-English invent).
+    from .prompts import relation_semantics_coverage
+    missing = relation_semantics_coverage(by_relation.keys(), config)
+    if missing and (config or {}).get("strict_relation_semantics", True):
+        return {
+            "ok": False,
+            "error": (
+                "Missing relation_semantics for: " + ", ".join(missing)
+                + ". Add glosses to the module config (or defaults) before judging."
+            ),
+            "all_claims": [],
+            "flagged": [],
+            "skipped_batches": [],
+            "cache_hits": 0,
+            "reviewed_skipped": [],
+            "gated_count": gated_count,
+        }
     all_claims = []
     flagged = []
     skipped_batches = []
@@ -317,7 +332,8 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
 
     def judge_batch(task):
         rel_name, meaning, keyed_batch = task
-        user_prompt = build_phase1_user_prompt(rel_name, meaning, [c for _, c in keyed_batch])
+        user_prompt = build_phase1_user_prompt(rel_name, meaning, [c for _, c in keyed_batch],
+                                           authoring_policy=(config or {}).get("authoring_policy"))
         return _call_llm(provider, PHASE1_SYSTEM, user_prompt, PHASE1_SCHEMA, validator=_phase1_validator)
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -473,6 +489,7 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
             phase1_reasoning=claim["reasoning"],
             subject_context=subj_ctx,
             object_context=obj_ctx,
+            authoring_policy=(config or {}).get("authoring_policy"),
         )
         pending.append((pos, key, user_prompt, schema))
 

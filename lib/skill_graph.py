@@ -17,11 +17,12 @@ from .graph_utils import label
 
 
 def check_skill_graph(g: Graph, ns_uri: str, config: dict) -> dict:
-    """config keys: class (local name), depends_on (local name),
-    uses_concept (local name, optional)."""
+    """config keys: class, depends_on, and optionally requires_concept
+    or uses_concept (local predicate name linking Skill → Concept)."""
     cls_name = config.get("class")
     dep_name = config.get("depends_on")
-    uses_name = config.get("uses_concept")
+    # COMP101 uses requiresConcept on Skills; older OOP configs used usesConcept.
+    uses_name = config.get("requires_concept") or config.get("uses_concept")
 
     if not cls_name or not dep_name:
         return {"issues": ["skill_graph config missing required 'class' or 'depends_on'"], "skills": []}
@@ -76,7 +77,8 @@ def check_skill_graph(g: Graph, ns_uri: str, config: dict) -> dict:
         skill_info.append({
             "name": label(g, s),
             "depends_on": deps,
-            "uses_concept": uses,
+            "uses_concept": uses,  # values from requires_concept or uses_concept predicate
+            "concept_link_predicate": uses_name,
             "is_root": len(deps) == 0,
         })
 
