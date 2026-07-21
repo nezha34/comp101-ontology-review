@@ -145,6 +145,17 @@ DEFAULT_RELATION_SEMANTICS = {
         "(e.g. list vs tuple, set vs list). Not for parallel same-named methods "
         "that differ only by caller type, and not for unrelated operations."
     ),
+    # Common inverses (often declared in T-Box; A-Box may be forward-only)
+    "teaches": "Inverse of taughtIn: this lecture introduces the object entity.",
+    "revisits": "Inverse of revisitedIn: this lecture reinforces the object entity.",
+    "requiredBy": "Inverse of requiresConcept: this concept is required by the object skill.",
+    "isUsedBy": "Inverse of usesConcept: this concept is used by the object carrier.",
+    "implementedBy": "Inverse of implementsConcept: this concept is implemented by the object construct.",
+    "isProducedBy": "Inverse of producesType: this type is produced by the object method/builtin.",
+    "methodOf": "The subject Method belongs to the object DataType (e.g. list.append methodOf list).",
+    "hasMethod": "Inverse of methodOf: this DataType declares the object Method.",
+    "raisedBy": "Inverse of throwsError: this error is raised by the object carrier.",
+    "precedes": "Soft temporal/causal precedence between misconceptions or beats (module-specific).",
 }
 
 
