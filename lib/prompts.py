@@ -55,7 +55,7 @@ from __future__ import annotations
 # transcripts), not in the graph itself. Without external_evidence, phase 2
 # cannot verify these — auto-bucket as unverifiable instead of calling the
 # model. With external_evidence, judge normally.
-EVIDENCE_EXTERNAL_RELATIONS: frozenset[str] = frozenset({"taughtIn"})
+EVIDENCE_EXTERNAL_RELATIONS: frozenset[str] = frozenset({"taughtIn", "revisitedIn"})
 
 # Sentinel for the new_object enum: the model believes the correct object
 # is not among the entities shown in context. The caller must downgrade
@@ -79,6 +79,7 @@ SCRATCHPAD_MARKERS: tuple[str, ...] = (
 # configs/<module>.json → relation_semantics (+ optional authoring_policy).
 # Module overlay always wins over these defaults. Missing meaning must fail
 # loudly at judge time (see resolve_relation_meaning) — never invent gloss.
+#
 DEFAULT_RELATION_SEMANTICS = {
     "dependsOn": (
         "Strict prerequisite: the subject is learned after the object; the "
@@ -134,16 +135,25 @@ DEFAULT_RELATION_SEMANTICS = {
         "introduction. Valid when the curriculum actually revisits the entity."
     ),
     "recommendedBefore": (
-        "Authored soft teaching order: teach the subject before the object. "
-        "Pacing preference for PATH / skill pickup — not a strict prerequisite "
-        "(that is dependsOn) and not a peer-confusion link (contrastsWith). "
-        "A before B means A is usually introduced earlier; never 'backwards' "
-        "solely because B is safer or more advanced."
+        "Soft order among sibling peers when there is a teaching dilemma "
+        "(which to introduce first) and a total order like PATH / dependsOn "
+        "does not already decide. Not a strict prerequisite (dependsOn), not "
+        "a confusion link (confusedWith), and not required between consecutive "
+        "spine beats the tutor already traverses in sequence."
     ),
+    # OOP/ICS: opposites, alternatives, or confused Concept peers.
     "contrastsWith": (
-        "Entities students often confuse and should explicitly compare "
-        "(e.g. list vs tuple, set vs list). Not for parallel same-named methods "
-        "that differ only by caller type, and not for unrelated operations."
+        "Two concepts that are opposites, alternatives, or commonly confused "
+        "and should be distinguished (Concept↔Concept in OOP). Not COMP101's "
+        "confusedWith (any confusable entities)."
+    ),
+    # COMP101: student mix-ups (any suitable entity types).
+    "confusedWith": (
+        "Entities students often confuse and should explicitly distinguish "
+        "(e.g. list vs tuple, discard vs remove, default dict iteration vs "
+        ".keys()). Endpoints need not share the same class when the confusion "
+        "is real. Not for soft pacing (recommendedBefore) or strict "
+        "prerequisites (dependsOn)."
     ),
     # Common inverses (often declared in T-Box; A-Box may be forward-only)
     "teaches": "Inverse of taughtIn: this lecture introduces the object entity.",
@@ -206,15 +216,72 @@ def relation_semantics_coverage(
     return sorted(set(relation_names) - known)
 
 
+def format_skill_graph_wiring(config: dict | None) -> str | None:
+    """One-block dump of config skill_graph for the judge prompts.
+
+    Same wiring the structural skill-graph checker uses — so the LLM sees
+    which class is a Skill and which predicates are skill→skill vs
+    skill→concept, instead of re-deriving that only from gloss prose.
+    """
+    sg = (config or {}).get("skill_graph") or {}
+    skill_cls = sg.get("class")
+    if not skill_cls:
+        return None
+    dep = sg.get("depends_on") or "dependsOn"
+    concept_edge = sg.get("requires_concept") or sg.get("uses_concept")
+    if not concept_edge:
+        concept_edge = "requiresConcept"
+    lines = [
+        "Module skill-graph wiring (from config — same as structural checker):",
+        f"  Skill class = {skill_cls}",
+        f"  skill→skill edge = {dep}",
+        f"  skill→concept edge = {concept_edge}",
+    ]
+    if sg.get("requires_concept"):
+        lines.append(
+            f"  In this module, subjects of type {skill_cls} use "
+            f"{concept_edge} for concept links — never usesConcept."
+        )
+    elif sg.get("uses_concept"):
+        lines.append(
+            f"  In this module, subjects of type {skill_cls} use "
+            f"{concept_edge} for concept links (legacy / OOP-style)."
+        )
+    return "\n".join(lines)
+
+
 # --------------------------------------------------------------------------
 # PHASE 1
 # --------------------------------------------------------------------------
-
 PHASE1_SYSTEM = """You are a strict pedagogical ontology reviewer for a \
 university intro CS course. You will be shown a batch of factual claims, \
 each derived directly from one RDF triple in a course ontology. Your only \
 job is to judge whether each individual claim is TRUE, given how the \
-relation is defined below.
+relation is defined below and any declared property shape / class \
+vocabulary supplied in the user message.
+
+Do NOT invent endpoint-type restrictions (e.g. "must be Concept-Concept") \
+beyond the relation meaning and the declared domain/range. If domain and \
+range are owl:Thing (or broad), mixed class pairings are allowed. \
+Exception: when the relation meaning below explicitly restricts which \
+entity *kind* the subject or object must be (e.g. "domain is Method / \
+BuiltInFunction / LanguageConstruct, not Skill"), treat that gloss \
+restriction as authoritative even if the OWL domain/range shown is \
+broader — the gloss encodes course-specific policy the T-Box intentionally \
+leaves open for extensibility. If you cannot tell from the provided text, \
+use "uncertain" — not "incorrect".
+
+requiresConcept vs usesConcept: if the subject is typed Skill, the only \
+valid relation of this pair is requiresConcept; usesConcept never applies \
+to Skill subjects. If you are judging a usesConcept edge and the subject \
+is a Skill, verdict is "incorrect". If you are judging a requiresConcept \
+edge and the subject is Method / BuiltInFunction / LanguageConstruct (not \
+a Skill), verdict is "incorrect".
+
+Several claims in this batch may share the same subject or object — that \
+is expected graph structure (a Skill commonly has multiple requiresConcept \
+edges), not evidence of redundancy. Judge each edge only against the \
+relation meaning, not against how many siblings it has.
 
 Judge each claim on its own — you are not being shown the rest of the \
 ontology yet, so do not assume missing context justifies a claim; if you \
@@ -256,12 +323,44 @@ def build_phase1_user_prompt(
     relation_meaning: str,
     claims: list[dict],
     authoring_policy: str | None = None,
+    property_shape: dict | None = None,
+    class_glossary: list[tuple[str, str]] | None = None,
+    drift_vocabulary: str | None = None,
+    skill_graph_wiring: str | None = None,
 ) -> str:
-    """claims: list of {index, subject_label, object_label, subject_types, object_types}"""
+    """claims: list of {index, subject_label, object_label, subject_types, object_types,
+    optional subject_definition / object_definition}."""
     lines = [
         f'Relation being judged: "{relation_name}"',
         f"What this relation is supposed to mean in this ontology: {relation_meaning}",
     ]
+    if property_shape:
+        dom = ", ".join(property_shape.get("domain") or []) or "(undeclared)"
+        rng = ", ".join(property_shape.get("range") or []) or "(undeclared)"
+        lines.append(f"Declared OWL shape for {relation_name}: domain=[{dom}]; range=[{rng}]")
+        if property_shape.get("comment"):
+            lines.append(f"OWL rdfs:comment for {relation_name}: {property_shape['comment']}")
+        lines.append(
+            "Do not invent endpoint-type rules beyond this declared shape and "
+            "the relation meaning above (gloss kind-restrictions win over a "
+            "broader OWL domain)."
+        )
+    if skill_graph_wiring:
+        lines.append("")
+        lines.append(skill_graph_wiring)
+    if drift_vocabulary:
+        lines.append("")
+        lines.append(drift_vocabulary)
+    if class_glossary:
+        lines.append("")
+        lines.append("Class vocabulary used in this batch (from the ontology T-Box):")
+        for name, gloss in class_glossary:
+            lines.append(f"  - {name}: {gloss}")
+    if relation_name in ("usesConcept", "requiresConcept") and not skill_graph_wiring:
+        lines.append(
+            "Skill nodes use requiresConcept, never usesConcept "
+            "(if subject kind mismatches the relation, verdict is incorrect)."
+        )
     if authoring_policy:
         lines.append("")
         lines.append(f"Module authoring policy (do not contradict): {authoring_policy}")
@@ -272,18 +371,27 @@ def build_phase1_user_prompt(
     for c in claims:
         subj_ctx = f" (a {', '.join(c['subject_types'])})" if c.get("subject_types") else ""
         obj_ctx = f" (a {', '.join(c['object_types'])})" if c.get("object_types") else ""
-        lines.append(
-            f"  [{c['index']}] \"{c['subject_label']}\"{subj_ctx} "
-            f"--{relation_name}--> \"{c['object_label']}\"{obj_ctx}"
+        line = (
+            f'  [{c["index"]}] "{c["subject_label"]}"{subj_ctx} '
+            f'--{relation_name}--> "{c["object_label"]}"{obj_ctx}'
         )
+        bits = []
+        if c.get("subject_definition"):
+            bits.append(f'subject definition: "{c["subject_definition"]}"')
+        if c.get("object_definition"):
+            bits.append(f'object definition: "{c["object_definition"]}"')
+        if bits:
+            line += " [" + "; ".join(bits) + "]"
+        lines.append(line)
     lines.append("")
     lines.append(
         "For every index above, return one verdict object with that index, "
         "a verdict, and reasoning specific to that claim (not a generic "
         "justification, not reused across indices): a short phrase for "
-        "\"correct\", a full sentence for anything else."
+        '"correct", a full sentence for anything else.'
     )
     return "\n".join(lines)
+
 
 
 PHASE1_SCHEMA = {
@@ -335,6 +443,20 @@ provided). This is NOT the same as "issue": absence of evidence in your \
 context is not evidence the edge is wrong. Never propose removing an \
 edge merely because you cannot confirm it.
 
+requiresConcept vs usesConcept: if the subject is typed Skill, the only \
+valid relation of this pair is requiresConcept; usesConcept never applies \
+to Skill subjects. Judging a usesConcept edge with a Skill subject → \
+verdict "issue" with fix_action="change_predicate" → requiresConcept. \
+Judging a requiresConcept edge whose subject is Method / BuiltInFunction \
+/ LanguageConstruct (not Skill) → "issue" with change_predicate → \
+usesConcept.
+
+For recommendedBefore: verdict "issue" requires showing that PATH or \
+dependsOn context does NOT already fix the order — absence of such \
+context in what you're shown means "unverifiable", not "issue". If PATH \
+shows the pair is already ordered (especially consecutive beats), a \
+redundant recommendedBefore is an "issue" (usually remove_edge).
+
 Write your evidence and reasoning BEFORE your verdict, and make them \
 carry your FINAL position only. Never narrate reconsideration — no \
 "wait", no "let me re-read", no visible self-correction. If you change \
@@ -370,7 +492,9 @@ Your fix may target ONLY the flagged edge itself. The allowed actions:
 - "remove_edge"      — delete the flagged triple. You do not retype it; \
 the system already knows which triple is flagged.
 - "change_predicate" — the endpoints are right but the relation is the \
-wrong one. Pick the correct relation from the allowed list in new_predicate.
+wrong one. Pick the correct relation from the allowed list in new_predicate. \
+Common module swaps: usesConcept ↔ requiresConcept (Skill vs carrier); \
+confusedWith ↔ contrastsWith when the wrong module synonym was used.
 - "change_object"    — the subject and relation are right but point at \
 the wrong node. Pick the correct object from the entity list in \
 new_object. Every option in that list is a real node shown in your \
@@ -402,6 +526,11 @@ def build_phase2_user_prompt(
     external_evidence: str | None = None,
     external_evidence_label: str = "Lecture content excerpt",
     authoring_policy: str | None = None,
+    property_shape: dict | None = None,
+    class_glossary: list[tuple[str, str]] | None = None,
+    drift_vocabulary: str | None = None,
+    path_order: str | None = None,
+    skill_graph_wiring: str | None = None,
 ) -> str:
     """Build the phase-2 user prompt.
 
@@ -416,6 +545,34 @@ def build_phase2_user_prompt(
         f"What {relation_name} is supposed to mean here: {relation_meaning}",
         f'First-pass verdict: {phase1_verdict} — "{phase1_reasoning}"',
     ]
+    if property_shape:
+        dom = ", ".join(property_shape.get("domain") or []) or "(undeclared)"
+        rng = ", ".join(property_shape.get("range") or []) or "(undeclared)"
+        lines.append(f"Declared OWL shape for {relation_name}: domain=[{dom}]; range=[{rng}]")
+        if property_shape.get("comment"):
+            lines.append(f"OWL rdfs:comment for {relation_name}: {property_shape['comment']}")
+        lines.append(
+            "Do not invent endpoint-type rules beyond this declared shape and "
+            "the relation meaning above (gloss kind-restrictions win over a "
+            "broader OWL domain)."
+        )
+    if skill_graph_wiring:
+        lines.append("")
+        lines.append(skill_graph_wiring)
+    if drift_vocabulary:
+        lines.append("")
+        lines.append(drift_vocabulary)
+    if path_order:
+        lines.append("")
+        lines.append(path_order)
+    if class_glossary:
+        lines.append("Class vocabulary for this claim:")
+        for name, gloss in class_glossary:
+            lines.append(f"  - {name}: {gloss}")
+    if relation_name in ("usesConcept", "requiresConcept") and not skill_graph_wiring:
+        lines.append(
+            "Skill nodes use requiresConcept, never usesConcept."
+        )
     if authoring_policy:
         lines.append(f"Module authoring policy (do not contradict): {authoring_policy}")
     lines += [
@@ -450,6 +607,7 @@ def build_phase2_user_prompt(
         "fields — evidence and reasoning first, then verdict, then fix."
     )
     return "\n".join(lines)
+
 
 
 def build_phase2_schema(

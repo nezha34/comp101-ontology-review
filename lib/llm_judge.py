@@ -31,9 +31,24 @@ from pathlib import Path
 from rdflib import RDF, RDFS, Graph
 from rdflib.term import BNode, Literal
 
-from .graph_utils import label, object_properties
+from .graph_utils import (
+    label,
+    object_properties,
+    property_shape,
+    class_glossary_for_types,
+    class_glossary_for_names,
+    merge_class_glossaries,
+    individual_definition,
+    detect_namespace,
+)
 from .llm_providers import LLMProvider, build_provider
 from .review_store import load_reviewed, triple_key
+from .ontology_drift import format_drift_vocabulary_block, prepare_config_with_baseline
+from .path_order import (
+    PATH_ORDER_RELATIONS,
+    attach_path_to_config,
+    format_path_excerpt_for_pair,
+)
 from .prompts import (
     DEFAULT_RELATION_SEMANTICS,
     UnknownRelationSemanticsError,
@@ -46,6 +61,7 @@ from .prompts import (
     build_phase1_user_prompt,
     build_phase2_schema,
     build_phase2_user_prompt,
+    format_skill_graph_wiring,
     downgrade_sentinel_fix,
     validate_phase2_output,
 )
@@ -77,7 +93,7 @@ CACHE_PATH = Path(__file__).resolve().parent.parent / "results" / ".semantic_cac
 # grammar-constrained decoding — higher baseline sampling temperature,
 # min_p, terser-reasoning-for-"correct" prompt change, tighter maxLength.
 # Bumped so verdicts built under old schema/prompts/sampling aren't reused.
-PROMPT_VERSION = "6"
+PROMPT_VERSION = "12"
 
 
 class _VerdictCache:
@@ -214,6 +230,14 @@ def _types_of(g: Graph, node) -> list[str]:
     ]
 
 
+def _type_uris_of(g: Graph, node) -> list:
+    return [
+        t for t in g.objects(node, RDF.type)
+        if str(t) not in ("http://www.w3.org/2002/07/owl#NamedIndividual",)
+        and not isinstance(t, BNode)
+    ]
+
+
 def collect_claims(g: Graph, config: dict) -> tuple[dict, int]:
     """Group every object-property triple by relation name.
 
@@ -229,6 +253,7 @@ def collect_claims(g: Graph, config: dict) -> tuple[dict, int]:
     gated_count = 0
 
     include = set((config or {}).get("semantic_relations", [])) or None  # None = all
+    ns = detect_namespace(g)
 
     for prop in object_properties(g):
         rel_name = _local_name(prop)
@@ -242,6 +267,12 @@ def collect_claims(g: Graph, config: dict) -> tuple[dict, int]:
                 continue
             i = idx_counter[rel_name]
             idx_counter[rel_name] += 1
+            subj_def = individual_definition(g, s, ns)
+            obj_def = individual_definition(g, o, ns)
+            if subj_def and len(subj_def) > 160:
+                subj_def = subj_def[:157] + "..."
+            if obj_def and len(obj_def) > 160:
+                obj_def = obj_def[:157] + "..."
             by_relation[rel_name].append({
                 "index": i,
                 "predicate": rel_name,
@@ -252,6 +283,10 @@ def collect_claims(g: Graph, config: dict) -> tuple[dict, int]:
                 "object_label": label(g, o),
                 "subject_types": _types_of(g, s),
                 "object_types": _types_of(g, o),
+                "subject_type_uris": _type_uris_of(g, s),
+                "object_type_uris": _type_uris_of(g, o),
+                "subject_definition": subj_def,
+                "object_definition": obj_def,
             })
     return dict(by_relation), gated_count
 
@@ -296,6 +331,24 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
             "reviewed_skipped": [],
             "gated_count": gated_count,
         }
+    path_needed = sorted(set(by_relation) & PATH_ORDER_RELATIONS)
+    if path_needed and not (config or {}).get("_path_steps"):
+        return {
+            "ok": False,
+            "error": (
+                "PATH order required to judge "
+                + ", ".join(path_needed)
+                + " (gloss references PATH). Set config path_file to the module "
+                "PATH JSON (e.g. examples/comp101_path_w5_w6.json), or remove "
+                "those relations from semantic_relations."
+            ),
+            "all_claims": [],
+            "flagged": [],
+            "skipped_batches": [],
+            "cache_hits": 0,
+            "reviewed_skipped": [],
+            "gated_count": gated_count,
+        }
     all_claims = []
     flagged = []
     skipped_batches = []
@@ -332,8 +385,22 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
 
     def judge_batch(task):
         rel_name, meaning, keyed_batch = task
-        user_prompt = build_phase1_user_prompt(rel_name, meaning, [c for _, c in keyed_batch],
-                                           authoring_policy=(config or {}).get("authoring_policy"))
+        claims = [c for _, c in keyed_batch]
+        shape = property_shape(g, claims[0]["predicate_uri"])
+        glossary = _batch_class_glossary(g, claims, shape, rel_name, config or {})
+        drift_block = None
+        if (config or {}).get("_ontology_drift"):
+            drift_block = format_drift_vocabulary_block(config["_ontology_drift"])
+        user_prompt = build_phase1_user_prompt(
+            rel_name,
+            meaning,
+            claims,
+            authoring_policy=(config or {}).get("authoring_policy"),
+            property_shape=shape,
+            class_glossary=glossary,
+            drift_vocabulary=drift_block,
+            skill_graph_wiring=format_skill_graph_wiring(config),
+        )
         return _call_llm(provider, PHASE1_SYSTEM, user_prompt, PHASE1_SCHEMA, validator=_phase1_validator)
 
     with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -372,8 +439,27 @@ def run_phase1(g: Graph, config: dict, provider: LLMProvider,
             "reviewed_skipped": reviewed_skipped, "gated_count": gated_count}
 
 
-def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> list[str]:
-    """Human-readable neighborhood lines for the prompt."""
+def _batch_class_glossary(g: Graph, claims: list[dict], shape: dict, rel_name: str,
+                          config: dict) -> list[tuple[str, str]]:
+    """Batch types + declared domain/range (+ Skill for carrier/skill relations)."""
+    type_uris = []
+    for c in claims:
+        type_uris.extend(c.get("subject_type_uris") or [])
+        type_uris.extend(c.get("object_type_uris") or [])
+    extra_names = list(shape.get("domain") or []) + list(shape.get("range") or [])
+    if rel_name in ("usesConcept", "requiresConcept"):
+        extra_names.append("Skill")
+    return merge_class_glossaries(
+        class_glossary_for_types(g, type_uris, config),
+        class_glossary_for_names(g, extra_names, config),
+    )
+
+
+def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> tuple[list[str], bool, int]:
+    """Human-readable neighborhood lines for the prompt.
+
+    Returns (lines, truncated, total_before_cap).
+    """
     lines = []
     types = _types_of(g, node)
     if types:
@@ -397,14 +483,19 @@ def _neighborhood(g: Graph, node, exclude_predicate, exclude_partner) -> list[st
             continue
         lines.append(f"\"{label(g, s)}\" --{_local_name(p)}--> this")
 
-    return lines[:CONTEXT_LIMIT]
+    total = len(lines)
+    truncated = total > CONTEXT_LIMIT
+    return lines[:CONTEXT_LIMIT], truncated, total
 
 
-def _neighborhood_labels(g: Graph, node, exclude_predicate, exclude_partner) -> list[str]:
+def _neighborhood_labels(g: Graph, node, exclude_predicate, exclude_partner) -> tuple[list[str], bool, int]:
     """Plain labels of real entity nodes (not literals) connected to
     `node`, in either direction. This is the closed vocabulary for the
     change_object enum — the model can only pick something actually
-    shown to it, never invent or corrupt a name."""
+    shown to it, never invent or corrupt a name.
+
+    Returns (labels, truncated, total_before_cap).
+    """
     labels: set[str] = set()
     for p, o in g.predicate_objects(node):
         if p in (RDF.type, RDFS.label) or isinstance(o, (BNode, Literal)):
@@ -418,7 +509,10 @@ def _neighborhood_labels(g: Graph, node, exclude_predicate, exclude_partner) -> 
         if p == exclude_predicate and s == exclude_partner:
             continue
         labels.add(label(g, s))
-    return sorted(labels)
+    all_sorted = sorted(labels)
+    total = len(all_sorted)
+    truncated = total > MAX_CONTEXT_ENTITY_LABELS
+    return all_sorted[:MAX_CONTEXT_ENTITY_LABELS], truncated, total
 
 
 def _build_fix_display(claim: dict, result: dict) -> tuple[str, str, str]:
@@ -463,9 +557,30 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
     # not guaranteed thread-safe; only the HTTP calls go to the pool
     pending = []  # (pos, key, user_prompt, schema), in flagged order
     outcomes: dict[int, dict] = {}  # position in `flagged` -> llm/cached result
+    trunc_meta: dict[int, dict] = {}
     for pos, claim in enumerate(flagged):
-        subj_ctx = _neighborhood(g, claim["subject_uri"], claim["predicate_uri"], claim["object_uri"])
-        obj_ctx = _neighborhood(g, claim["object_uri"], claim["predicate_uri"], claim["subject_uri"])
+        subj_ctx, subj_trunc, subj_total = _neighborhood(
+            g, claim["subject_uri"], claim["predicate_uri"], claim["object_uri"])
+        obj_ctx, obj_trunc, obj_total = _neighborhood(
+            g, claim["object_uri"], claim["predicate_uri"], claim["subject_uri"])
+        subj_labels, subj_lab_trunc, subj_lab_total = _neighborhood_labels(
+            g, claim["subject_uri"], claim["predicate_uri"], claim["object_uri"])
+        obj_labels, obj_lab_trunc, obj_lab_total = _neighborhood_labels(
+            g, claim["object_uri"], claim["predicate_uri"], claim["subject_uri"])
+        context_truncated = bool(
+            subj_trunc or obj_trunc or subj_lab_trunc or obj_lab_trunc
+        )
+        trunc_meta[pos] = {
+            "context_truncated": context_truncated,
+            "subject_neighborhood_shown": len(subj_ctx),
+            "subject_neighborhood_total": subj_total,
+            "object_neighborhood_shown": len(obj_ctx),
+            "object_neighborhood_total": obj_total,
+            "subject_labels_total": subj_lab_total,
+            "object_labels_total": obj_lab_total,
+            "context_labels_shown": 0,  # filled below when building enum
+        }
+
         key = _cache_key("p2", PROMPT_VERSION, provider.label, claim["predicate"],
                          claim["subject_uri"], claim["object_uri"],
                          claim["relation_meaning"], claim["verdict"], claim["reasoning"],
@@ -476,10 +591,22 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
             cache_hits += 1
             continue
 
-        subj_labels = _neighborhood_labels(g, claim["subject_uri"], claim["predicate_uri"], claim["object_uri"])
-        obj_labels = _neighborhood_labels(g, claim["object_uri"], claim["predicate_uri"], claim["subject_uri"])
         context_labels = sorted(set(subj_labels + obj_labels))[:MAX_CONTEXT_ENTITY_LABELS]
+        trunc_meta[pos]["context_labels_shown"] = len(context_labels)
         schema = build_phase2_schema(context_labels, relation_vocab, claim["predicate"])
+        shape = property_shape(g, claim["predicate_uri"])
+        glossary = _batch_class_glossary(g, [claim], shape, claim["predicate"], config or {})
+        drift_block = None
+        if (config or {}).get("_ontology_drift"):
+            drift_block = format_drift_vocabulary_block(config["_ontology_drift"])
+        path_block = None
+        steps = (config or {}).get("_path_steps") or []
+        if claim["predicate"] in PATH_ORDER_RELATIONS and steps:
+            path_block = format_path_excerpt_for_pair(
+                steps,
+                _local_name(claim["subject_uri"]),
+                _local_name(claim["object_uri"]),
+            )
         user_prompt = build_phase2_user_prompt(
             relation_name=claim["predicate"],
             relation_meaning=claim["relation_meaning"],
@@ -490,6 +617,11 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
             subject_context=subj_ctx,
             object_context=obj_ctx,
             authoring_policy=(config or {}).get("authoring_policy"),
+            property_shape=shape,
+            class_glossary=glossary,
+            drift_vocabulary=drift_block,
+            path_order=path_block,
+            skill_graph_wiring=format_skill_graph_wiring(config),
         )
         pending.append((pos, key, user_prompt, schema))
 
@@ -521,6 +653,7 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
     for pos in sorted(outcomes):  # stable report order = phase-1 flag order
         claim, result = flagged[pos], outcomes[pos]
         fix_action, fix_triple, fix_rationale = _build_fix_display(claim, result)
+        meta = trunc_meta.get(pos) or {}
         record = {
             "predicate": claim["predicate"],
             "subject": claim["subject_label"],
@@ -538,6 +671,10 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
             "proposed_fix_triple": fix_triple,
             "proposed_fix_rationale": fix_rationale,
             "confidence": 1.0,
+            "context_truncated": meta.get("context_truncated", False),
+            "context_truncation": {
+                k: v for k, v in meta.items() if k != "context_truncated"
+            } if meta else None,
         }
         if result["verdict"] == "resolved":
             resolved.append(record)
@@ -554,7 +691,8 @@ def run_phase2(g: Graph, config: dict, flagged: list[dict], provider: LLMProvide
 
 
 def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
-                        model: str = "gemma4:26b", ns_uri: str | None = None) -> dict:
+                        model: str = "gemma4:26b", ns_uri: str | None = None,
+                        baseline_path: str | Path | None = None) -> dict:
     """Full two-phase pipeline. Never modifies `g` or any file.
 
     provider_type: "ollama" (local, default) or "nvidia_nim" (hosted,
@@ -565,6 +703,12 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
     accepted on a prior run are skipped entirely rather than re-judged and
     re-argued every time. Generic across any ontology — keyed purely by
     namespace + triple, nothing domain-specific baked in.
+
+    baseline_path: optional OWL/TTL to diff T-Box against. Gap classes and
+    object properties (with rdfs:comment) are appended into the judge prompts;
+    gap properties missing from relation_semantics are soft-filled from OWL
+    comments so the model does not invent meanings. Config key
+    ``semantic_baseline`` is used when baseline_path is omitted.
     """
     try:
         provider = build_provider(provider_type, model)
@@ -572,7 +716,19 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
         return {"ok": False, "error": str(e), "model": model, "provider": provider_type,
                 "phase1_total_claims": 0, "phase1_flagged": 0,
                 "phase2_resolved": [], "issues": [], "phase2_unverifiable": [],
-                "skipped_batches": [], "skipped_claims": [], "gated_count": 0}
+                "skipped_batches": [], "skipped_claims": [], "gated_count": 0,
+                "ontology_drift": None}
+
+    baseline = baseline_path or (config or {}).get("semantic_baseline")
+    config, drift = prepare_config_with_baseline(g, config, baseline)
+    config, path_meta = attach_path_to_config(config)
+    if path_meta and not path_meta.get("ok"):
+        return {"ok": False, "error": path_meta.get("error"), "model": model,
+                "provider": provider_type,
+                "phase1_total_claims": 0, "phase1_flagged": 0,
+                "phase2_resolved": [], "issues": [], "phase2_unverifiable": [],
+                "skipped_batches": [], "skipped_claims": [], "gated_count": 0,
+                "ontology_drift": drift, "path_order": path_meta}
 
     cache = _VerdictCache(CACHE_PATH)
     reviewed = load_reviewed(ns_uri) if ns_uri else {}
@@ -584,7 +740,8 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
                 "phase2_resolved": [], "issues": [], "phase2_unverifiable": [],
                 "skipped_batches": p1.get("skipped_batches", []),
                 "reviewed_skipped": p1.get("reviewed_skipped", []),
-                "gated_count": p1.get("gated_count", 0)}
+                "gated_count": p1.get("gated_count", 0),
+                "ontology_drift": drift, "path_order": path_meta}
 
     if not p1["flagged"]:
         return {"ok": True, "error": p1["error"], "model": model, "provider": provider_type,
@@ -593,7 +750,8 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
                 "phase2_resolved": [], "issues": [], "phase2_unverifiable": [],
                 "skipped_batches": p1.get("skipped_batches", []),
                 "reviewed_skipped": p1.get("reviewed_skipped", []),
-                "gated_count": p1.get("gated_count", 0)}
+                "gated_count": p1.get("gated_count", 0),
+                "ontology_drift": drift, "path_order": path_meta}
 
     p2 = run_phase2(g, config, p1["flagged"], provider, cache=cache)
     combined_error = " | ".join(e for e in (p1["error"], p2["error"]) if e) or None
@@ -613,4 +771,8 @@ def run_semantic_judge(g: Graph, config: dict, provider_type: str = "ollama",
         "skipped_claims": p2.get("skipped_claims", []),
         "reviewed_skipped": p1.get("reviewed_skipped", []),
         "gated_count": p1.get("gated_count", 0),
+        "ontology_drift": drift,
+        "path_order": path_meta,
+        "drift_filled_relations": (config or {}).get("_drift_filled_relations", []),
+        "drift_filled_classes": (config or {}).get("_drift_filled_classes", []),
     }

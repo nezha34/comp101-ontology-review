@@ -7,7 +7,7 @@
      xmlns:dcterms="http://purl.org/dc/terms/"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
     <owl:Ontology rdf:about="http://gnosis.local/ontologies/comp101">
-        <owl:versionInfo>2025.32</owl:versionInfo>
+        <owl:versionInfo>2025.36</owl:versionInfo>
         <rdfs:label>COMP101 course ontology</rdfs:label>
         <rdfs:comment>Static curriculum ontology for the COMP101 intro programming course: lectures, concepts, Python data types, methods, errors, and skills. Cross-cutting concepts are tagged shared for merge with other course modules. Student misconceptions, symptoms, remediations, and evidence are modelled separately in the dynamic ontology (http://gnosis.local/ontologies/comp101-dynamic), which imports this one and references these ids. Pedagogy metadata (definition, cognitiveType, bestPractice) is populated incrementally on high-value targets; empty instances inherit schema from the OOP module for future merge. Engineering notes: AllDisjointClasses covers asserted leaf types (Lecture, Concept, DataType, ErrorType, LanguageConstruct, Method, BuiltInFunction, Skill); intermediate classes ConceptCarrier/Invokable and Pattern⊑Concept are organizational. Inverse object properties are declared for reasoners — A-Box asserts only the forward direction (taughtIn, dependsOn, …); apps must query forwards or expand inverses.</rdfs:comment>
         <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
@@ -108,7 +108,7 @@
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:label>recommendedBefore</rdfs:label>
-        <rdfs:comment>Pedagogical soft ordering among peers (pacing hints for skills/methods/types). NOT the directed tutor sequence — that total order lives only in comp101_path_w5_w6.json (/path/next). Soft edges must not invert PATH when both endpoints are on the spine (CI path_recommended_before_inversion). Non-transitive; skippable when the learner has already mastered the target. Distinct from dependsOn (strict readiness gate) and from contrastsWith (confusable peers).</rdfs:comment>
+        <rdfs:comment>Soft order among sibling peers when PATH / dependsOn do not already decide which to introduce first (a teaching dilemma). NOT the tutor spine — that total order is only in comp101_path_w5_w6.json (/path/next). Do not sprinkle on every consecutive PATH pair; skip when traversal order is already determined. Distinct from dependsOn (strict readiness) and confusedWith (student mix-ups).</rdfs:comment>
     </owl:ObjectProperty>
     <owl:ObjectProperty rdf:about="http://gnosis.local/ontologies/comp101#implementsConcept">
         <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
@@ -128,12 +128,12 @@
         <rdfs:label>producesType</rdfs:label>
         <rdfs:comment>The data type a method or built-in function returns (adopted from the OOP module; richer than the returnsNone boolean, which is kept as a shortcut).</rdfs:comment>
     </owl:ObjectProperty>
-    <owl:ObjectProperty rdf:about="http://gnosis.local/ontologies/comp101#contrastsWith">
+    <owl:ObjectProperty rdf:about="http://gnosis.local/ontologies/comp101#confusedWith">
         <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
         <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-        <rdfs:label>contrastsWith</rdfs:label>
-        <rdfs:comment>Two entities that students often confuse and should compare (e.g. list vs tuple, shallow vs deep copy). Symmetric; shared with the OOP module.</rdfs:comment>
+        <rdfs:label>confusedWith</rdfs:label>
+        <rdfs:comment>Two entities students often confuse and should explicitly distinguish (e.g. list vs tuple, set.discard vs set.remove). Symmetric. COMP101-specific name: OOP keeps contrastsWith for opposites/alternatives/confused concepts (Concept↔Concept).</rdfs:comment>
     </owl:ObjectProperty>
     <owl:ObjectProperty rdf:about="http://gnosis.local/ontologies/comp101#methodOf">
         <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
@@ -576,9 +576,9 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_comprehension"/>
@@ -601,7 +601,7 @@
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#type_error"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#dict">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
@@ -621,8 +621,8 @@
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#collection"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#set">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
@@ -641,11 +641,11 @@
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#collection"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#hashing"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#time_complexity"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#frozenset">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
@@ -662,7 +662,6 @@
         <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immutable hashable set; usable as a dict key or set element.</definition>
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
-        <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#mutability"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#str">
@@ -753,7 +752,7 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#negative_indexing"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#negative_indexing"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#negative_indexing"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#negative_indexing">
@@ -779,7 +778,7 @@
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#zero_based_indexing"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#iteration">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
@@ -847,7 +846,7 @@
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#sort_vs_sorted">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
@@ -980,9 +979,9 @@
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_keys"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_keys"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_keys"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#empty_brace_ambiguity">
@@ -1085,7 +1084,7 @@
         <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Every element of A is also in B (A ⊆ B).</definition>
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
         <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#superset">
@@ -1268,7 +1267,6 @@
         <rdfs:label>[] list literal</rdfs:label>
         <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
-        <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
         <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_creation"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
     </owl:NamedIndividual>
@@ -1279,7 +1277,7 @@
         <socraticQuestion>What does {} create — an empty dict or an empty set?</socraticQuestion>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#set_constructor"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set_constructor"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#tuple_literal_syntax">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
@@ -1444,9 +1442,8 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_insert"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#list_insert"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list_insert"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
-        <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_insert"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#list_insert">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
@@ -1471,7 +1468,7 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#list_pop"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list_pop"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_pop"/>
         <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
@@ -1515,7 +1512,6 @@
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_clear"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
-        <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_count"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#list_reverse">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
@@ -1559,7 +1555,6 @@
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
         <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_reverse"/>
-        <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#list_copy">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
@@ -1585,7 +1580,7 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_update"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#sorted_function"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#sorted_function"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#dict_get">
@@ -1635,8 +1630,8 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
     </owl:NamedIndividual>
@@ -1650,7 +1645,7 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
         <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
     </owl:NamedIndividual>
@@ -1738,9 +1733,8 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
         <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#set_remove_method"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set_remove_method"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
-        <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set_remove_method"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#set_remove_method">
         <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
@@ -1956,7 +1950,7 @@
         <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
         <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
         <producesType rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
-        <contrastsWith rdf:resource="http://gnosis.local/ontologies/comp101#str_join"/>
+        <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str_join"/>
         <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
     </owl:NamedIndividual>
     <owl:NamedIndividual rdf:about="http://gnosis.local/ontologies/comp101#str_join">

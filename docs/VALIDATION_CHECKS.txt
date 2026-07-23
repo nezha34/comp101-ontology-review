@@ -152,6 +152,24 @@ a finding in the web UI writes that decision to a per-namespace JSON
 store keyed on the exact triple. A later re-run of the same ontology
 skips (doesn't re-flag or re-argue) anything already reviewed.
 
+Ontology T-Box drift (lib/ontology_drift.py) — optional baseline OWL via
+--semantic-baseline or config key semantic_baseline. Diffs named classes
+and object properties by local name. Gap entities with rdfs:comment are
+listed in the report and injected into phase-1/2 prompts; gap properties
+missing from relation_semantics are soft-filled from that comment so the
+LLM does not invent a meaning. Properties still lacking a comment fail
+strict mode as before.
+
+PATH order grounding (lib/path_order.py) — config path_file points at the
+module PATH JSON (steps list). recommendedBefore cannot be judged without
+it (fail-loud). Phase 2 injects a local PATH excerpt for the flagged pair.
+taughtIn and revisitedIn are evidence-external (gated out of the LLM
+unless lecture text is supplied).
+
+Adversarial eval (tests/test_adversarial_semantic.py) — deterministic
+checks for gating, PATH fail-loud/excerpts, skill_graph wiring in prompts,
+drift-without-comment, plus a catalog of live-LLM expectations (§6).
+
 
 VIEWING RESULTS
 -----------------

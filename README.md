@@ -21,13 +21,21 @@ python3.11 validate.py path/to/onto.owl
 # CLI — with the semantic judge (local Ollama, needs the model pulled)
 python3.11 validate.py path/to/onto.owl --semantic --semantic-model gemma4:26b
 
+# CLI — T-Box drift vs a baseline; gap class/relation comments feed the judge
+python3.11 validate.py path/to/onto.owl --semantic \
+    --semantic-baseline examples/comp101_oop.owl
+
 # CLI — semantic judge via hosted NVIDIA NIM instead of local Ollama
 export NVIDIA_API_KEY="nvapi-..."   # never hardcode this — env var only
 python3.11 validate.py path/to/onto.owl --semantic --semantic-provider nvidia_nim \
     --semantic-model mistralai/mistral-medium-3.5-128b
 
-# Web UI — upload a file, browse dashboard / graph / source views
-cd webapp && python3.11 app.py
+# Web UI — drag-drop validate / compare (FastAPI, primary)
+python -m web.app
+# open http://127.0.0.1:8765
+
+# Legacy Flask UI
+cd webapp && python app.py
 # open http://127.0.0.1:5000
 ```
 
@@ -47,6 +55,7 @@ gitignored — these are runtime artifacts, not source).
 | 6. SPARQL competency Qs | config-driven, only runs if `configs/*.json` matches the ontology's namespace | `lib/sparql_cq.py` |
 | 7. Skill graph | DAG + concept-link checks, config-driven | `lib/skill_graph.py` |
 | 8. Semantic judge | **opt-in** (`--semantic`), two-phase LLM review of whether each edge is actually true | `lib/llm_judge.py` |
+| T-Box drift | optional (`--semantic-baseline` or config `semantic_baseline`) — gap classes/properties vs a baseline OWL, with comments fed into the judge | `lib/ontology_drift.py` |
 
 Layers 1–7 run in seconds. Layer 8 is slow (LLM calls) and always opt-in.
 

@@ -220,6 +220,11 @@ def _render_one(result: dict, run_id: str | None = None, decisions: dict | None 
         sgbody += f"<p>{len(sg['skills'])} skills total, {n_root} root(s).</p>"
         parts.append(_section("Skill Graph", sgbody))
 
+    # Ontology T-Box drift vs baseline
+    drift = result.get("ontology_drift") or (result.get("semantic") or {}).get("ontology_drift")
+    if drift is not None:
+        parts.append(_section("Ontology T-Box Drift (vs baseline)", _render_ontology_drift(drift)))
+
     # Semantic judge (LLM, two-phase)
     semantic = result.get("semantic")
     if semantic is not None:
@@ -228,6 +233,60 @@ def _render_one(result: dict, run_id: str | None = None, decisions: dict | None 
 
     parts.append("</div>")
     return "".join(parts)
+
+
+def _render_ontology_drift(drift: dict) -> str:
+    if not drift.get("ok"):
+        return f"<p class='warn'>Drift not computed: {escape(drift.get('error') or 'unknown error')}</p>"
+    s = drift.get("summary") or {}
+    baseline = drift.get("baseline_path") or "(baseline)"
+    cards = "".join([
+        _card("Classes +", s.get("classes_added", 0),
+              "var(--warn)" if s.get("classes_added") else "var(--ok)"),
+        _card("Classes −", s.get("classes_removed", 0),
+              "var(--warn)" if s.get("classes_removed") else "var(--ok)"),
+        _card("Properties +", s.get("properties_added", 0),
+              "var(--warn)" if s.get("properties_added") else "var(--ok)"),
+        _card("Properties −", s.get("properties_removed", 0),
+              "var(--warn)" if s.get("properties_removed") else "var(--ok)"),
+    ])
+    body = (
+        f'<div class="cards">{cards}</div>'
+        f"<p>Compared candidate T-Box to baseline <code>{escape(baseline)}</code> "
+        f"by local name. Gap classes/properties with <code>rdfs:comment</code> are "
+        f"fed into the semantic judge so it does not invent meanings.</p>"
+    )
+
+    def _list_entities(title: str, items: list, kind: str) -> str:
+        if not items:
+            return ""
+        rows = []
+        for e in items:
+            comment = escape(e.get("comment") or "(no rdfs:comment)")
+            if kind == "property":
+                shape = (
+                    f" domain=[{escape(', '.join(e.get('domain') or []))}]"
+                    f" range=[{escape(', '.join(e.get('range') or []))}]"
+                )
+            else:
+                parents = e.get("subclass_of") or []
+                shape = f" ⊑ {escape(', '.join(parents))}" if parents else ""
+            rows.append(
+                f"<li><code>{escape(e['id'])}</code>{shape}: {comment}</li>"
+            )
+        return f"<h3>{escape(title)} ({len(items)})</h3><ul>{''.join(rows)}</ul>"
+
+    body += _list_entities("Classes only in candidate", drift.get("classes_added") or [], "class")
+    body += _list_entities("Object properties only in candidate",
+                           drift.get("properties_added") or [], "property")
+    body += _list_entities("Classes only in baseline", drift.get("classes_removed") or [], "class")
+    body += _list_entities("Object properties only in baseline",
+                           drift.get("properties_removed") or [], "property")
+    if not any(drift.get(k) for k in (
+        "classes_added", "classes_removed", "properties_added", "properties_removed"
+    )):
+        body += "<p class='ok'>No T-Box vocabulary drift.</p>"
+    return body
 
 
 def _render_review_controls(run_id: str, idx: int, status: str | None) -> str:
@@ -332,10 +391,22 @@ def _render_semantic(semantic: dict, run_id: str | None = None, decisions: dict 
             if run_id:
                 status = decisions.get(str(i))
                 review_line = _render_review_controls(run_id, i, status)
+            trunc_note = ""
+            if issue.get("context_truncated"):
+                ct = issue.get("context_truncation") or {}
+                trunc_note = (
+                    f'<p class="warn"><b>Context truncated</b> for this flag '
+                    f'(subject neighborhood {ct.get("subject_neighborhood_shown")}/'
+                    f'{ct.get("subject_neighborhood_total")}; '
+                    f'object {ct.get("object_neighborhood_shown")}/'
+                    f'{ct.get("object_neighborhood_total")}). '
+                    f'Double-check before accepting a fix.</p>'
+                )
             body += (
                 f'<div class="issue-box" id="semantic-issue-{i}">'
                 f'<h3>{escape(issue["subject"])} <code>--{escape(issue["predicate"])}--&gt;</code> {escape(issue["object"])}</h3>'
                 f'<p><b>{escape(issue.get("issue_summary",""))}</b></p>'
+                f'{trunc_note}'
                 f'<p><b>Evidence:</b> {escape(issue.get("evidence",""))}</p>'
                 f'<p><b>Reasoning:</b> {escape(issue.get("phase2_reasoning",""))}</p>'
                 f'{fix_line}'

@@ -2,7 +2,12 @@ rdflib>=7.0
 owlready2>=0.46
 requests>=2.31
 flask>=3.0
+fastapi>=0.110
+uvicorn>=0.27
+python-multipart>=0.0.9
 # HermiT (via owlready2) needs a JVM on PATH. OOPS! needs network unless --no-oops.
 # Semantic judge (--semantic) needs either a local Ollama server, or
 # NVIDIA_API_KEY set in the environment for the hosted NVIDIA NIM backend.
-# Web UI: cd webapp && python3.11 app.py  ->  http://127.0.0.1:5000
+# Primary UI (drag-drop + compare + semantic):
+#   python -m web.app  →  http://127.0.0.1:8765
+# Legacy Flask UI: cd webapp && python app.py  →  http://127.0.0.1:5000

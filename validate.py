@@ -32,6 +32,7 @@ Usage:
   python3.11 validate.py onto.owl --semantic --semantic-model gemma4:26b
   python3.11 validate.py onto.owl --semantic --semantic-provider nvidia_nim \\
       --semantic-model mistralai/mistral-medium-3.5-128b       # hosted NVIDIA NIM (needs NVIDIA_API_KEY env var)
+  python3.11 validate.py onto.owl --semantic-baseline examples/comp101_oop.owl  # T-Box drift vs baseline (also feeds gap glosses into --semantic)
 """
 
 import argparse
@@ -44,6 +45,7 @@ from lib.graph_utils import detect_namespace, load_graph
 from lib.llm_judge import run_semantic_judge
 from lib.metrics import compute_ontoqa_metrics
 from lib.oops_client import call_oops_api
+from lib.ontology_drift import prepare_config_with_baseline
 from lib.reasoner import check_consistency
 from lib.report import summarize, write_html, write_json
 from lib.skill_graph import check_skill_graph
@@ -179,7 +181,8 @@ def validate_fast(path: Path, config_override: dict | None, use_oops: bool,
 
 def run_semantic_only(path: Path, config_override: dict | None,
                        semantic_model: str = "gemma4:26b",
-                       semantic_provider: str = "ollama") -> dict:
+                       semantic_provider: str = "ollama",
+                       semantic_baseline: str | Path | None = None) -> dict:
     """Just the semantic judge, re-parsing the graph fresh. Kept separate
     from validate_fast so a caller can run it in a background thread well
     after the fast result was already shown -- rdflib Graph reads aren't
@@ -191,13 +194,21 @@ def run_semantic_only(path: Path, config_override: dict | None,
                 "phase1_total_claims": 0, "phase1_flagged": 0, "phase2_resolved": [], "issues": []}
     ns_uri = (config_override or {}).get("namespace") or detect_namespace(g)
     config = config_override or find_config_for_namespace(ns_uri) or {}
-    return run_semantic_judge(g, config, provider_type=semantic_provider, model=semantic_model, ns_uri=ns_uri)
+    baseline = semantic_baseline or config.get("semantic_baseline")
+    return run_semantic_judge(
+        g, config,
+        provider_type=semantic_provider,
+        model=semantic_model,
+        ns_uri=ns_uri,
+        baseline_path=baseline,
+    )
 
 
 def validate_one(path: Path, config_override: dict | None, use_oops: bool,
                   use_reasoner: bool, oops_pitfalls: str,
                   use_semantic: bool = False, semantic_model: str = "gemma4:26b",
-                  semantic_provider: str = "ollama") -> dict:
+                  semantic_provider: str = "ollama",
+                  semantic_baseline: str | Path | None = None) -> dict:
     """CLI entry point: fast checks then (optionally) semantic, synchronously
     in one call -- same blocking behaviour as before this was split. The
     webapp instead calls validate_fast() + run_semantic_only() separately so
@@ -206,9 +217,31 @@ def validate_one(path: Path, config_override: dict | None, use_oops: bool,
     if result.get("parse_error"):
         return result
 
+    # Always attach T-Box drift when a baseline is available (even without --semantic)
+    g, _ = load_graph(path)
+    if g is not None:
+        ns_uri = (config_override or {}).get("namespace") or detect_namespace(g)
+        config = config_override or find_config_for_namespace(ns_uri) or {}
+        baseline = semantic_baseline or config.get("semantic_baseline")
+        if baseline:
+            _, drift = prepare_config_with_baseline(g, config, baseline, toolkit_root=ROOT)
+            result["ontology_drift"] = drift
+            if drift and drift.get("ok"):
+                s = drift.get("summary") or {}
+                print(
+                    f"  Ontology drift vs {Path(drift.get('baseline_path', baseline)).name}: "
+                    f"+{s.get('classes_added', 0)} classes / +{s.get('properties_added', 0)} props, "
+                    f"-{s.get('classes_removed', 0)} classes / -{s.get('properties_removed', 0)} props"
+                )
+            elif drift and drift.get("error"):
+                print(f"  Ontology drift: {drift['error']}")
+
     if use_semantic:
         print(f"  [7/7] Semantic judge (LLM, {semantic_provider})...", end=" ", flush=True)
-        semantic = run_semantic_only(path, config_override, semantic_model, semantic_provider)
+        semantic = run_semantic_only(
+            path, config_override, semantic_model, semantic_provider,
+            semantic_baseline=semantic_baseline,
+        )
         if semantic["ok"]:
             n_reviewed = len(semantic.get("reviewed_skipped", []))
             n_gated = semantic.get("gated_count", 0)
@@ -219,14 +252,18 @@ def validate_one(path: Path, config_override: dict | None, use_oops: bool,
                   f"{len(semantic.get('phase2_unverifiable', []))} unverifiable after re-check"
                   f"{reviewed_note}{gated_note}")
         else:
-            print(f"unavailable ({semantic['error']})")
+            print(f"FAILED: {semantic.get('error')}")
+        result["semantic"] = semantic
+        if semantic.get("ontology_drift") is not None:
+            result["ontology_drift"] = semantic["ontology_drift"]
     else:
-        semantic = {"ok": False, "error": "skipped (pass --semantic to enable)", "model": None,
-                    "provider": None, "phase1_total_claims": 0, "phase1_flagged": 0,
-                    "phase2_resolved": [], "issues": []}
+        result["semantic"] = {
+            "ok": False, "error": "skipped (pass --semantic to enable)", "model": None,
+            "provider": None, "phase1_total_claims": 0, "phase1_flagged": 0,
+            "phase2_resolved": [], "issues": [],
+        }
         print("  [7/7] Semantic judge... skipped")
 
-    result["semantic"] = semantic
     result["summary"] = summarize(result)
     return result
 
@@ -249,6 +286,10 @@ def main():
     parser.add_argument("--semantic-model", default="gemma4:26b",
                          help="Model tag/id — an Ollama tag (e.g. gemma4:26b) or a NIM model id "
                               "(e.g. mistralai/mistral-medium-3.5-128b)")
+    parser.add_argument("--semantic-baseline", type=Path, default=None,
+                         help="Baseline OWL/TTL for T-Box drift vs the file under review. "
+                              "Gap classes/properties (with rdfs:comment) feed the semantic judge "
+                              "so it does not invent meanings. Overrides config semantic_baseline.")
     parser.add_argument("--out", type=Path, default=RESULTS_DIR, help="Output directory for reports")
     args = parser.parse_args()
 
@@ -262,7 +303,8 @@ def main():
     results = [
         validate_one(t, config_override, not args.no_oops, not args.no_reasoner, args.oops_pitfalls,
                      use_semantic=args.semantic, semantic_model=args.semantic_model,
-                     semantic_provider=args.semantic_provider)
+                     semantic_provider=args.semantic_provider,
+                     semantic_baseline=args.semantic_baseline)
         for t in targets
     ]
 
