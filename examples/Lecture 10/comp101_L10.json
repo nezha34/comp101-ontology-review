@@ -1,0 +1,208 @@
+{
+  "lecture": 10,
+  "author": "Asmae",
+  "source_owl": "comp101_L10.owl",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/oop#",
+  "title": "Object-Oriented Programming (Python)",
+  "extends": "COMP101_ONTOLOGY.json (static curriculum ontology) — cross-references into it (e.g. C035 Encapsulation, LC008 class definition, E007 AttributeError, F019 isinstance()) are foreign keys by ID, not duplicated locally.",
+
+  "entity_types": [
+    {
+      "name": "Lecture",
+      "status": "old",
+      "definition": "A course unit defined by the curriculum with a sequence number, title, and learning outcomes. Organizational — groups content and defines ordering, doesn't itself teach anything.",
+      "parent_class": null
+    },
+    {
+      "name": "Concept",
+      "status": "old",
+      "definition": "A pure abstract idea or theoretical principle with no runtime existence, syntax, or physical form (e.g. Inheritance, Encapsulation, Polymorphism).",
+      "parent_class": null
+    },
+    {
+      "name": "DataType",
+      "status": "old",
+      "definition": "A Python-level classification of values determining valid operations and storage — what type() would return.",
+      "parent_class": null
+    },
+    {
+      "name": "Skill",
+      "status": "old",
+      "definition": "A transferable cognitive operation a student can perform across multiple unseen problems, defined by a verb phrase (e.g. \"Apply polymorphism\").",
+      "parent_class": null
+    },
+    {
+      "name": "Method",
+      "status": "old",
+      "definition": "A callable defined on a specific Python type, accessed via dot notation (e.g. __str__, __init__).",
+      "parent_class": null
+    },
+    {
+      "name": "BuiltInFunction",
+      "status": "old",
+      "definition": "A Python callable pre-defined in the built-in/stdlib namespace, invoked as a free function (e.g. isinstance(), super(), hasattr()).",
+      "parent_class": null
+    },
+    {
+      "name": "LanguageConstruct",
+      "status": "old",
+      "definition": "A syntactic keyword, statement, or structural element of Python grammar itself (e.g. class, def, return).",
+      "parent_class": null
+    },
+    {
+      "name": "ErrorType",
+      "status": "old",
+      "definition": "A named Python exception class that can be raised when an operation fails (e.g. AttributeError, TypeError).",
+      "parent_class": null
+    },
+    {
+      "name": "Encoding",
+      "status": "old",
+      "definition": "A defined mapping between raw byte sequences and human-readable symbols or numeric values.",
+      "parent_class": null
+    },
+    {
+      "name": "OOPMechanism",
+      "status": "new",
+      "definition": "A concrete Python-level procedure/convention that makes OOP work at the implementation level — the how, as opposed to Concept's what (e.g. Constructor, Self Reference, Name Mangling, super() Call, Dunder Method).",
+      "parent_class": null
+    },
+    {
+      "name": "ClassMember",
+      "status": "new",
+      "definition": "A named structural element belonging to a class definition or hierarchy — a structural slot, not a behavior (e.g. Instance Attribute, Class Attribute, Subclass, Superclass).",
+      "parent_class": null
+    },
+    {
+      "name": "MethodRole",
+      "status": "new",
+      "definition": "The contract a method fulfills within a class, independent of its concrete implementation (e.g. Getter Method, Abstract Method, Static Method).",
+      "parent_class": null
+    },
+    {
+      "name": "DesignAbstraction",
+      "status": "new",
+      "definition": "Language-agnostic structural/architectural design vocabulary above the level of any individual class or method (e.g. Abstract Class, Interface, Mixin, Design Pattern).",
+      "parent_class": null
+    },
+    {
+      "name": "PythonInternals",
+      "status": "new",
+      "definition": "A CPython interpreter-level mechanism exposing how classes/objects are built and accessed (e.g. Decorator, Metaclass, __slots__, __mro__).",
+      "parent_class": null
+    }
+  ],
+
+  "relations": [
+    {
+      "name": "taughtIn",
+      "official_name": "TAUGHT_IN",
+      "status": "old",
+      "definition": "Content belongs to / is first introduced in a lecture.",
+      "domain": "Thing",
+      "range": "Lecture",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "teaches" }
+    },
+    {
+      "name": "dependsOn",
+      "official_name": "DEPENDS_ON",
+      "status": "old",
+      "definition": "Subject cannot be meaningfully learned until the object is already understood. Prerequisite ordering between concepts/skills.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": true, "functional": false, "inverse_of": "isRequiredBy" }
+    },
+    {
+      "name": "contrastsWith",
+      "official_name": "CONTRASTS_WITH",
+      "status": "old",
+      "definition": "Subject and object are alternatives/opposites or commonly confused peers at the same level of abstraction.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": true, "transitive": false, "functional": false, "inverse_of": null }
+    },
+    {
+      "name": "usesConcept",
+      "official_name": "USES_CONCEPT",
+      "status": "old",
+      "definition": "A non-Concept entity actively applies/draws on a Concept to do its work.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isUsedBy" }
+    },
+    {
+      "name": "producesType",
+      "official_name": "PRODUCES_TYPE",
+      "status": "old",
+      "definition": "A Method/BuiltInFunction actually yields a result of the given DataType.",
+      "domain": "Method",
+      "range": "DataType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isProducedBy" }
+    },
+    {
+      "name": "throwsError",
+      "official_name": "THROWS_ERROR",
+      "status": "old",
+      "definition": "Performing the subject operation can actually raise the named ErrorType under realistic conditions.",
+      "domain": "Thing",
+      "range": "ErrorType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isThrownBy" }
+    },
+    {
+      "name": "exampleOf",
+      "official_name": "EXAMPLE_OF",
+      "status": "old",
+      "definition": "A specific code pattern/instance concretely demonstrates a Concept or Algorithm.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "hasExample" }
+    },
+    {
+      "name": "implementedBy",
+      "official_name": "IMPLEMENTED_BY",
+      "status": "old",
+      "definition": "A Concept is made concrete in Python code by a LanguageConstruct/Method/OOPMechanism/PythonInternals.",
+      "domain": "Concept",
+      "range": "ImplementorType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "implements" }
+    },
+    {
+      "name": "bestPractice",
+      "official_name": "BEST_PRACTICE",
+      "status": "old",
+      "definition": "A recommended approach or convention associated with this entity. Datatype property, not a node.",
+      "domain": "Thing",
+      "range": "xsd:string",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": null }
+    },
+    {
+      "name": "enables",
+      "official_name": null,
+      "status": "new",
+      "definition": "Subject is a mechanism/language feature that makes the object concept/goal achievable — means-to-end, not prerequisite (contrast with dependsOn).",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "enabledBy", "asymmetric": true }
+    },
+    {
+      "name": "partOf",
+      "official_name": null,
+      "status": "new",
+      "definition": "Subject is a genuine conceptual/structural sub-component of the object. Used here for Method/MethodRole -> containing Concept membership, in place of the official schema's narrower method_of.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": true, "functional": false, "inverse_of": "hasPart" }
+    }
+  ],
+
+  "official_relations_not_used_here": [
+    "PREREQUISITE_OF (no cross-lecture ordering — this module has only L10)",
+    "OPERATES_ON_TYPE (no Operator individuals in this module)",
+    "ACCEPTS_TYPE (no Operator/BuiltInFunction input-type edges asserted)",
+    "METHOD_OF (partOf is used instead — see notes)",
+    "TIME_COMPLEXITY (no Algorithm individuals in this module)",
+    "SOLVES_PROBLEM (no Algorithm individuals in this module)"
+  ],
+
+  "notes": "ImplementorType (declared as an owl:Class, unionOf LanguageConstruct/Method/OOPMechanism/PythonInternals) is a helper union used only as the range of implements / domain of implementedBy — not an instantiated entity type, no individuals are typed directly as ImplementorType. Datatype annotation properties definition, courseId, cognitiveType and commonCauses are present on most individuals but aren't modeled as relations here since they're plumbing (labels/IDs), not the 15 semantic relations. isRequiredBy, isUsedBy, isProducedBy, isThrownBy and hasPart are declared purely as the OWL inverses of dependsOn/usesConcept/producesType/throwsError/partOf for reasoner symmetry, not separate semantic relations. Operator and Algorithm (2 of the official 11 entity types) have no individuals in this lecture's module — they live only in the static curriculum ontology this file extends."
+}
