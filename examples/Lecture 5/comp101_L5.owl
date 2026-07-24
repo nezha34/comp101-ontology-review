@@ -1,0 +1,1447 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="http://gnosis.local/ontologies/comp101#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_modify_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Modify elements in place</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#mutability"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_remove_elements"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_access_element">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Access an element by index</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#zero_based_indexing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_slice_list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#str">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>str</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>A string keeps its characters in order and cannot be changed once created — which other type behaves the same way? Does items[1:3] on a string work the same as on a list?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:str</canonicalId>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#int">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>int</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_index">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.index()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What happens if you call list.index(x) when x is not in the list?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Return the index of the first matching value; raises ValueError if missing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_search"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#int"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_reverse"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#concatenation_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>+ (concatenation operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#concatenation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#sort_vs_sorted">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>sort() vs sorted()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What does list.sort() return? What about sorted(list)?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#mutability"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_copy_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Copy a list correctly</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#aliasing"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#shallow_copy"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_create_tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>tuple</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How is a tuple different from a list once it is created?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</allowsDuplicates>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ordered immutable sequence. The isHashable trait is an intro approximation: a tuple is usable as a dict key or set member only when all of its elements are hashable (e.g. a tuple containing a list is not).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#type_error"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_clear">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Clear (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_clear</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#iterable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Iterable</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What kinds of things can you put after 'for x in ...'?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:iterable</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An object that can yield its elements one at a time (usable in for-loops).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_copy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Copy (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_copy</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#hasMethod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>hasMethod</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#methodOf"/>
+    <rdfs:comment>Inverse of methodOf: a type or class has this method.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isOrdered">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isOrdered</rdfs:label>
+    <rdfs:comment>Whether the type preserves a positional order of elements.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_index">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>tuple.index()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_search"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#int"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N5e3122d185614a1384ba63109d1c0957">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdf:rest rdf:nodeID="N1ca1453e9c5540769b42445d5200f92d"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#element">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Element</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>When several values sit together as a group, what do we call one of those values?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:element</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A single item stored inside a collection.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_insert">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.insert()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insert an element at a given index (in-place).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_insert"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_extend"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>list</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How could you store several values under a single name?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</allowsDuplicates>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutable ordered sequence that allows duplicates and integer indexing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_comprehension"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#requiredBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>requiredBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#requiresConcept"/>
+    <rdfs:comment>Inverse of requiresConcept: this concept is required by the given skill.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#throwsError">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>throwsError</rdfs:label>
+    <rdfs:comment>An operation/construct can raise this error type. Prefer Method, BuiltInFunction, or LanguageConstruct carriers — not bare DataType nodes.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W2_python">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 2 — Intro to Python (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W2</canonicalId>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#indexing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Indexing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you get just one item out of a list?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Accessing an element by its integer position.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#mutability"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#allowsDuplicates">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>allowsDuplicates</rdfs:label>
+    <rdfs:comment>Whether the type may contain repeated elements. For dict this means duplicate *keys* are not retained (last assignment wins); values may still repeat.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dependsOn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>dependsOn</rdfs:label>
+    <rdfs:comment>Strict prerequisite: the source should be learned after the target. Transitive, so prerequisite chains close automatically (adopted from the OOP T-Box).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#mutability">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Mutability</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>After you change a list inside a function, is the original list changed too?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:mutability</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Whether a value can be changed in place after creation; lists are mutable, tuples and strings are not.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <bestPractice rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Teach mutability as theory before practice: establish that some values can change in place (lists) and others cannot (tuples, strings), then introduce append/pop so students see that theory in concrete mutations.</bestPractice>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_append"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb12ea129c94a4be5854618808a4a29ef">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdf:rest rdf:nodeID="N02e76637d58046d5a79572fa430ec924"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#value_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>ValueError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised when a value has the right type but an inappropriate content.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calling list.remove(x) or list.index(x) for a value that is not present.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_literal_syntax">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>() tuple literal</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_append">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.append()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Add one element to the end of a list (in-place).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_insert"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list_insert"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isProducedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>isProducedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#producesType"/>
+    <rdfs:comment>Inverse of producesType: this data type is produced by the given method or built-in function.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#precedes">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>precedes</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#recommendedBefore"/>
+    <rdfs:comment>Inverse of recommendedBefore: the source normally comes later in the teaching sequence.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#revisits">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>revisits</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#revisitedIn"/>
+    <rdfs:comment>Inverse of revisitedIn: a lecture reinforces this entity from an earlier week.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_slice_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Slice a list</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#slicing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_traverse_list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#bool">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>bool</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Pattern</rdfs:label>
+    <rdfs:comment>A common loop or problem-solving pattern (e.g. Accumulator).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#length">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Length (len)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you find how many items a collection holds?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:length</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#collection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_constructor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>tuple()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#shallow_copy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Shallow Copy</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>If you copy a list of lists, and change an inner list, does the copy change too?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A new outer container that still shares inner objects with the original.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">analyze</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#aliasing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_copy"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#raisedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>raisedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#throwsError"/>
+    <rdfs:comment>Inverse of throwsError: this error is raised by the given entity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#enumerate_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>enumerate()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How can you loop over both index and value at the same time?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:enumerate</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yields (index, value) pairs when looping over an iterable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_count">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.count()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Count how many times a value appears in a list.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_search"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#int"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_index"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#subscript_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>[] subscript operator</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#index_error"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#type_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#implementsConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>implementsConcept</rdfs:label>
+    <rdfs:comment>Syntax-level coding of a concept (LanguageConstruct). BuiltInFunctions use usesConcept instead — do not attach implementsConcept to builtins.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#negative_indexing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Negative Indexing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What do you think list[-1] gives you?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Counting from the end: x[-1] is the last element.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#index_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#ConceptCarrier">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>ConceptCarrier</rdfs:label>
+    <rdfs:comment>Python surface that can implement or use curriculum concepts (syntax, methods, builtins). Groups LanguageConstruct with invokables for T-box connectivity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_create">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Create (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Before you can use a collection, how do you bring one into existence?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_create</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abstract operation: construct a new collection value.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#deep_copy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Deep Copy</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>How could you copy a nested list so that nothing is shared with the original?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Recursively copy nested structures so nothing is shared with the original.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">analyze</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#shallow_copy"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#nested_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#repetition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Repetition</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What does [0] * 3 give you?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:repetition</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#str_join">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>str.join()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How do you glue a list of strings back into one string?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:str_join</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Join an iterable of strings into one string with a separator.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#concatenation"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Lecture">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Lecture</rdfs:label>
+    <rdfs:comment>A week or unit in the course schedule.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W12_systems">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 12 — Computer Systems (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W12</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W8_sorting"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#methodOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>methodOf</rdfs:label>
+    <rdfs:comment>A method belongs to a type or class. Range widened to owl:Thing to also cover user-defined classes in the OOP module.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_pop">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.pop()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>list.pop() and list.append() both change the list — but what does each one give you back?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove and return an element by index (default: last).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_clear"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#index_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_remove_elements">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Remove elements</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_find_and_count"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#len_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>len()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Which single built-in gives you the size of a list, a string, a dict, or a set?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Built-in that returns the number of items in a collection.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#length"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#int"/>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_clear">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.clear()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove all elements from a list (in-place).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_clear"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_remove">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Remove (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How is removing a value different from looking it up?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_remove</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abstract operation: delete an element from a collection.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#str_split">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>str.split()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How do you turn a sentence into a list of words?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:str_split</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Split a string into a list of substrings by a separator.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str_join"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#cognitiveType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>cognitiveType</rdfs:label>
+    <rdfs:comment>Bloom cognitive level. Enum: cognitive_type (remember | understand | apply | analyze | evaluate | create); short aliases rem/und/app/ana/eva/cre accepted in CI. Enum cognitive_type: remember | understand | apply | analyze | evaluate | create.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#difficulty">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>difficulty</rdfs:label>
+    <rdfs:comment>Author pacing hint. Enum: difficulty (low | medium | high). Enum difficulty: low | medium | high.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#range_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>range()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you write a loop that runs exactly n times without building a list of numbers?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:range</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Produces an immutable sequence of integers; common in for i in range(len(lst)).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_literal_syntax">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>[] list literal</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_creation"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Invokable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>Invokable</rdfs:label>
+    <rdfs:comment>Callable Python API: type-bound methods and global built-in functions.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W5_lists">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 5 — Data Structures: Lists and Tuples</rdfs:label>
+    <canonicalId>course:W5</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Week 5 unit: lists, tuples, and sequence operations.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W4_functions"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_extend">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.extend()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Append all elements from another iterable (in-place).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_combine"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_remove"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#revisitedIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>revisitedIn</rdfs:label>
+    <rdfs:comment>Week where a concept introduced earlier is reinforced in a new context — not first taught here.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#enables">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>enables</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#dependsOn"/>
+    <rdfs:comment>Inverse of dependsOn: the source is a prerequisite that enables the target.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#usesConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>usesConcept</rdfs:label>
+    <rdfs:comment>A method, construct, or built-in function relies on / carries out a concept or abstract operation (create, access, remove, ...). Shared name with the OOP module (replaces the earlier performsOperation).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_update">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Update (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Once a collection exists, how do you change one of the values it already holds?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_update</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abstract operation: change an existing element or mapping entry in place.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#nested_lists">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Nested Lists</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>If a list holds other lists, how would you reach an item inside the inner list?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Lists whose elements are themselves lists; need multiple indices.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#container">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Container</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What does it mean to ask whether something is 'in' a collection?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:container</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A collection that supports membership tests (x in c).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#collection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#counter_pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Pattern"/>
+    <rdfs:label>Counter Pattern</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you count how many items match a condition?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#commonCauses">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>commonCauses</rdfs:label>
+    <rdfs:comment>Typical student mistakes that trigger this error, to seed remediation (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#nested_tuples">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Nested Tuples</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>If a tuple holds other tuples, how would you reach an inner value?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#producesType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>producesType</rdfs:label>
+    <rdfs:comment>The data type a method or built-in function returns (adopted from the OOP module; richer than the returnsNone boolean, which is kept as a shortcut).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isHashable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isHashable</rdfs:label>
+    <rdfs:comment>Whether instances can be used as dict keys or set members. For tuple, this intro-level facet is true only when every element is itself hashable.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#definition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>definition</rdfs:label>
+    <rdfs:comment>Short plain-language definition of the entity (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_copy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.copy()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Create a shallow copy of a list (new outer list, shared inners).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_copy"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#ErrorType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>ErrorType</rdfs:label>
+    <rdfs:comment>An exception students may encounter (e.g. IndexError).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_unpacking">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Tuple Unpacking</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How could you assign a, b = (1, 2) in a single line?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Assigning tuple (or sequence) elements to multiple names in one statement; lengths must match.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#tuple_packing"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_traverse_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Traverse a list</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_modify_list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#runtime_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>RuntimeError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised for errors that do not fall into other categories — often “collection changed size during iteration”.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Changing a dict or set’s size while iterating over it.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#aliasing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Aliasing (references)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>If b = a and you append to b, what happens to a?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Two names referring to the same object in memory; mutation through one name affects the other.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#mutability"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_sort"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isUsedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>isUsedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#usesConcept"/>
+    <rdfs:comment>Inverse of usesConcept: this concept/operation is used by the given method, construct, or built-in function.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_search">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Search/Count (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Besides looping yourself, what questions can you ask about whether a value is present?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_search</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abstract operation: find whether / where a value occurs in a collection.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#implementedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>implementedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#implementsConcept"/>
+    <rdfs:comment>Inverse of implementsConcept: a concept is coded by this language construct, method, or built-in.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isMutable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isMutable</rdfs:label>
+    <rdfs:comment>Whether the type can be changed in place after creation.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_comprehension">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>List Comprehension</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Can you build this new list in one line instead of a for loop?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A concise syntax that always builds a new list; it does not mutate an existing list.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#for_loop">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>for loop</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Syntax that iterates over an iterable, binding each element in turn.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#collection">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Collection</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>If you need several values to travel together as one group, what idea is that — before we care about order or labels?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:collection</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">A grouping of elements treated as one whole (later specialized into sequences, sets, mappings).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iterable"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#element"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#recommendedBefore">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>recommendedBefore</rdfs:label>
+    <rdfs:comment>Soft order among sibling peers when PATH / dependsOn do not already decide which to introduce first (a teaching dilemma). NOT the tutor spine — that total order is only in comp101_path_w5_w6.json (/path/next). Do not sprinkle on every consecutive PATH pair; skip when traversal order is already determined. Distinct from dependsOn (strict readiness) and confusedWith (student mix-ups).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3d7bc964149343eba09164d6966cb653">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_creation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>List Creation</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What are the different ways you could make a new list?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Ways to build a new list (literals, list(), comprehensions).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#membership_test"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#in_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>in (membership operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#membership_test"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_combine">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Combine/Merge (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_combine</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Concept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Concept</rdfs:label>
+    <rdfs:comment>An idea to understand, not a keyword (e.g. Indexing).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#teaches">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>teaches</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#taughtIn"/>
+    <rdfs:comment>Inverse of taughtIn: a lecture first introduces this entity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_constructor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>list()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_create"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_unpack_tuple">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Unpack tuples / return multiple values</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#tuple_unpacking"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W4_functions">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 4 — Functions (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W4</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Skill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Skill</rdfs:label>
+    <rdfs:comment>A learning outcome the student should achieve.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_find_and_count">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Find and count elements</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_search"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_comprehend_list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>Method</rdfs:label>
+    <rdfs:comment>A function bound to a data type (e.g. list.append()).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#bestPractice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>bestPractice</rdfs:label>
+    <rdfs:comment>A recommended practice or idiom the tutor can reinforce (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#zero_based_indexing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Zero-based Indexing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>A list has 5 items — what is the index of the first one? And the last one?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The first element is at index 0; the last is at len(x)-1.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#negative_indexing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#negative_indexing"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isIndexed">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isIndexed</rdfs:label>
+    <rdfs:comment>Whether elements are accessed by integer position.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#confusedWith">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>confusedWith</rdfs:label>
+    <rdfs:comment>Two entities students often confuse and should explicitly distinguish (e.g. list vs tuple, set.discard vs set.remove). Symmetric. COMP101-specific name: OOP keeps contrastsWith for opposites/alternatives/confused concepts (Concept↔Concept).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#concatenation">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Concatenation</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you join two lists into one with +?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:concatenation</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#sequence"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#sequence">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Sequence</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>If a collection keeps its items in order, how would you get the third one?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:sequence</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">An ordered collection whose elements are addressed by position.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#collection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_remove">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.remove()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove the first matching value (in-place); raises if missing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#list_pop"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_pop"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#value_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#slicing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Slicing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What does items[1:3] include on a list — and does it include index 3? Does the same slice work on a string?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Taking a contiguous subsequence by start:stop indices (e.g. items[1:3] on a list). The same syntax works on strings; introduce on lists in W5 and contrast with str.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#indexing"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#zero_based_indexing"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3f25dbfe852e4dc2b62966ec2cb184aa">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdf:rest rdf:nodeID="N710bd795770942cd919282aa4bcd7ed4"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#requiresConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>requiresConcept</rdfs:label>
+    <rdfs:comment>A skill requires understanding of a concept.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_sort">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.sort()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>x = mylist.sort() — what is x afterwards, and why?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Sort a list in place; returns None (contrast sorted()).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_update"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#sorted_function"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#repetition_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>* (repetition operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#repetition"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#iteration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Iteration</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you do something to every item in a list?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:iteration</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Repeatedly processing each element of an iterable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#type_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>TypeError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised when an operation is applied to an object of inappropriate type.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Wrong operation for the type: indexing a set, assigning to a tuple element, or using an unhashable key in a dict or set.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#onPath">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>onPath</rdfs:label>
+    <rdfs:comment>True when this individual is a step on the authored W5–W6 PATH spine (comp101_path_w5_w6.json). Off-path entities remain available for skills, remediation, and on-demand tutoring.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#del_statement">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>del statement</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_remove"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_access">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Access (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Once values live in a group, how do you get just one of them back out?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_access</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Abstract operation: retrieve an element by position or key.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:versionInfo>2025.36</owl:versionInfo>
+    <rdfs:label>COMP101 course ontology</rdfs:label>
+    <rdfs:comment>Static curriculum ontology for the COMP101 intro programming course: lectures, concepts, Python data types, methods, errors, and skills. Cross-cutting concepts are tagged shared for merge with other course modules. Student misconceptions, symptoms, remediations, and evidence are modelled separately in the dynamic ontology (http://gnosis.local/ontologies/comp101-dynamic), which imports this one and references these ids. Pedagogy metadata (definition, cognitiveType, bestPractice) is populated incrementally on high-value targets; empty instances inherit schema from the OOP module for future merge. Engineering notes: AllDisjointClasses covers asserted leaf types (Lecture, Concept, DataType, ErrorType, LanguageConstruct, Method, BuiltInFunction, Skill); intermediate classes ConceptCarrier/Invokable and Pattern⊑Concept are organizational. Inverse object properties are declared for reasoners — A-Box asserts only the forward direction (taughtIn, dependsOn, …); apps must query forwards or expand inverses.</rdfs:comment>
+    <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_reverse">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>list.reverse()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Reverse a list in place; returns None.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_update"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#list_sort"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#LanguageConstruct">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>LanguageConstruct</rdfs:label>
+    <rdfs:comment>Python syntax such as a for loop or the [] operator.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W8_sorting">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 8 — Sorting &amp; Searching (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W8</canonicalId>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#sorted_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>sorted()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>You need the sorted order but must keep the original list untouched — sorted() or list.sort()?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isIterable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isIterable</rdfs:label>
+    <rdfs:comment>Whether the type can be looped over.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N02e76637d58046d5a79572fa430ec924">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdf:rest rdf:nodeID="N5e3122d185614a1384ba63109d1c0957"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N710bd795770942cd919282aa4bcd7ed4">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdf:rest rdf:nodeID="Nb12ea129c94a4be5854618808a4a29ef"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_comprehend_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Build lists with comprehensions</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_comprehension"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_copy_list"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_count">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>tuple.count()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#op_search"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#int"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#taughtIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>taughtIn</rdfs:label>
+    <rdfs:comment>Week where an entity is first introduced (primary teaching). Use revisitedIn for reinforcement in a later week.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_create_list">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Create a list</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_creation"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_access_element"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#canonicalId">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>canonicalId</rdfs:label>
+    <rdfs:comment>Stable cross-module identity (e.g. core:time_complexity) that the merge tool collapses duplicate nodes onto.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#returnsNone">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>returnsNone</rdfs:label>
+    <rdfs:comment>True if the method mutates in place and evaluates to None (e.g. list.append); false if it returns a useful value (e.g. list.pop). Kept as a shortcut alongside producesType.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#index_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>IndexError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised when an index is out of range for a sequence.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Using an index equal to len(x) (off-by-one), or indexing an empty sequence.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#op_insert">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Insert/Add (operation)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:op_insert</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_create_tuple">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Create and pack tuples</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#tuple_packing"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_unpack_tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#membership_test">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Membership Test</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How can you check if a value is in a list without writing a loop?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:membership_test</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Checking whether a value occurs in a collection (in / not in).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#container"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#DataType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>DataType</rdfs:label>
+    <rdfs:comment>A Python built-in type used in code (e.g. list, dict).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#socraticQuestion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>socraticQuestion</rdfs:label>
+    <rdfs:comment>A starter Socratic probe an LLM tutor can ask about this concept.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#sharedConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>sharedConcept</rdfs:label>
+    <rdfs:comment>Marks a cross-cutting concept owned by no single module; the merge tool should dedupe these across course modules.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuple_packing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Tuple Packing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What happens when you write t = 1, 2, 3 without parentheses?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Forming a tuple from comma-separated values (parentheses optional).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W5_lists"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#tuple"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N4c434040c5a148f7b4c50451daa66670">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdf:rest rdf:nodeID="N3d7bc964149343eba09164d6966cb653"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#accumulator_pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Pattern"/>
+    <rdfs:label>Accumulator Pattern</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you add up all the numbers in a list?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#BuiltInFunction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>BuiltInFunction</rdfs:label>
+    <rdfs:comment>A global built-in function such as len() or sorted() (adopted from the shared OOP T-Box; cleaner than modelling these as LanguageConstructs).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W3_control">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 3 — Control Structures (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W3</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nf548fb3e3d24480e831cb1f2a3f45f6d">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+    <owl:members rdf:nodeID="N3f25dbfe852e4dc2b62966ec2cb184aa"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N1ca1453e9c5540769b42445d5200f92d">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdf:rest rdf:nodeID="N4c434040c5a148f7b4c50451daa66670"/>
+  </rdf:Description>
+</rdf:RDF>

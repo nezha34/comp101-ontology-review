@@ -1,0 +1,1477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+   xmlns="http://gnosis.local/ontologies/comp101#"
+   xmlns:dcterms="http://purl.org/dc/terms/"
+   xmlns:owl="http://www.w3.org/2002/07/owl#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#union_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>| (union operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_union"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#str">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>str</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>A string keeps its characters in order and cannot be changed once created — which other type behaves the same way? Does items[1:3] on a string work the same as on a list?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:str</canonicalId>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#int">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>int</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#key_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>KeyError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised when a dict key is missing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Looking up a key that does not exist; use dict.get() or check membership first.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_get"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_clear">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.clear()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_difference_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.difference()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_difference"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_symmetric_difference_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.symmetric_difference()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Method form of symmetric difference (also available via ^).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#symmetric_difference"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_operations">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Set Operations</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>You have two sets of student names — how would you find who is in both?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Family of set algebra: union, intersection, difference, symmetric difference.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#hasMethod">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>hasMethod</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#methodOf"/>
+    <rdfs:comment>Inverse of methodOf: a type or class has this method.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isOrdered">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isOrdered</rdfs:label>
+    <rdfs:comment>Whether the type preserves a positional order of elements.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_constructor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>set()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How could you turn a list with repeats into a collection of unique items? How is that different from {}?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Build a set from an iterable; empty set requires set(), not {}.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_to_set"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#deduplication"/>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#requiredBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>requiredBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#requiresConcept"/>
+    <rdfs:comment>Inverse of requiresConcept: this concept is required by the given skill.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#difference_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>- (difference operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_difference"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#throwsError">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>throwsError</rdfs:label>
+    <rdfs:comment>An operation/construct can raise this error type. Prefer Method, BuiltInFunction, or LanguageConstruct carriers — not bare DataType nodes.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W2_python">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 2 — Intro to Python (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W2</canonicalId>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_pop_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.pop()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove and return an arbitrary set element.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#key_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#allowsDuplicates">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>allowsDuplicates</rdfs:label>
+    <rdfs:comment>Whether the type may contain repeated elements. For dict this means duplicate *keys* are not retained (last assignment wins); values may still repeat.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_constructor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>dict()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Built-in dict(...) / dict() to construct a mapping.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dependsOn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>dependsOn</rdfs:label>
+    <rdfs:comment>Strict prerequisite: the source should be learned after the target. Transitive, so prerequisite chains close automatically (adopted from the OOP T-Box).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_constructor">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>frozenset()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Build a frozenset from an iterable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#key">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Key</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>In a phone book, what do you look something up by?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">The lookup handle in a mapping; must be hashable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_copy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.copy()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isProducedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>isProducedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#producesType"/>
+    <rdfs:comment>Inverse of producesType: this data type is produced by the given method or built-in function.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#precedes">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>precedes</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#recommendedBefore"/>
+    <rdfs:comment>Inverse of recommendedBefore: the source normally comes later in the teaching sequence.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#revisits">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>revisits</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#revisitedIn"/>
+    <rdfs:comment>Inverse of revisitedIn: a lecture reinforces this entity from an earlier week.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#bool">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>bool</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Pattern</rdfs:label>
+    <rdfs:comment>A common loop or problem-solving pattern (e.g. Accumulator).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_set_algebra">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Perform unions, intersections, differences</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_operations"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_union"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_intersection"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_difference"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_compare_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#raisedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>raisedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#throwsError"/>
+    <rdfs:comment>Inverse of throwsError: this error is raised by the given entity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#enumerate_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>enumerate()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How can you loop over both index and value at the same time?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:enumerate</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Yields (index, value) pairs when looping over an iterable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#for_loop"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_items">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.items()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dynamic view of a dict’s (key, value) pairs.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_setdefault"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#implementsConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>implementsConcept</rdfs:label>
+    <rdfs:comment>Syntax-level coding of a concept (LanguageConstruct). BuiltInFunctions use usesConcept instead — do not attach implementsConcept to builtins.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#list_to_set">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>List-to-Set Conversion</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>You have a list with repeated names — how could a set help you get only the unique ones?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Convert a list to a set to drop duplicates (order not preserved).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#deduplication"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_keys">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.keys()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dynamic view of a dict’s keys.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>dict</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>Does a dictionary remember the order you added keys in? (Since Python 3.7 it does — but older tutorials and other languages often treat dicts as unordered.)</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Mutable mapping from keys to values. Ordered by insertion since Python 3.7. The allowsDuplicates trait refers to keys (duplicate keys collapse); values may repeat.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#tuples_as_keys">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Tuples as Dictionary Keys</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Why can a tuple be a dictionary key when a list cannot?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Using an immutable tuple as a dictionary key because it is hashable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_immutability"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#deduplication">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Deduplication</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>You have a list with repeats — how could you keep each value only once?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:deduplication</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Removing repeated values, often via set conversion.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_setdefault">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.setdefault()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What if you want to add a key only if it doesn't already exist?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Returns the value for key if present; otherwise inserts key with default and returns default.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <bestPractice rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Use for frequency counting: d.setdefault(word, 0) before incrementing.</bestPractice>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#ConceptCarrier">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>ConceptCarrier</rdfs:label>
+    <rdfs:comment>Python surface that can implement or use curriculum concepts (syntax, methods, builtins). Groups LanguageConstruct with invokables for T-box connectivity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_pop">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.pop()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove a key and return its value; raises KeyError if absent (unless default given).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#key_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_issuperset_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.issuperset()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#bool"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_update_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Add and modify dict entries</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_delete_dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>frozenset</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What if you needed a set that can never change — say, to use it as a dictionary key?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Immutable hashable set; usable as a dict key or set element.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Lecture">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Lecture</rdfs:label>
+    <rdfs:comment>A week or unit in the course schedule.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#attribute_error">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:label>AttributeError</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Raised when an attribute or method reference fails on an object.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <commonCauses rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Calling a method that does not exist on that type (e.g. dict.remove) or reading a missing attribute.</commonCauses>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_issuperset_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.issuperset()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Test whether this set is a superset of another.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#bool"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W12_systems">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 12 — Computer Systems (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W12</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W8_sorting"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#methodOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>methodOf</rdfs:label>
+    <rdfs:comment>A method belongs to a type or class. Range widened to owl:Thing to also cover user-defined classes in the OOP module.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#subset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Subset</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you check if every element of A is also in B?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Every element of A is also in B (A ⊆ B).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>set</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What happens if you add the same value to a set twice? If you needed unique usernames where order does not matter, which type would you reach for?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <isOrdered rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isOrdered>
+    <isMutable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isMutable>
+    <isHashable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isHashable>
+    <isIndexed rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</isIndexed>
+    <isIterable rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</isIterable>
+    <allowsDuplicates rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</allowsDuplicates>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Unordered mutable collection of unique hashable elements.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#hashing"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#time_complexity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_difference">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Set Difference</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you find items in A that are not in B?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elements in A but not B (A − B).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set_operations"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_default_iteration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Dict Default Iteration (keys)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What does for x in d give you — keys, values, or pairs?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Iterating a dict directly yields its keys, not values or key-value pairs.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_keys"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_values"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_keys"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_issubset_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.issubset()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Test whether this set is a subset of another.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#subset"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#bool"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_issubset_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.issubset()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#subset"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#bool"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#nested_dicts">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Nested Dictionaries</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>If a value in a dict is itself a dict, how would you reach an inner value?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_union_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.union()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Method form of set union (also available via |).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_union"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set_intersection_method"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_add_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.add()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Insert one element into a set (no-op if already present).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set_discard_method"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#str_split">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>str.split()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How do you turn a sentence into a list of words?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:str_split</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Split a string into a list of substrings by a separator.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#str"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#difficulty">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>difficulty</rdfs:label>
+    <rdfs:comment>Author pacing hint. Enum: difficulty (low | medium | high). Enum difficulty: low | medium | high.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#cognitiveType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>cognitiveType</rdfs:label>
+    <rdfs:comment>Bloom cognitive level. Enum: cognitive_type (remember | understand | apply | analyze | evaluate | create); short aliases rem/und/app/ana/eva/cre accepted in CI. Enum cognitive_type: remember | understand | apply | analyze | evaluate | create.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_discard_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.discard()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove an element if present; does not raise if missing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set_remove_method"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#range_function">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdfs:label>range()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you write a loop that runs exactly n times without building a list of numbers?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:range</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Produces an immutable sequence of integers; common in for i in range(len(lst)).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_count_with_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Count frequencies with a dict</rdfs:label>
+    <socraticQuestion>How would you count how many times each word appears using a dict?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_comprehend_dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_difference_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.difference()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Method form of set difference (also available via -).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_difference"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_comprehension">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Dictionary Comprehension</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Could you build a dict in one line the way you build a list with a comprehension?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Building a new dict with {k: v for ...} syntax.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Invokable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>Invokable</rdfs:label>
+    <rdfs:comment>Callable Python API: type-bound methods and global built-in functions.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#revisitedIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>revisitedIn</rdfs:label>
+    <rdfs:comment>Week where a concept introduced earlier is reinforced in a new context — not first taught here.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_intersection_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.intersection()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Method form of set intersection (also available via &amp;).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_intersection"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set_difference_method"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#enables">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>enables</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#dependsOn"/>
+    <rdfs:comment>Inverse of dependsOn: the source is a prerequisite that enables the target.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#key_value_pair">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Key-Value Pair</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What are the two halves of a single dictionary entry?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">One (key, value) entry in a mapping.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#key"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#key_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#usesConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>usesConcept</rdfs:label>
+    <rdfs:comment>A method, construct, or built-in function relies on / carries out a concept or abstract operation (create, access, remove, ...). Shared name with the OOP module (replaces the earlier performsOperation).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W6_dicts_sets">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 6 — Data Structures: Dictionaries and Sets</rdfs:label>
+    <canonicalId>course:W6</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Week 6 unit: dictionaries, sets, hashing, and structure selection.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_remove_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.remove()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove an element; raises KeyError if missing.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#set_union_method"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#key_error"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_intersection">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Set Intersection</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>Given two sets, how would you keep only the items they share?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elements in both sets (A ∩ B).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set_operations"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#counter_pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Pattern"/>
+    <rdfs:label>Counter Pattern</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you count how many items match a condition?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#commonCauses">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>commonCauses</rdfs:label>
+    <rdfs:comment>Typical student mistakes that trigger this error, to seed remediation (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_iterate_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Iterate keys, values, and items</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_value_pair"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#dict_default_iteration"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_update_dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_count_with_dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isHashable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isHashable</rdfs:label>
+    <rdfs:comment>Whether instances can be used as dict keys or set members. For tuple, this intro-level facet is true only when every element is itself hashable.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#producesType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:label>producesType</rdfs:label>
+    <rdfs:comment>The data type a method or built-in function returns (adopted from the OOP module; richer than the returnsNone boolean, which is kept as a shortcut).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#definition">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>definition</rdfs:label>
+    <rdfs:comment>Short plain-language definition of the entity (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#time_complexity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Time Complexity of Operations</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Why might checking whether an item is in a set be faster than checking a list?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:time_complexity</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">How the cost of an operation grows with collection size; list membership scans all elements, dict/set lookup is typically constant time on average.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">analyze</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#data_structure_selection"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W8_sorting"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#ErrorType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>ErrorType</rdfs:label>
+    <rdfs:comment>An exception students may encounter (e.g. IndexError).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_symmetric_difference_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.symmetric_difference()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#symmetric_difference"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isUsedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>isUsedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#usesConcept"/>
+    <rdfs:comment>Inverse of usesConcept: this concept/operation is used by the given method, construct, or built-in function.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#implementedBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>implementedBy</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#implementsConcept"/>
+    <rdfs:comment>Inverse of implementsConcept: a concept is coded by this language construct, method, or built-in.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_intersection_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.intersection()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_intersection"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isMutable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isMutable</rdfs:label>
+    <rdfs:comment>Whether the type can be changed in place after creation.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_copy_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.copy()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Shallow copy of a set.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#for_loop">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>for loop</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Syntax that iterates over an iterable, binding each element in turn.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N6ee2899f302349be82f16ecea81b17a9">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdf:rest rdf:nodeID="N7f35b071e1a643aab21dd3ea9c5b1df3"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_union_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.union()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_union"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#intersection_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>&amp; (intersection operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#set_intersection"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#recommendedBefore">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>recommendedBefore</rdfs:label>
+    <rdfs:comment>Soft order among sibling peers when PATH / dependsOn do not already decide which to introduce first (a teaching dilemma). NOT the tutor spine — that total order is only in comp101_path_w5_w6.json (/path/next). Do not sprinkle on every consecutive PATH pair; skip when traversal order is already determined. Distinct from dependsOn (strict readiness) and confusedWith (student mix-ups).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_union">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Set Union</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>If A = {1,2} and B = {2,3}, what is everything that appears in either set?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elements in either set (A ∪ B).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set_operations"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_get">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.get()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Safe dict lookup that returns a default instead of raising KeyError.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <bestPractice rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Prefer dict.get(key, default) over direct subscript when key presence is uncertain.</bestPractice>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_default_iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#key_value_mapping">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Key-Value Mapping</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>If each value has a label you look it up by, what kind of structure is that?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Association of unique keys to values (the dict abstraction).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#data_structure_selection">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Data Structure Selection</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Given a problem, which structure would you choose — list, tuple, dict, or set — and why?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:data_structure_selection</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Choosing among list, tuple, dict, and set based on order, mutability, uniqueness, keyed lookup, and operation cost.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">evaluate</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#time_complexity"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#superset">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Superset</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you check if A contains all of B's elements?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Every element of B is also in A (A ⊇ B).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#empty_brace_ambiguity">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Empty Brace Ambiguity</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>What does {} create — an empty dict or an empty set?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">In Python, {} is always an empty dict; an empty set requires set().</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#key_immutability">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Key Immutability</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Why can you use a string or tuple as a dict key, but not a list?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dict keys and set elements must not change while stored; typically hashable immutables.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">analyze</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Concept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Concept</rdfs:label>
+    <rdfs:comment>An idea to understand, not a keyword (e.g. Indexing).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#teaches">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>teaches</rdfs:label>
+    <owl:inverseOf rdf:resource="http://gnosis.local/ontologies/comp101#taughtIn"/>
+    <rdfs:comment>Inverse of taughtIn: a lecture first introduces this entity.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_dedupe">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Remove duplicates with a set</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#deduplication"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#list_to_set"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_membership"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W4_functions">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 4 — Functions (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W4</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Skill">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>Skill</rdfs:label>
+    <rdfs:comment>A learning outcome the student should achieve.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#frozenset_copy_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>frozenset.copy()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <producesType rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#frozenset"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_update">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.update()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Merge another mapping or pairs into this dict (in-place).</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#Method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>Method</rdfs:label>
+    <rdfs:comment>A function bound to a data type (e.g. list.append()).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#bestPractice">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>bestPractice</rdfs:label>
+    <rdfs:comment>A recommended practice or idiom the tutor can reinforce (shared pedagogy metadata; from the OOP module).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isIndexed">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isIndexed</rdfs:label>
+    <rdfs:comment>Whether elements are accessed by integer position.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#confusedWith">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>confusedWith</rdfs:label>
+    <rdfs:comment>Two entities students often confuse and should explicitly distinguish (e.g. list vs tuple, set.discard vs set.remove). Symmetric. COMP101-specific name: OOP keeps contrastsWith for opposites/alternatives/confused concepts (Concept↔Concept).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_literal_syntax">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>{} dict literal</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>What does {} create — an empty dict or an empty set?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#set_constructor"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#symmetric_difference">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Symmetric Difference</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you find items that are in exactly one of the two sets?</socraticQuestion>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Elements in exactly one of the two sets.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#set_operations"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_popitem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.popitem()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <throwsError rdf:resource="http://gnosis.local/ontologies/comp101#key_error"/>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_use_tuples_as_keys">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Use tuples as dictionary keys</rdfs:label>
+    <socraticQuestion>Why can a tuple be a dictionary key when a list cannot?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#tuples_as_keys"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#hashing"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_immutability"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_dedupe"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_lookup_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Retrieve values from a dict</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_iterate_dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_use_tuples_as_keys"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#hashing">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Hashing</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Why can Python find a dict key quickly without scanning every entry?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:hashing</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Computing a hash code used for dict/set membership and lookup.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">understand</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#requiresConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>requiresConcept</rdfs:label>
+    <rdfs:comment>A skill requires understanding of a concept.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N54dfc60361e849a69189a518abe1c0f6">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdf:rest rdf:nodeID="N6ee2899f302349be82f16ecea81b17a9"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nde6cbe1390574e438488d8a80c56b01f">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdf:rest rdf:nodeID="N91e734dcec5947d3812f46210f474be2"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_membership">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Test membership</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_set_algebra"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#iteration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Iteration</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>How would you do something to every item in a list?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:iteration</canonicalId>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Repeatedly processing each element of an iterable.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <revisitedIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_delete_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Delete dict entries</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#onPath">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>onPath</rdfs:label>
+    <rdfs:comment>True when this individual is a step on the authored W5–W6 PATH spine (comp101_path_w5_w6.json). Off-path entities remain available for skills, remediation, and on-demand tutoring.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#set_clear_method">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>set.clear()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Remove all elements from a set.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#set"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_select_data_structure">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Choose the right data structure for a problem</rdfs:label>
+    <socraticQuestion>Given a problem, which structure would you choose — list, tuple, dict, or set — and why?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#data_structure_selection"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#time_complexity"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <owl:versionInfo>2025.36</owl:versionInfo>
+    <rdfs:label>COMP101 course ontology</rdfs:label>
+    <rdfs:comment>Static curriculum ontology for the COMP101 intro programming course: lectures, concepts, Python data types, methods, errors, and skills. Cross-cutting concepts are tagged shared for merge with other course modules. Student misconceptions, symptoms, remediations, and evidence are modelled separately in the dynamic ontology (http://gnosis.local/ontologies/comp101-dynamic), which imports this one and references these ids. Pedagogy metadata (definition, cognitiveType, bestPractice) is populated incrementally on high-value targets; empty instances inherit schema from the OOP module for future merge. Engineering notes: AllDisjointClasses covers asserted leaf types (Lecture, Concept, DataType, ErrorType, LanguageConstruct, Method, BuiltInFunction, Skill); intermediate classes ConceptCarrier/Invokable and Pattern⊑Concept are organizational. Inverse object properties are declared for reasoners — A-Box asserts only the forward direction (taughtIn, dependsOn, …); apps must query forwards or expand inverses.</rdfs:comment>
+    <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#LanguageConstruct">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#ConceptCarrier"/>
+    <rdfs:label>LanguageConstruct</rdfs:label>
+    <rdfs:comment>Python syntax such as a for loop or the [] operator.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W8_sorting">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 8 — Sorting &amp; Searching (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W8</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#isIterable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#DataType"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>isIterable</rdfs:label>
+    <rdfs:comment>Whether the type can be looped over.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#taughtIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>taughtIn</rdfs:label>
+    <rdfs:comment>Week where an entity is first introduced (primary teaching). Use revisitedIn for reinforcement in a later week.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#dict_values">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:label>dict.values()</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <onPath rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</onPath>
+    <returnsNone rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">false</returnsNone>
+    <definition rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Dynamic view of a dict’s values.</definition>
+    <cognitiveType rdf:datatype="http://www.w3.org/2001/XMLSchema#string">apply</cognitiveType>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <usesConcept rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+    <confusedWith rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+    <methodOf rdf:resource="http://gnosis.local/ontologies/comp101#dict"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#dict_items"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_compare_sets">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Compare sets (subset / superset)</rdfs:label>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#subset"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#superset"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_select_data_structure"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#value">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Value</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">low</difficulty>
+    <socraticQuestion>Once you find a key, what does it give you back?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#canonicalId">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>canonicalId</rdfs:label>
+    <rdfs:comment>Stable cross-module identity (e.g. core:time_complexity) that the merge tool collapses duplicate nodes onto.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#hashable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Concept"/>
+    <rdfs:label>Hashable</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">high</difficulty>
+    <socraticQuestion>Why can a string be a dictionary key but a list cannot?</socraticQuestion>
+    <sharedConcept rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</sharedConcept>
+    <canonicalId>core:hashable</canonicalId>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#hashing"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#returnsNone">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:domain rdf:resource="http://gnosis.local/ontologies/comp101#Method"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:label>returnsNone</rdfs:label>
+    <rdfs:comment>True if the method mutates in place and evaluates to None (e.g. list.append); false if it returns a useful value (e.g. list.pop). Kept as a shortcut alongside producesType.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Ne2ed043599464336a6bf36603686a462">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+    <owl:members rdf:nodeID="Nb0c41684ef9847ffb2943492229fe13c"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#DataType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>DataType</rdfs:label>
+    <rdfs:comment>A Python built-in type used in code (e.g. list, dict).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N7f35b071e1a643aab21dd3ea9c5b1df3">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#ErrorType"/>
+    <rdf:rest rdf:nodeID="N3c0f7451210b4c5bb8ec7c24683b5019"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#socraticQuestion">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>socraticQuestion</rdfs:label>
+    <rdfs:comment>A starter Socratic probe an LLM tutor can ask about this concept.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#sharedConcept">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AnnotationProperty"/>
+    <rdfs:label>sharedConcept</rdfs:label>
+    <rdfs:comment>Marks a cross-cutting concept owned by no single module; the merge tool should dedupe these across course modules.</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#skill_comprehend_dict">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdfs:label>Build dicts with comprehensions</rdfs:label>
+    <socraticQuestion>Could you build a dict in one line the way you build a list with a comprehension?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#dict_comprehension"/>
+    <requiresConcept rdf:resource="http://gnosis.local/ontologies/comp101#key_value_mapping"/>
+    <recommendedBefore rdf:resource="http://gnosis.local/ontologies/comp101#skill_dedupe"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#accumulator_pattern">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Pattern"/>
+    <rdfs:label>Accumulator Pattern</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <socraticQuestion>How would you add up all the numbers in a list?</socraticQuestion>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W3_control"/>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#iteration"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#BuiltInFunction">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+    <rdfs:subClassOf rdf:resource="http://gnosis.local/ontologies/comp101#Invokable"/>
+    <rdfs:label>BuiltInFunction</rdfs:label>
+    <rdfs:comment>A global built-in function such as len() or sorted() (adopted from the shared OOP T-Box; cleaner than modelling these as LanguageConstructs).</rdfs:comment>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N38f5bdb4adf64c4bb86177e7dbe6f966">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Skill"/>
+    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#W3_control">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdfs:label>Week 3 — Control Structures (placeholder; owned by another module)</rdfs:label>
+    <canonicalId>course:W3</canonicalId>
+    <dependsOn rdf:resource="http://gnosis.local/ontologies/comp101#W2_python"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="Nb0c41684ef9847ffb2943492229fe13c">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#Lecture"/>
+    <rdf:rest rdf:nodeID="N54dfc60361e849a69189a518abe1c0f6"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N91e734dcec5947d3812f46210f474be2">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#BuiltInFunction"/>
+    <rdf:rest rdf:nodeID="N38f5bdb4adf64c4bb86177e7dbe6f966"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://gnosis.local/ontologies/comp101#symmetric_difference_operator">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdf:type rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdfs:label>^ (symmetric difference operator)</rdfs:label>
+    <difficulty rdf:datatype="http://www.w3.org/2001/XMLSchema#string">medium</difficulty>
+    <taughtIn rdf:resource="http://gnosis.local/ontologies/comp101#W6_dicts_sets"/>
+    <implementsConcept rdf:resource="http://gnosis.local/ontologies/comp101#symmetric_difference"/>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="N3c0f7451210b4c5bb8ec7c24683b5019">
+    <rdf:first rdf:resource="http://gnosis.local/ontologies/comp101#LanguageConstruct"/>
+    <rdf:rest rdf:nodeID="Nde6cbe1390574e438488d8a80c56b01f"/>
+  </rdf:Description>
+</rdf:RDF>

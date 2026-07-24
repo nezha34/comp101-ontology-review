@@ -1,0 +1,351 @@
+{
+  "lecture": 6,
+  "author": "shared",
+  "source_owl": "comp101_L6.owl",
+  "namespace": "http://gnosis.local/ontologies/comp101#",
+  "title": "Data Structures: Dictionaries and Sets",
+  "notes": "Split from examples/comp101_w5_w6.owl by taughtIn=W6_dicts_sets. Interim README layout before full merge/test.",
+  "entity_types": [
+    {
+      "name": "Lecture",
+      "status": "old",
+      "definition": "A week or unit in the course schedule.",
+      "parent_class": null
+    },
+    {
+      "name": "DataType",
+      "status": "old",
+      "definition": "A Python built-in type used in code (e.g. list, dict).",
+      "parent_class": null
+    },
+    {
+      "name": "Pattern",
+      "status": "old",
+      "definition": "A common loop or problem-solving pattern (e.g. Accumulator).",
+      "parent_class": null
+    },
+    {
+      "name": "Invokable",
+      "status": "new",
+      "definition": "Callable Python API: type-bound methods and global built-in functions.",
+      "parent_class": null
+    },
+    {
+      "name": "ConceptCarrier",
+      "status": "new",
+      "definition": "Python surface that can implement or use curriculum concepts (syntax, methods, builtins). Groups LanguageConstruct with invokables for T-box connectivity.",
+      "parent_class": null
+    },
+    {
+      "name": "Method",
+      "status": "old",
+      "definition": "A function bound to a data type (e.g. list.append()).",
+      "parent_class": null
+    },
+    {
+      "name": "Concept",
+      "status": "old",
+      "definition": "An idea to understand, not a keyword (e.g. Indexing).",
+      "parent_class": null
+    },
+    {
+      "name": "Skill",
+      "status": "old",
+      "definition": "A learning outcome the student should achieve.",
+      "parent_class": null
+    },
+    {
+      "name": "BuiltInFunction",
+      "status": "old",
+      "definition": "A global built-in function such as len() or sorted() (adopted from the shared OOP T-Box; cleaner than modelling these as LanguageConstructs).",
+      "parent_class": null
+    },
+    {
+      "name": "ErrorType",
+      "status": "old",
+      "definition": "An exception students may encounter (e.g. IndexError).",
+      "parent_class": null
+    },
+    {
+      "name": "LanguageConstruct",
+      "status": "old",
+      "definition": "Python syntax such as a for loop or the [] operator.",
+      "parent_class": null
+    }
+  ],
+  "relations": [
+    {
+      "name": "hasMethod",
+      "status": "old",
+      "definition": "Inverse of methodOf: a type or class has this method.",
+      "domain": "Thing",
+      "range": "Method",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "requiredBy",
+      "status": "old",
+      "definition": "Inverse of requiresConcept: this concept is required by the given skill.",
+      "domain": "Concept",
+      "range": "Skill",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "throwsError",
+      "status": "old",
+      "definition": "An operation/construct can raise this error type. Prefer Method, BuiltInFunction, or LanguageConstruct carriers — not bare DataType nodes.",
+      "domain": "Thing",
+      "range": "ErrorType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "dependsOn",
+      "status": "old",
+      "definition": "Strict prerequisite: the source should be learned after the target. Transitive, so prerequisite chains close automatically (adopted from the OOP T-Box).",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "isProducedBy",
+      "status": "old",
+      "definition": "Inverse of producesType: this data type is produced by the given method or built-in function.",
+      "domain": "DataType",
+      "range": "Invokable",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "precedes",
+      "status": "new",
+      "definition": "Inverse of recommendedBefore: the source normally comes later in the teaching sequence.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "revisits",
+      "status": "old",
+      "definition": "Inverse of revisitedIn: a lecture reinforces this entity from an earlier week.",
+      "domain": "Lecture",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "raisedBy",
+      "status": "old",
+      "definition": "Inverse of throwsError: this error is raised by the given entity.",
+      "domain": "ErrorType",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "implementsConcept",
+      "status": "old",
+      "definition": "Syntax-level coding of a concept (LanguageConstruct). BuiltInFunctions use usesConcept instead — do not attach implementsConcept to builtins.",
+      "domain": "ConceptCarrier",
+      "range": "Concept",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "methodOf",
+      "status": "old",
+      "definition": "A method belongs to a type or class. Range widened to owl:Thing to also cover user-defined classes in the OOP module.",
+      "domain": "Method",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "revisitedIn",
+      "status": "old",
+      "definition": "Week where a concept introduced earlier is reinforced in a new context — not first taught here.",
+      "domain": "Thing",
+      "range": "Lecture",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "enables",
+      "status": "new",
+      "definition": "Inverse of dependsOn: the source is a prerequisite that enables the target.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "usesConcept",
+      "status": "old",
+      "definition": "A method, construct, or built-in function relies on / carries out a concept or abstract operation (create, access, remove, ...). Shared name with the OOP module (replaces the earlier performsOperation).",
+      "domain": "ConceptCarrier",
+      "range": "Concept",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "producesType",
+      "status": "old",
+      "definition": "The data type a method or built-in function returns (adopted from the OOP module; richer than the returnsNone boolean, which is kept as a shortcut).",
+      "domain": "Invokable",
+      "range": "DataType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "isUsedBy",
+      "status": "old",
+      "definition": "Inverse of usesConcept: this concept/operation is used by the given method, construct, or built-in function.",
+      "domain": "Concept",
+      "range": "ConceptCarrier",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "implementedBy",
+      "status": "old",
+      "definition": "Inverse of implementsConcept: a concept is coded by this language construct, method, or built-in.",
+      "domain": "Concept",
+      "range": "ConceptCarrier",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "recommendedBefore",
+      "status": "old",
+      "definition": "Soft order among sibling peers when PATH / dependsOn do not already decide which to introduce first (a teaching dilemma). NOT the tutor spine — that total order is only in comp101_path_w5_w6.json (/path/next). Do not sprinkle on every consecutive PATH pair; skip when traversal order is already determined. Distinct from dependsOn (strict readiness) and confusedWith (student mix-ups).",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "teaches",
+      "status": "old",
+      "definition": "Inverse of taughtIn: a lecture first introduces this entity.",
+      "domain": "Lecture",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "confusedWith",
+      "status": "old",
+      "definition": "Two entities students often confuse and should explicitly distinguish (e.g. list vs tuple, set.discard vs set.remove). Symmetric. COMP101-specific name: OOP keeps contrastsWith for opposites/alternatives/confused concepts (Concept↔Concept).",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "requiresConcept",
+      "status": "old",
+      "definition": "A skill requires understanding of a concept.",
+      "domain": "Skill",
+      "range": "Concept",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "taughtIn",
+      "status": "old",
+      "definition": "Week where an entity is first introduced (primary teaching). Use revisitedIn for reinforcement in a later week.",
+      "domain": "Thing",
+      "range": "Lecture",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    }
+  ]
+}

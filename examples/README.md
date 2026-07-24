@@ -13,16 +13,25 @@ FOLDER STRUCTURE
         Lecture 1/
           comp101_L1.owl
           comp101_L1.json
-        Lecture 3/
+        Lecture 3/          # Control Structures
           comp101_L3.owl
           comp101_L3.json
+        Lecture 4/          # Functions
+          comp101_L4.owl
+          comp101_L4.json
+        Lecture 5/          # Lists (and tuples)
+          comp101_L5.owl
+          comp101_L5.json
+        Lecture 6/          # Dictionaries and Sets
+          comp101_L6.owl
+          comp101_L6.json
         Lecture 9/
           comp101_L9.owl
           comp101_L9.json
         ...
         README.md
         # optional shared fixtures (not per-lecture drafts):
-        #   comp101_path_*.json, comp101_w5_w6.owl, comp101_core_concepts.json
+        #   comp101_path_*.json, comp101_core_concepts.json
 
 
 - One folder per lecture, named literally "Lecture <N>" (e.g.
