@@ -1,0 +1,217 @@
+{
+  "lecture": 11,
+  "author": "Asmae",
+  "source_owl": "comp101_L11.owl",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/ics#",
+  "title": "Introduction to Computer Systems",
+  "extends": "COMP101_ONTOLOGY.json (static curriculum ontology) — cross-references into it are foreign keys by ID, not duplicated locally.",
+
+  "entity_types": [
+    {
+      "name": "Lecture",
+      "status": "old",
+      "definition": "A course unit defined by the curriculum with a sequence number, title, and learning outcomes. Organizational — groups content and defines ordering, doesn't itself teach anything.",
+      "parent_class": null
+    },
+    {
+      "name": "Concept",
+      "status": "old",
+      "definition": "A pure abstract idea or theoretical principle with no runtime existence, syntax, or physical form (e.g. Scope, Layer Model, Time Complexity).",
+      "parent_class": null
+    },
+    {
+      "name": "DataType",
+      "status": "old",
+      "definition": "A Python-level classification of values determining valid operations and storage — what type() would return.",
+      "parent_class": null
+    },
+    {
+      "name": "Skill",
+      "status": "old",
+      "definition": "A transferable cognitive operation a student can perform across multiple unseen problems, defined by a verb phrase (e.g. \"Diagnose OS-level errors by layer\").",
+      "parent_class": null
+    },
+    {
+      "name": "Method",
+      "status": "old",
+      "definition": "A callable defined on a specific Python type, accessed via dot notation.",
+      "parent_class": null
+    },
+    {
+      "name": "BuiltInFunction",
+      "status": "old",
+      "definition": "A Python callable pre-defined in the built-in/stdlib namespace, invoked as a free function.",
+      "parent_class": null
+    },
+    {
+      "name": "LanguageConstruct",
+      "status": "old",
+      "definition": "A syntactic keyword, statement, or structural element of Python grammar itself.",
+      "parent_class": null
+    },
+    {
+      "name": "ErrorType",
+      "status": "old",
+      "definition": "A named Python exception class that can be raised when an operation fails (e.g. PermissionError, UnicodeDecodeError).",
+      "parent_class": null
+    },
+    {
+      "name": "Encoding",
+      "status": "old",
+      "definition": "A defined mapping between raw byte sequences and human-readable symbols or numeric values (e.g. UTF-8, ASCII).",
+      "parent_class": null
+    },
+    {
+      "name": "HardwareComponent",
+      "status": "new",
+      "definition": "A physical, tangible computing component at the hardware layer — consumes power, occupies physical space (e.g. CPU, RAM, CPU Register, Cache).",
+      "parent_class": null
+    },
+    {
+      "name": "SystemLayer",
+      "status": "new",
+      "definition": "A named, autonomous software/firmware layer in the execution stack between hardware and user code, each a complete system with its own service interface (e.g. Operating System, Kernel, Python Runtime).",
+      "parent_class": null
+    },
+    {
+      "name": "RuntimeEntity",
+      "status": "new",
+      "definition": "A concrete artifact/execution agent created at runtime, exists for a duration, has identity while it exists (e.g. Process, Thread, Bytecode).",
+      "parent_class": null
+    },
+    {
+      "name": "SystemMechanism",
+      "status": "new",
+      "definition": "An OS/hardware operational procedure or policy the system executes automatically, enforced rather than invoked (e.g. System Call, CPU Scheduling, Virtual Memory, stdin/stdout/stderr).",
+      "parent_class": null
+    },
+    {
+      "name": "SystemProperty",
+      "status": "new",
+      "definition": "A named, inspectable, mutable value attached to a running process or its OS environment (e.g. Process ID, Environment Variable, PATH).",
+      "parent_class": null
+    }
+  ],
+
+  "relations": [
+    {
+      "name": "taughtIn",
+      "official_name": "TAUGHT_IN",
+      "status": "old",
+      "definition": "Content belongs to / is first introduced in a lecture.",
+      "domain": "Thing",
+      "range": "Lecture",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "teaches" }
+    },
+    {
+      "name": "dependsOn",
+      "official_name": "DEPENDS_ON",
+      "status": "old",
+      "definition": "Subject cannot be meaningfully learned until the object is already understood. Prerequisite ordering between concepts/skills.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": true, "functional": false, "inverse_of": "isRequiredBy" }
+    },
+    {
+      "name": "contrastsWith",
+      "official_name": "CONTRASTS_WITH",
+      "status": "old",
+      "definition": "Subject and object are alternatives/opposites or commonly confused peers at the same level of abstraction.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": true, "transitive": false, "functional": false, "inverse_of": null }
+    },
+    {
+      "name": "usesConcept",
+      "official_name": "USES_CONCEPT",
+      "status": "old",
+      "definition": "A non-Concept entity actively applies/draws on a Concept to do its work.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isUsedBy" }
+    },
+    {
+      "name": "producesType",
+      "official_name": "PRODUCES_TYPE",
+      "status": "old",
+      "definition": "A Method/BuiltInFunction actually yields a result of the given DataType.",
+      "domain": "Method",
+      "range": "DataType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isProducedBy" }
+    },
+    {
+      "name": "throwsError",
+      "official_name": "THROWS_ERROR",
+      "status": "old",
+      "definition": "Performing the subject operation can actually raise the named ErrorType under realistic conditions.",
+      "domain": "Thing",
+      "range": "ErrorType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isThrownBy" }
+    },
+    {
+      "name": "exampleOf",
+      "official_name": "EXAMPLE_OF",
+      "status": "old",
+      "definition": "A specific code pattern/instance concretely demonstrates a Concept or Algorithm.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "hasExample" }
+    },
+    {
+      "name": "implementedBy",
+      "official_name": "IMPLEMENTED_BY",
+      "status": "old",
+      "definition": "A Concept is made concrete by a mechanism/construct that realizes it.",
+      "domain": "Concept",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "implements" }
+    },
+    {
+      "name": "bestPractice",
+      "official_name": "BEST_PRACTICE",
+      "status": "old",
+      "definition": "A recommended approach or convention associated with this entity. Datatype property, not a node.",
+      "domain": "Thing",
+      "range": "xsd:string",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": null }
+    },
+    {
+      "name": "enables",
+      "official_name": null,
+      "status": "new",
+      "definition": "Subject is a mechanism/system feature that makes the object concept/goal achievable — means-to-end, not prerequisite (contrast with dependsOn).",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "enabledBy", "asymmetric": true }
+    },
+    {
+      "name": "partOf",
+      "official_name": null,
+      "status": "new",
+      "definition": "Subject is a genuine conceptual/structural sub-component of the object.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": { "symmetric": false, "transitive": true, "functional": false, "inverse_of": "hasPart" }
+    },
+    {
+      "name": "managedBy",
+      "official_name": null,
+      "status": "new",
+      "definition": "Subject is genuinely under the runtime control/ownership of the object SystemLayer (e.g. a Process managedBy the Operating System), not just conceptually associated with it. Introduced for this ICS module — doesn't exist in OOP.",
+      "domain": "Thing",
+      "range": "SystemLayer",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "manages" }
+    }
+  ],
+
+  "official_relations_not_used_here": [
+    "PREREQUISITE_OF (no cross-lecture ordering — this module has only L11)",
+    "OPERATES_ON_TYPE (no Operator individuals in this module)",
+    "ACCEPTS_TYPE (no Operator/BuiltInFunction input-type edges asserted)",
+    "METHOD_OF (partOf is used instead — see notes)",
+    "TIME_COMPLEXITY (no Algorithm individuals in this module)",
+    "SOLVES_PROBLEM (no Algorithm individuals in this module)"
+  ],
+
+  "notes": "managedBy/manages is genuinely new to this ICS module (RuntimeEntity/SystemMechanism -> SystemLayer control edges, e.g. Process managedBy Operating System) and has no counterpart in the OOP module (comp101_L10.json) — flag during merge since it may generalize to other SystemLayer-adjacent lectures rather than staying ICS-only. Datatype annotation properties definition, courseId, cognitiveType and commonCauses are present on most individuals but aren't modeled as relations here since they're plumbing (labels/IDs), not the 15 semantic relations. isRequiredBy, isUsedBy, isProducedBy, isThrownBy and hasPart are declared purely as the OWL inverses of dependsOn/usesConcept/producesType/throwsError/partOf for reasoner symmetry, not separate semantic relations. Operator and Algorithm (2 of the official 11 entity types) have no individuals in this lecture's module — they live only in the static curriculum ontology this file extends. Unlike OOP, this module has no ImplementorType union class — implementedBy/implements range/domain directly against owl:Thing instead."
+}
