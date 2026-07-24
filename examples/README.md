@@ -13,10 +13,16 @@ FOLDER STRUCTURE
         Lecture 1/
           comp101_L1.owl
           comp101_L1.json
+        Lecture 3/
+          comp101_L3.owl
+          comp101_L3.json
         Lecture 9/
           comp101_L9.owl
           comp101_L9.json
         ...
+        README.md
+        # optional shared fixtures (not per-lecture drafts):
+        #   comp101_path_*.json, comp101_w5_w6.owl, comp101_core_concepts.json
 
 
 - One folder per lecture, named literally "Lecture <N>" (e.g.
@@ -32,9 +38,10 @@ THE .owl FILE
   validate.py key off this pattern, so "comp101L9.owl",
   "comp101_lecture9.owl" etc. will get missed.
 
-- RDF/XML (or Turtle), same style as the existing files in this folder
-  (comp101_oop.owl, comp101_ics.owl) — rdflib-loadable, every
-  class/property/individual has an rdfs:label.
+- RDF/XML (or Turtle), same style as the existing lecture folders
+  (e.g. Lecture 10 / Lecture 11) — rdflib-loadable, every
+  class/property/individual has an rdfs:label. An optional
+  ``comp101_L<N>.ttl`` alongside the ``.owl`` is fine if you author in Turtle.
 
 - Every individual should carry a taughtIn (or equivalent) link to its
   lecture individual, and a stable ID via whatever id_property the

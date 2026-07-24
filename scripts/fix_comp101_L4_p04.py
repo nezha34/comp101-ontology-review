@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fix OOPS P04 / P05 / P13 in examples/comp101_L4_functions.owl.
+"""Fix OOPS P04 / P05 / P13 in examples/Lecture 4/comp101_L4.owl.
 
 Same class of fixes as scripts/fix_comp101_L3_p04.py (L3 control-structures ontology):
 
@@ -28,7 +28,7 @@ from rdflib.collection import Collection
 from rdflib.term import BNode
 
 ROOT = Path(__file__).resolve().parents[1]
-PATH = ROOT / "examples" / "comp101_L4_functions.owl"
+PATH = ROOT / "examples" / "Lecture 4" / "comp101_L4.owl"
 NS = "http://comp101.sase.um6p.ma/ontology/functions#"
 
 

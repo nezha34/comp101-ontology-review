@@ -1,0 +1,325 @@
+{
+  "lecture": 4,
+  "author": "team",
+  "source_owl": "comp101_L4.owl",
+  "namespace": "http://comp101.sase.um6p.ma/ontology/functions#",
+  "title": "Functions",
+  "notes": "COMP101 Functions (Lecture 4). OOPS P04/P05/P13 fixes applied: ConceptCarrier as domain/range hub; implementedBy is Concept→ConceptCarrier with inverse implementsConcept; Algorithm→carrier edges use usesConstruct ⊣ constructUsedBy.",
+  "entity_types": [
+    {
+      "name": "Algorithm",
+      "status": "old",
+      "definition": "A programming algorithm taught during the lecture.",
+      "parent_class": null
+    },
+    {
+      "name": "BuiltInFunction",
+      "status": "old",
+      "definition": "A native Python built-in function.",
+      "parent_class": "ConceptCarrier"
+    },
+    {
+      "name": "Concept",
+      "status": "old",
+      "definition": "An abstract programming concept.",
+      "parent_class": null
+    },
+    {
+      "name": "ConceptCarrier",
+      "status": "new",
+      "definition": "Python surface that can realize or carry curriculum concepts (language constructs, operators, builtins, data types). Organizational superclass used as domain/range of realization and algorithm-construct properties.",
+      "parent_class": null
+    },
+    {
+      "name": "DataType",
+      "status": "old",
+      "definition": "A Python data type.",
+      "parent_class": "ConceptCarrier"
+    },
+    {
+      "name": "ErrorType",
+      "status": "old",
+      "definition": "A Python exception type.",
+      "parent_class": null
+    },
+    {
+      "name": "LanguageConstruct",
+      "status": "old",
+      "definition": "A Python language construct.",
+      "parent_class": "ConceptCarrier"
+    },
+    {
+      "name": "Lecture",
+      "status": "old",
+      "definition": "A COMP101 lecture.",
+      "parent_class": null
+    },
+    {
+      "name": "Method",
+      "status": "old",
+      "definition": "A method belonging to a Python object.",
+      "parent_class": null
+    },
+    {
+      "name": "Operator",
+      "status": "old",
+      "definition": "A Python operator.",
+      "parent_class": "ConceptCarrier"
+    },
+    {
+      "name": "Skill",
+      "status": "old",
+      "definition": "A transferable programming competency.",
+      "parent_class": null
+    }
+  ],
+  "relations": [
+    {
+      "name": "acceptedBy",
+      "status": "old",
+      "definition": "Inverse of accepts_type.",
+      "domain": "DataType",
+      "range": "BuiltInFunction",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "acceptsType"
+      }
+    },
+    {
+      "name": "acceptsType",
+      "status": "old",
+      "definition": "A function accepts this data type as input.",
+      "domain": "BuiltInFunction",
+      "range": "DataType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "acceptedBy"
+      }
+    },
+    {
+      "name": "constructUsedBy",
+      "status": "new",
+      "definition": "Inverse of usesConstruct: this ConceptCarrier is employed by the object Algorithm. A-Box may assert only usesConstruct; reasoners can infer this direction.",
+      "domain": "ConceptCarrier",
+      "range": "Algorithm",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "usesConstruct"
+      }
+    },
+    {
+      "name": "contrastsWith",
+      "status": "old",
+      "definition": "Relates two concepts that represent alternative, opposite, or commonly confused ideas.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": true,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": null
+      }
+    },
+    {
+      "name": "dependsOn",
+      "status": "old",
+      "definition": "Indicates that understanding one educational entity requires prior understanding of another.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": true,
+        "functional": false,
+        "inverse_of": "isRequiredBy"
+      }
+    },
+    {
+      "name": "hasMethods",
+      "status": "old",
+      "definition": "Inverse of method_of.",
+      "domain": "DataType",
+      "range": "Method",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "methodOf"
+      }
+    },
+    {
+      "name": "implementedBy",
+      "status": "old",
+      "definition": "Concept is realized/expressed by this ConceptCarrier (language construct, operator, builtin, or data type). Inverse of implementsConcept. Domain is Concept only (not Algorithm).",
+      "domain": "Concept",
+      "range": "ConceptCarrier",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "implementsConcept"
+      }
+    },
+    {
+      "name": "implementsConcept",
+      "status": "old",
+      "definition": "Inverse of implementedBy: a ConceptCarrier realizes or expresses this Concept. A-Box may assert only implementedBy; reasoners can infer this direction.",
+      "domain": "ConceptCarrier",
+      "range": "Concept",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "implementedBy"
+      }
+    },
+    {
+      "name": "isProducedBy",
+      "status": "old",
+      "definition": "Inverse of produces_type.",
+      "domain": "DataType",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "producesType"
+      }
+    },
+    {
+      "name": "isRequiredBy",
+      "status": "old",
+      "definition": "Inverse of depends_on.",
+      "domain": "Thing",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": true,
+        "functional": false,
+        "inverse_of": "dependsOn"
+      }
+    },
+    {
+      "name": "isThrownBy",
+      "status": "old",
+      "definition": "Inverse of throws_error.",
+      "domain": "ErrorType",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "throwsError"
+      }
+    },
+    {
+      "name": "isUsedBy",
+      "status": "old",
+      "definition": "Inverse of uses_concept.",
+      "domain": "Concept",
+      "range": null,
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "usesConcept"
+      }
+    },
+    {
+      "name": "methodOf",
+      "status": "old",
+      "definition": "This method belongs to a data type.",
+      "domain": "Method",
+      "range": "DataType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "hasMethods"
+      }
+    },
+    {
+      "name": "producesType",
+      "status": "old",
+      "definition": "Returns this data type.",
+      "domain": "Thing",
+      "range": "DataType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "isProducedBy"
+      }
+    },
+    {
+      "name": "taughtIn",
+      "status": "old",
+      "definition": "Associates an ontology entity with the lecture in which it is introduced or explicitly taught.",
+      "domain": "Thing",
+      "range": "Lecture",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "teaches"
+      }
+    },
+    {
+      "name": "teaches",
+      "status": "old",
+      "definition": "Inverse of taught_in.",
+      "domain": "Lecture",
+      "range": "Thing",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "taughtIn"
+      }
+    },
+    {
+      "name": "throwsError",
+      "status": "old",
+      "definition": "Associates a language construct, function, method, or concept with an error that may result from its incorrect use.",
+      "domain": "Thing",
+      "range": "ErrorType",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "isThrownBy"
+      }
+    },
+    {
+      "name": "usesConcept",
+      "status": "old",
+      "definition": "Indicates that an entity relies on or makes use of a programming concept.",
+      "domain": null,
+      "range": "Concept",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "isUsedBy"
+      }
+    },
+    {
+      "name": "usesConstruct",
+      "status": "new",
+      "definition": "Algorithm is coded with / employs this ConceptCarrier (language construct, operator, builtin, or data type). Distinct from implementedBy (Concept → carrier realization). Inverse of constructUsedBy.",
+      "domain": "Algorithm",
+      "range": "ConceptCarrier",
+      "characteristics": {
+        "symmetric": false,
+        "transitive": false,
+        "functional": false,
+        "inverse_of": "constructUsedBy"
+      }
+    }
+  ]
+}

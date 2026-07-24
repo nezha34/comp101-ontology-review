@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fix OOPS P04 / P13 in examples/comp101_L3_control_structures.owl.
+"""Fix OOPS P04 / P13 in examples/Lecture 3/comp101_L3.owl.
 
 Connects LanguageConstruct, Skill, Algorithm, and ConceptCarrier into the T-Box:
   - ConceptCarrier organizational class; LC/Operator/BuiltInFunction/DataType ⊑ it
@@ -27,7 +27,7 @@ from rdflib.collection import Collection
 from rdflib.term import BNode
 
 ROOT = Path(__file__).resolve().parents[1]
-PATH = ROOT / "examples" / "comp101_L3_control_structures.owl"
+PATH = ROOT / "examples" / "Lecture 3" / "comp101_L3.owl"
 NS = "http://comp101.sase.um6p.ma/ontology/control-structures#"
 
 
