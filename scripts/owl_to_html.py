@@ -6,8 +6,8 @@ doc): classes, object/data properties, individuals grouped by class with
 outgoing relations. Dependency-light (rdflib only).
 
 Usage:
-  python scripts/owl_to_html.py examples/comp101_CS_bilal.owl
-  python scripts/owl_to_html.py examples/comp101_CS_bilal.owl -o examples/comp101_CS_bilal.html
+  python scripts/owl_to_html.py examples/comp101_L3_control_structures.owl
+  python scripts/owl_to_html.py examples/comp101_L3_control_structures.owl -o examples/comp101_L3_control_structures.html
 """
 
 from __future__ import annotations
