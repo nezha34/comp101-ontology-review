@@ -68,6 +68,7 @@ lecture, plus the formal bits (domain/range/characteristics) that
 aren't always obvious just from staring at the OWL file.
 
 Required shape:
+----------------
 
 {
   "lecture": 9,
