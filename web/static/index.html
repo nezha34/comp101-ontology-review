@@ -429,13 +429,35 @@
       wire(dropA, fileA, "fileA", fnameA);
       wire(dropB, fileB, "fileB", fnameB);
 
+      async function pollSemanticStatus(runId) {
+        while (true) {
+          await new Promise((r) => setTimeout(r, 4000));
+          let data;
+          try {
+            const res = await fetch("/api/validate/status/" + encodeURIComponent(runId));
+            data = await res.json();
+            if (!res.ok || !data.ok) throw new Error(data.error || ("HTTP " + res.status));
+          } catch (err) {
+            statusEl.classList.add("err");
+            statusEl.textContent = "Lost track of the semantic judge run: " + (err.message || err);
+            return;
+          }
+          if (data.ready) {
+            frame.addEventListener("load", () => applyTheme(currentTheme(), frame), { once: true });
+            frame.srcdoc = data.html;
+            statusEl.textContent = "Done — semantic judge finished.";
+            return;
+          }
+        }
+      }
+
       runBtn.addEventListener("click", async () => {
         runBtn.disabled = true;
         statusEl.classList.remove("err");
         const sem = state.mode === "validate" && optSemantic.checked;
         statusEl.textContent = state.mode === "compare"
           ? "Comparing… this can take a minute."
-          : (sem ? "Validating + semantic judge… several minutes." : "Validating…");
+          : "Validating…";
         result.classList.remove("visible");
 
         const fd = new FormData();
@@ -470,7 +492,12 @@
           frame.srcdoc = data.html;
           paths.textContent = "Saved: " + data.report_html + "  ·  " + data.report_json;
           result.classList.add("visible");
-          statusEl.textContent = "Done.";
+          if (data.semantic_pending) {
+            statusEl.textContent = "Structural results ready — semantic judge still running in the background…";
+            pollSemanticStatus(data.run_id);
+          } else {
+            statusEl.textContent = "Done.";
+          }
         } catch (err) {
           statusEl.classList.add("err");
           statusEl.textContent = err.message || String(err);

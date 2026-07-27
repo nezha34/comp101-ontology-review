@@ -117,6 +117,11 @@ DEFAULT_RELATION_SEMANTICS = {
         "The subject is a mechanism or language feature that makes the "
         "object concept/goal achievable — a means-to-end relationship."
     ),
+    "exampleOf": (
+        "The subject is a specific instance/code pattern that concretely "
+        "demonstrates the object Concept or Algorithm. Direction: "
+        "specific → general."
+    ),
     "throwsError": (
         "Performing the subject operation can, under realistic conditions "
         "covered by this course, actually raise the named error/exception."
@@ -165,6 +170,7 @@ DEFAULT_RELATION_SEMANTICS = {
     "methodOf": "The subject Method belongs to the object DataType (e.g. list.append methodOf list).",
     "hasMethod": "Inverse of methodOf: this DataType declares the object Method.",
     "raisedBy": "Inverse of throwsError: this error is raised by the object carrier.",
+    "hasExample": "Inverse of exampleOf: the object is a concrete instance/code pattern that demonstrates this concept.",
     "precedes": "Soft temporal/causal precedence between misconceptions or beats (module-specific).",
 }
 

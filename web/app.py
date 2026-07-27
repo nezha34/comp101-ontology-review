@@ -27,12 +27,19 @@ sys.path.insert(0, str(ROOT))
 import validate  # noqa: E402
 from lib.graph_utils import detect_namespace, load_graph  # noqa: E402
 from lib.ontology_drift import compute_tbox_drift  # noqa: E402
-from lib.report import render_html, write_html, write_json  # noqa: E402
+from lib.report import render_html, summarize, write_html, write_json  # noqa: E402
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 UPLOADS_DIR = ROOT / "uploads"
 RESULTS_DIR = ROOT / "results"
 ONTOLOGY_EXTS = validate.ONTOLOGY_EXTS
+
+# In-memory per-run state, keyed by run_id (the upload's timestamp stamp).
+# Fast layers (1-6) run synchronously and get shown right away; if the
+# semantic judge was requested it runs afterward in the background and
+# patches this dict in place, same split CLI/validate_fast + webapp already
+# use -- /api/validate/status/<run_id> is how the frontend polls for it.
+_RUNS: dict[str, dict] = {}
 
 app = FastAPI(title="COMP101 Ontology Review", version="0.2.0")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -132,25 +139,30 @@ def write_compare_html(payload: dict, out_dir: Path, stamp: str) -> Path:
     return path
 
 
-def _run_validate(
-    path: Path,
-    *,
-    use_oops: bool,
-    use_reasoner: bool,
-    use_semantic: bool,
-    semantic_provider: str,
-    semantic_model: str,
-) -> dict:
-    return validate.validate_one(
+def _run_validate_fast(path: Path, *, use_oops: bool, use_reasoner: bool) -> dict:
+    """Layers 1-6 only -- seconds, not minutes. `result["semantic"]` comes
+    back as a "pending" placeholder; the semantic judge (if requested) is
+    run separately, in the background, so the fast result can be shown
+    immediately instead of blocking the whole request on the LLM."""
+    return validate.validate_fast(
         path,
         None,  # always auto-match the config by namespace
         use_oops,
         use_reasoner,
         "",
-        use_semantic=use_semantic,
-        semantic_model=semantic_model,
-        semantic_provider=semantic_provider,
     )
+
+
+def _run_semantic_and_patch(run_id: str, path: Path, *, semantic_provider: str, semantic_model: str) -> dict:
+    """Runs just the semantic judge (re-parsing the graph fresh — rdflib
+    Graphs aren't guaranteed thread-safe to share) and patches it into the
+    already-stored fast result for this run."""
+    semantic = validate.run_semantic_only(path, None, semantic_model, semantic_provider)
+    result = _RUNS[run_id]
+    result["semantic"] = semantic
+    result["summary"] = summarize(result)
+    _RUNS[run_id] = result
+    return result
 
 
 def _describe_for_compare(path: Path) -> tuple[dict, object | None]:
@@ -193,6 +205,17 @@ def index() -> HTMLResponse:
     return HTMLResponse((STATIC_DIR / "index.html").read_text(encoding="utf-8"))
 
 
+async def _run_semantic_background_task(
+    run_id: str, path: Path, stamp: str, *, semantic_provider: str, semantic_model: str
+) -> None:
+    result = await asyncio.to_thread(
+        _run_semantic_and_patch, run_id, path,
+        semantic_provider=semantic_provider, semantic_model=semantic_model,
+    )
+    write_html([result], RESULTS_DIR, stamp)
+    write_json([result], RESULTS_DIR, stamp)
+
+
 @app.post("/api/validate")
 async def api_validate(
     file: UploadFile = File(...),
@@ -207,16 +230,12 @@ async def api_validate(
     work.mkdir(parents=True, exist_ok=True)
     try:
         path = _save_upload(file, work)
+        sem = _flag(use_semantic)
+        provider = semantic_provider.strip() or "ollama"
+        model = semantic_model.strip() or "gemma4:26b"
 
         def _run():
-            raw = _run_validate(
-                path,
-                use_oops=_flag(use_oops),
-                use_reasoner=_flag(use_reasoner),
-                use_semantic=_flag(use_semantic),
-                semantic_provider=semantic_provider.strip() or "ollama",
-                semantic_model=semantic_model.strip() or "gemma4:26b",
-            )
+            raw = _run_validate_fast(path, use_oops=_flag(use_oops), use_reasoner=_flag(use_reasoner))
             result = strip_runtime(raw)
             results = [result]
             html_path = write_html(results, RESULTS_DIR, stamp)
@@ -224,10 +243,23 @@ async def api_validate(
             return result, results, html_path, json_path
 
         result, results, html_path, json_path = await asyncio.to_thread(_run)
+        run_id = stamp
+        _RUNS[run_id] = result
+
+        semantic_pending = sem and not result.get("parse_error")
+        if semantic_pending:
+            asyncio.create_task(
+                _run_semantic_background_task(
+                    run_id, path, stamp, semantic_provider=provider, semantic_model=model,
+                )
+            )
+
         return JSONResponse(
             {
                 "ok": True,
                 "mode": "validate",
+                "run_id": run_id,
+                "semantic_pending": semantic_pending,
                 "html": render_html(results),
                 "result": result,
                 "report_html": str(html_path),
@@ -236,6 +268,23 @@ async def api_validate(
         )
     except Exception as exc:  # noqa: BLE001
         return JSONResponse({"ok": False, "error": str(exc)}, status_code=500)
+
+
+@app.get("/api/validate/status/{run_id}")
+def api_validate_status(run_id: str):
+    result = _RUNS.get(run_id)
+    if result is None:
+        return JSONResponse({"ok": False, "error": "unknown run_id"}, status_code=404)
+    semantic = result.get("semantic") or {}
+    ready = semantic.get("error") != "pending"
+    return JSONResponse(
+        {
+            "ok": True,
+            "ready": ready,
+            "html": render_html([result]) if ready else None,
+            "result": result if ready else None,
+        }
+    )
 
 
 @app.post("/api/compare")
