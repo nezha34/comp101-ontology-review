@@ -1,33 +1,33 @@
 # COMP101 Ontology Validation
 
-Toolkit for validating COMP101 week ontologies (OWL/RDF): structural
+Toolkit for validating COMP101 lecture ontologies (OWL/RDF): structural
 integrity, OWL DL consistency, the OOPS! pitfall scanner, OntoQA metrics,
-SPARQL competency questions, skill-graph DAG checks, and an optional
-two-phase LLM semantic judge that checks whether asserted relationships
-are actually *true*, not just well-formed. See `VALIDATION_CHECKS.txt`
-for what each layer does in detail.
+SPARQL competency questions, skill-graph DAG checks, T-Box drift/compare
+between two ontologies, and an optional two-phase LLM semantic judge that
+checks whether asserted relationships are actually *true*, not just
+well-formed. See `VALIDATION_CHECKS.txt` for what each layer does in detail.
 
 ## Quick start
 
 ```bash
-python3.11 -m pip install -r requirements.txt   # rdflib, owlready2, owlrl, flask, requests
+pip install -r requirements.txt   # rdflib, owlready2, requests, flask, fastapi, uvicorn, python-multipart
 
 # CLI — validate one file, structural layers only
-python3.11 validate.py path/to/onto.owl --no-oops --no-reasoner
+python validate.py path/to/onto.owl --no-oops --no-reasoner
 
 # CLI — full pass (needs a JVM on PATH for HermiT; internet for OOPS!)
-python3.11 validate.py path/to/onto.owl
+python validate.py path/to/onto.owl
 
 # CLI — with the semantic judge (local Ollama, needs the model pulled)
-python3.11 validate.py path/to/onto.owl --semantic --semantic-model gemma4:26b
+python validate.py path/to/onto.owl --semantic --semantic-model gemma4:26b
 
 # CLI — T-Box drift vs a baseline; gap class/relation comments feed the judge
-python3.11 validate.py path/to/onto.owl --semantic \
-    --semantic-baseline examples/comp101_oop.owl
+python validate.py path/to/onto.owl --semantic \
+    --semantic-baseline "examples/Lecture 10/comp101_L10.owl"
 
 # CLI — semantic judge via hosted NVIDIA NIM instead of local Ollama
-export NVIDIA_API_KEY="nvapi-..."   # never hardcode this — env var only
-python3.11 validate.py path/to/onto.owl --semantic --semantic-provider nvidia_nim \
+export NVIDIA_API_KEY="nvapi-..."   # never hardcode this — env var only (see .env.example)
+python validate.py path/to/onto.owl --semantic --semantic-provider nvidia_nim \
     --semantic-model mistralai/mistral-medium-3.5-128b
 
 # Web UI — drag-drop validate / compare (FastAPI, primary)
@@ -39,9 +39,24 @@ cd webapp && python app.py
 # open http://127.0.0.1:5000
 ```
 
+Needs Python 3.11+ and a JVM on PATH for HermiT (layer 3). If you have more
+than one Python on this machine (e.g. a system `python3.11` alongside a
+conda/venv `python`), **install `requirements.txt` into whichever
+interpreter actually runs the command** — `pip` on PATH silently resolving
+to a different interpreter than `python`/`python3.11` is a real footgun
+that has bitten this repo before (`import fastapi`/`import owlready2`
+failing at runtime despite `pip install` reporting success). Check with:
+
+```bash
+python -c "import sys; print(sys.executable)"
+python -m pip install -r requirements.txt   # installs into that same interpreter
+```
+
 Reports land in `results/validation_report_*.{html,json}` (gitignored).
-Web UI runs are stored per-upload under `webapp/runs/<id>/` (also
-gitignored — these are runtime artifacts, not source).
+The FastAPI UI stores uploads under `uploads/<id>/` and reports under
+`results/` (both gitignored); the legacy Flask UI stores its own
+per-upload runs under `webapp/runs/<id>/` (also gitignored — these are
+runtime artifacts, not source, in both cases).
 
 ## What you get
 
@@ -55,7 +70,7 @@ gitignored — these are runtime artifacts, not source).
 | 6. SPARQL competency Qs | config-driven, only runs if `configs/*.json` matches the ontology's namespace | `lib/sparql_cq.py` |
 | 7. Skill graph | DAG + concept-link checks, config-driven | `lib/skill_graph.py` |
 | 8. Semantic judge | **opt-in** (`--semantic`), two-phase LLM review of whether each edge is actually true | `lib/llm_judge.py` |
-| T-Box drift | optional (`--semantic-baseline` or config `semantic_baseline`) — gap classes/properties vs a baseline OWL, with comments fed into the judge | `lib/ontology_drift.py` |
+| T-Box drift / compare | classes+properties added/removed between two ontologies (a candidate vs. a baseline, or any two files side by side) | `lib/ontology_drift.py` |
 
 Layers 1–7 run in seconds. Layer 8 is slow (LLM calls) and always opt-in.
 
@@ -80,8 +95,8 @@ and still be pedagogically wrong. The semantic judge catches that:
   re-run doesn't re-flag (and re-argue) something already reviewed.
 - **Two backends**, same interface (`lib/llm_providers.py`): local Ollama
   (free, needs a model pulled — default `gemma4:26b`) or hosted NVIDIA
-  NIM (needs `NVIDIA_API_KEY` in the environment — never passed via the
-  UI or written to disk).
+  NIM (needs `NVIDIA_API_KEY` in the environment — see `.env.example`;
+  never passed via the UI or written to disk).
 - **Caching + parallelism.** An on-disk verdict cache
   (`results/.semantic_cache.json`) means reruns only pay for claims that
   actually changed; LLM calls run in a thread pool (`SEMANTIC_WORKERS`
@@ -90,31 +105,52 @@ and still be pedagogically wrong. The semantic judge catches that:
   immediately; the semantic judge runs afterward in a background thread
   and streams findings in as they're ready.
 
+## Comparing two ontologies
+
+`lib/ontology_drift.py` diffs the T-Box (classes + object properties,
+matched by local name so the same vocabulary aligns across namespaces) of
+two ontologies. Two entry points:
+
+- **CLI, one-sided**: `--semantic-baseline <file>` diffs the file under
+  review against a baseline and feeds the gap vocabulary into the
+  semantic judge as glosses, so it doesn't invent meanings for
+  undeclared classes/properties.
+- **Web UI, "Compare two"**: upload any two files for a side-by-side
+  "only in A" / "only in B" diff. This is diff-only — it does not re-run
+  the full validation pipeline on each file (that's what "Validate one"
+  is for); Compare just parses both files and reports the vocabulary
+  delta.
+
 ## Layout
 
 ```text
-validate.py            CLI entry point
-lib/                    all validation layers + the semantic judge
-  graph_utils.py          parsing, namespace detection
-  structural.py           layer 2
-  reasoner.py              layer 3 (HermiT)
-  oops_client.py           layer 4 (live OOPS! API)
-  oops_catalogue.py        P01-P41 severity/description table
-  metrics.py               layer 5 (OntoQA)
-  sparql_cq.py             layer 6
-  skill_graph.py           layer 7
-  prompts.py               layer 8 — phase 1 / phase 2 prompts
-  llm_providers.py         layer 8 — Ollama / NVIDIA NIM backends
-  llm_judge.py             layer 8 — orchestration, cache, parallelism
-  review_store.py          persists human accept/dismiss decisions
-  report.py                shared HTML/JSON report rendering
-  graph_view.py            interactive graph view (flagged edges highlighted)
-  source_view.py           raw-source view (flagged lines highlighted)
-webapp/                 Flask UI (upload -> dashboard / graph / source views)
-configs/                per-ontology namespace + CQs + skill_graph + relation_semantics
-data/AA/                reference COMP101 OOP/ICS ontologies (kept in sync with poster/final/)
-examples/               sample OWL modules to try the tool on
-results/                generated reports (gitignored)
+validate.py             CLI entry point
+lib/                     all validation layers + the semantic judge
+  graph_utils.py           parsing, namespace detection
+  structural.py            layer 2
+  reasoner.py               layer 3 (HermiT)
+  oops_client.py            layer 4 (live OOPS! API)
+  oops_catalogue.py         P01-P41 severity/description table
+  metrics.py                layer 5 (OntoQA)
+  sparql_cq.py              layer 6
+  skill_graph.py            layer 7
+  path_order.py             PATH-ordering scaffolding for the semantic judge
+  prompts.py                layer 8 — phase 1 / phase 2 prompts
+  llm_providers.py          layer 8 — Ollama / NVIDIA NIM backends
+  llm_judge.py              layer 8 — orchestration, cache, parallelism
+  ontology_drift.py         T-Box drift/compare (used by CLI baseline + web Compare)
+  review_store.py           persists human accept/dismiss decisions
+  report.py                 shared HTML/JSON report rendering
+  graph_view.py             interactive graph view (flagged edges highlighted)
+  source_view.py            raw-source view (flagged lines highlighted)
+web/                     FastAPI UI (primary) — drag-drop validate / compare
+webapp/                  legacy Flask UI — dashboard / graph / source views
+configs/                 per-ontology namespace + CQs + skill_graph + relation_semantics
+examples/                sample ontologies, one folder per lecture — see examples/README.md
+scripts/                 one-off fixer/conversion scripts (e.g. owl_to_html.py)
+tests/                   adversarial semantic-judge prompt tests
+results/                 generated reports (gitignored)
+uploads/                 FastAPI UI's per-upload scratch files (gitignored)
 ```
 
 ## Adding a new ontology
@@ -127,3 +163,15 @@ results/                generated reports (gitignored)
 3. For the semantic judge to have a real definition of your relations
    (rather than a generic fallback), add a `relation_semantics` block to
    the same config.
+4. If this is a per-lecture submission headed for a merge into the shared
+   ontology, follow the folder + sidecar-JSON convention in
+   `examples/README.md` instead of dropping a loose file — it's what
+   makes merging everyone's lecture ontologies tractable later.
+
+## Tests
+
+```bash
+python tests/test_adversarial_semantic.py -v   # unittest, no extra deps
+# or, if pytest is installed:
+pytest tests/ -q
+```

@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 import validate  # noqa: E402
-from lib.graph_utils import load_graph  # noqa: E402
+from lib.graph_utils import detect_namespace, load_graph  # noqa: E402
 from lib.ontology_drift import compute_tbox_drift  # noqa: E402
 from lib.report import render_html, write_html, write_json  # noqa: E402
 
@@ -50,27 +50,6 @@ def _save_upload(upload: UploadFile, dest_dir: Path) -> Path:
 
 def _flag(value: str) -> bool:
     return str(value).strip().lower() in {"1", "true", "yes", "on"}
-
-
-def load_all_configs() -> list[dict]:
-    configs: list[dict] = []
-    for cfg_path in sorted(validate.CONFIGS_DIR.glob("*.json")):
-        try:
-            cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError:
-            continue
-        cfg["_id"] = cfg_path.stem
-        configs.append(cfg)
-    return configs
-
-
-def find_config_by_id(config_id: str | None) -> dict | None:
-    if not config_id or config_id in {"auto", ""}:
-        return None
-    for cfg in load_all_configs():
-        if cfg["_id"] == config_id or cfg.get("name") == config_id:
-            return {k: v for k, v in cfg.items() if not k.startswith("_")}
-    return None
 
 
 def strip_runtime(result: dict) -> dict:
@@ -115,6 +94,19 @@ def _render_drift_section(drift: dict, title: str = "T-Box vocabulary drift") ->
     return "\n".join(lines)
 
 
+def _render_file_identity(label: str, info: dict) -> str:
+    if info.get("parse_error"):
+        return (
+            f"<h3>{escape(label)}: {escape(info.get('name', ''))}</h3>"
+            f"<p class='bad'>Parse error: {escape(info['parse_error'])}</p>"
+        )
+    return (
+        f"<h3>{escape(label)}: {escape(info.get('name', ''))}</h3>"
+        f"<p class='meta'>Namespace: <code>{escape(info.get('namespace') or '—')}</code> &middot; "
+        f"Triples: {info.get('triple_count', 0)}</p>"
+    )
+
+
 def render_compare_html(payload: dict) -> str:
     left = payload.get("left") or {}
     right = payload.get("right") or {}
@@ -122,11 +114,9 @@ def render_compare_html(payload: dict) -> str:
     body = (
         f"<h1>Compare: {escape(left.get('name', 'A'))} vs {escape(right.get('name', 'B'))}</h1>"
         f"<p class='meta'>{escape(payload.get('timestamp') or '')}</p>"
-        + _render_drift_section(drift, "Pairwise T-Box drift (A vs B)")
-        + "<h2>Left (A)</h2>"
-        + render_html([left])
-        + "<h2>Right (B)</h2>"
-        + render_html([right])
+        + _render_file_identity("A", left)
+        + _render_file_identity("B", right)
+        + _render_drift_section(drift, "T-Box vocabulary drift (A vs B)")
     )
     return (
         "<!DOCTYPE html><html><head><meta charset='utf-8'>"
@@ -145,17 +135,15 @@ def write_compare_html(payload: dict, out_dir: Path, stamp: str) -> Path:
 def _run_validate(
     path: Path,
     *,
-    config_id: str,
     use_oops: bool,
     use_reasoner: bool,
     use_semantic: bool,
     semantic_provider: str,
     semantic_model: str,
 ) -> dict:
-    cfg = find_config_by_id(config_id)
     return validate.validate_one(
         path,
-        cfg,
+        None,  # always auto-match the config by namespace
         use_oops,
         use_reasoner,
         "",
@@ -165,29 +153,36 @@ def _run_validate(
     )
 
 
-def _run_compare(
-    path_a: Path,
-    path_b: Path,
-    *,
-    config_id: str,
-    use_oops: bool,
-    use_reasoner: bool,
-) -> dict:
-    cfg = find_config_by_id(config_id)
-    a = validate.validate_one(path_a, cfg, use_oops, use_reasoner, "", use_semantic=False)
-    b = validate.validate_one(path_b, cfg, use_oops, use_reasoner, "", use_semantic=False)
+def _describe_for_compare(path: Path) -> tuple[dict, object | None]:
+    """Parse-only identity for one side of a compare — no validation pipeline.
+
+    Full per-file validation already lives in Validate mode; Compare only
+    needs the graphs themselves to diff the T-Box.
+    """
+    g, err = load_graph(path)
+    if err or g is None:
+        return {"name": path.name, "source_path": str(path), "parse_error": err or "failed to parse"}, None
+    return {
+        "name": path.name,
+        "source_path": str(path),
+        "namespace": detect_namespace(g),
+        "triple_count": len(g),
+        "parse_error": None,
+    }, g
+
+
+def _run_compare(path_a: Path, path_b: Path) -> dict:
+    left, ga = _describe_for_compare(path_a)
+    right, gb = _describe_for_compare(path_b)
     pairwise = None
-    if not a.get("parse_error") and not b.get("parse_error"):
-        ga, _ = load_graph(path_a)
-        gb, _ = load_graph(path_b)
-        if ga is not None and gb is not None:
-            pairwise = compute_tbox_drift(ga, gb)
-            pairwise["baseline_path"] = str(path_b)
-            pairwise["candidate_path"] = str(path_a)
+    if ga is not None and gb is not None:
+        pairwise = compute_tbox_drift(ga, gb)
+        pairwise["baseline_path"] = str(path_b)
+        pairwise["candidate_path"] = str(path_a)
     return {
         "mode": "compare",
-        "left": strip_runtime(a),
-        "right": strip_runtime(b),
+        "left": left,
+        "right": right,
         "pairwise_vocab": pairwise,
         "timestamp": datetime.now().isoformat(),
     }
@@ -198,21 +193,6 @@ def index() -> HTMLResponse:
     return HTMLResponse((STATIC_DIR / "index.html").read_text(encoding="utf-8"))
 
 
-@app.get("/api/configs")
-def api_configs():
-    packs = []
-    for cfg in load_all_configs():
-        packs.append(
-            {
-                "id": cfg["_id"],
-                "name": cfg.get("name"),
-                "namespace": cfg.get("namespace"),
-                "cq_count": len(cfg.get("competency_questions") or []),
-            }
-        )
-    return JSONResponse({"ok": True, "configs": packs})
-
-
 @app.post("/api/validate")
 async def api_validate(
     file: UploadFile = File(...),
@@ -220,8 +200,7 @@ async def api_validate(
     use_reasoner: str = Form("0"),
     use_semantic: str = Form("0"),
     semantic_provider: str = Form("ollama"),
-    semantic_model: str = Form("gemma4:e4b"),
-    config_id: str = Form("auto"),
+    semantic_model: str = Form("gemma4:26b"),
 ):
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     work = UPLOADS_DIR / f"validate_{stamp}"
@@ -232,12 +211,11 @@ async def api_validate(
         def _run():
             raw = _run_validate(
                 path,
-                config_id=config_id,
                 use_oops=_flag(use_oops),
                 use_reasoner=_flag(use_reasoner),
                 use_semantic=_flag(use_semantic),
                 semantic_provider=semantic_provider.strip() or "ollama",
-                semantic_model=semantic_model.strip() or "gemma4:e4b",
+                semantic_model=semantic_model.strip() or "gemma4:26b",
             )
             result = strip_runtime(raw)
             results = [result]
@@ -264,9 +242,6 @@ async def api_validate(
 async def api_compare(
     file_a: UploadFile = File(...),
     file_b: UploadFile = File(...),
-    use_oops: str = Form("0"),
-    use_reasoner: str = Form("0"),
-    config_id: str = Form("auto"),
 ):
     stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     work = UPLOADS_DIR / f"compare_{stamp}"
@@ -277,13 +252,7 @@ async def api_compare(
         path_b = _save_upload(file_b, work / "b")
 
         def _run():
-            payload = _run_compare(
-                path_a,
-                path_b,
-                config_id=config_id,
-                use_oops=_flag(use_oops),
-                use_reasoner=_flag(use_reasoner),
-            )
+            payload = _run_compare(path_a, path_b)
             html = render_compare_html(payload)
             html_path = write_compare_html(payload, RESULTS_DIR, stamp)
             json_path = RESULTS_DIR / f"compare_report_{stamp}.json"

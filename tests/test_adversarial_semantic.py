@@ -46,7 +46,13 @@ from lib.prompts import (
 
 EXAMPLES = ROOT / "examples"
 CONFIG_PATH = ROOT / "configs" / "comp101_w5_w6.json"
-OWL_PATH = EXAMPLES / "comp101_w5_w6.owl"
+# The original combined W5-W6 module was split into one file per lecture
+# folder (see examples/README.md); the test fixture needs both merged back
+# into a single graph to see cross-week triples (e.g. W6 dependsOn W5).
+OWL_PATHS = [
+    EXAMPLES / "Lecture 5" / "comp101_L5.owl",
+    EXAMPLES / "Lecture 6" / "comp101_L6.owl",
+]
 PATH_PATH = EXAMPLES / "comp101_path_w5_w6.json"
 
 # Live-LLM expectations from the review (§6). Not executed here — documented
@@ -100,9 +106,12 @@ def _load_cfg() -> dict:
 
 
 def _load_owl() -> Graph:
-    g, err = load_graph(OWL_PATH)
-    assert err is None, err
-    return g
+    merged = Graph()
+    for path in OWL_PATHS:
+        g, err = load_graph(path)
+        assert err is None, err
+        merged += g
+    return merged
 
 
 class AdversarialDeterministic(unittest.TestCase):

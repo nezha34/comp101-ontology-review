@@ -17,8 +17,9 @@ Runs, per ontology file:
      modifies the ontology file — read-only, report-only. Needs a local
      Ollama server (http://localhost:11434) with the model pulled.
 
-Requires python3.11 (has rdflib/owlready2/owlrl installed on this machine —
-check with `python3.11 -c "import rdflib, owlready2"` if unsure).
+Requires Python 3.11+ with the packages in requirements.txt installed —
+check with `python -c "import rdflib, owlready2"` if unsure. HermiT (via
+owlready2) additionally needs a JVM on PATH.
 
 Usage:
   python3.11 validate.py                                    # validate the two known COMP101 ontologies

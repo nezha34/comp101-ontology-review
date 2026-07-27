@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
+      color-scheme: light dark;
       --ink: #14201a;
       --muted: #4a5c52;
       --line: #c5d0c8;
@@ -19,6 +20,52 @@
       --bad: #a11f2c;
       --drop: #e8efea;
       --drop-active: #d0e5d9;
+      --bg-glow-1: #dce9e1;
+      --bg-glow-2: #e4ebe6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #e7ede9;
+        --muted: #93a599;
+        --line: #33453b;
+        --paper: #101713;
+        --panel: #17211b;
+        --accent: #3fae7d;
+        --accent-soft: #1d3527;
+        --bad: #e8636f;
+        --drop: #1a251e;
+        --drop-active: #223a2c;
+        --bg-glow-1: #16261e;
+        --bg-glow-2: #17231c;
+      }
+    }
+    :root[data-theme="dark"] {
+      --ink: #e7ede9;
+      --muted: #93a599;
+      --line: #33453b;
+      --paper: #101713;
+      --panel: #17211b;
+      --accent: #3fae7d;
+      --accent-soft: #1d3527;
+      --bad: #e8636f;
+      --drop: #1a251e;
+      --drop-active: #223a2c;
+      --bg-glow-1: #16261e;
+      --bg-glow-2: #17231c;
+    }
+    :root[data-theme="light"] {
+      --ink: #14201a;
+      --muted: #4a5c52;
+      --line: #c5d0c8;
+      --paper: #f3f6f2;
+      --panel: #ffffff;
+      --accent: #1f6b4a;
+      --accent-soft: #d8ebe0;
+      --bad: #a11f2c;
+      --drop: #e8efea;
+      --drop-active: #d0e5d9;
+      --bg-glow-1: #dce9e1;
+      --bg-glow-2: #e4ebe6;
     }
     * { box-sizing: border-box; }
     body {
@@ -27,11 +74,13 @@
       font-family: "IBM Plex Sans", system-ui, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(ellipse 80% 50% at 10% -10%, #dce9e1 0%, transparent 55%),
-        radial-gradient(ellipse 60% 40% at 100% 0%, #e4ebe6 0%, transparent 45%),
+        radial-gradient(ellipse 80% 50% at 10% -10%, var(--bg-glow-1) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 40% at 100% 0%, var(--bg-glow-2) 0%, transparent 45%),
         var(--paper);
+      transition: background 0.15s, color 0.15s;
     }
     .wrap { max-width: 920px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
     header h1 {
       font-size: 1.85rem;
       font-weight: 600;
@@ -44,6 +93,17 @@
       max-width: 40rem;
       line-height: 1.45;
     }
+    #ui-theme-toggle {
+      font: inherit;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    #ui-theme-toggle:hover { opacity: 0.8; }
     .modes { display: flex; gap: 0.5rem; margin: 1.75rem 0 1.25rem; }
     .modes button {
       font: inherit;
@@ -85,6 +145,7 @@
       cursor: pointer;
       transition: background 0.15s, border-color 0.15s;
     }
+    .drop[hidden] { display: none; }
     .drop.over { background: var(--drop-active); border-color: var(--accent); }
     .drop.has-file {
       border-style: solid;
@@ -108,6 +169,7 @@
       font-size: 0.9rem;
     }
     .opts label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
+    .opts label[hidden] { display: none; }
     .opts select, .opts input[type="text"] {
       font: inherit;
       margin-left: 0.35rem;
@@ -151,7 +213,7 @@
       width: 100%;
       min-height: 70vh;
       border: 0;
-      background: #fff;
+      background: var(--panel);
     }
     .paths {
       font-family: "IBM Plex Mono", ui-monospace, monospace;
@@ -163,13 +225,26 @@
     }
     #semantic-opts { display: none; width: 100%; }
     #semantic-opts.show { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; }
+    #semantic-opts .note {
+      width: 100%;
+      margin: -0.4rem 0 0;
+      font-size: 0.8rem;
+    }
+    #semantic-opts .note code {
+      background: var(--drop);
+      border-radius: 4px;
+      padding: 0.05rem 0.3rem;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>COMP101 Ontology Review</h1>
-      <p>Drop an OWL module for full review (structural + optional LLM semantic judge), or drop two to compare T-Box vocabularies. Reports stay on this machine.</p>
+      <div>
+        <h1>COMP101 Ontology Review</h1>
+        <p>Drop an OWL module for full review (structural + optional LLM semantic judge), or drop two to compare T-Box vocabularies. Reports stay on this machine.</p>
+      </div>
+      <button type="button" id="ui-theme-toggle">🌓 Theme</button>
     </header>
 
     <div class="modes" role="tablist">
@@ -193,29 +268,25 @@
         </div>
       </div>
 
-      <div class="opts">
-        <label>
-          Config pack
-          <select id="opt-config">
-            <option value="auto">Auto (match namespace)</option>
-          </select>
-        </label>
+      <div class="opts" id="validate-opts">
         <label><input type="checkbox" id="opt-reasoner" /> HermiT (needs JVM)</label>
         <label><input type="checkbox" id="opt-oops" /> OOPS! (needs network)</label>
         <label id="opt-semantic-wrap"><input type="checkbox" id="opt-semantic" /> Semantic judge (LLM, slow)</label>
       </div>
       <div class="opts" id="semantic-opts">
-        <label>
-          Provider
-          <select id="opt-provider">
-            <option value="ollama" selected>Ollama (local)</option>
-            <option value="nvidia_nim">NVIDIA NIM</option>
-          </select>
+        <label><input type="radio" name="semantic-provider" id="opt-provider-ollama" value="ollama" checked /> Local Ollama</label>
+        <label><input type="radio" name="semantic-provider" id="opt-provider-nim" value="nvidia_nim" /> NVIDIA NIM (hosted)</label>
+        <label id="ollama-model-wrap">
+          Ollama model tag
+          <input type="text" id="opt-model-ollama" value="gemma4:26b" />
         </label>
-        <label>
-          Model
-          <input type="text" id="opt-model" value="gemma4:e4b" />
+        <label id="nim-model-wrap" hidden>
+          NIM model id
+          <input type="text" id="opt-model-nim" value="mistralai/mistral-medium-3.5-128b" />
         </label>
+        <p class="note" id="nim-key-note" hidden>
+          Needs <code>NVIDIA_API_KEY</code> set in the environment the server was started from — never entered here.
+        </p>
       </div>
 
       <div class="actions">
@@ -232,6 +303,31 @@
 
   <script>
     (function () {
+      const THEME_KEY = "comp101-ui-theme";
+      const root = document.documentElement;
+      const themeBtn = document.getElementById("ui-theme-toggle");
+
+      function currentTheme() {
+        return root.getAttribute("data-theme")
+          || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      }
+
+      function applyTheme(theme, frameEl) {
+        root.setAttribute("data-theme", theme);
+        try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+        if (frameEl && frameEl.contentDocument && frameEl.contentDocument.documentElement) {
+          frameEl.contentDocument.documentElement.setAttribute("data-theme", theme);
+        }
+      }
+
+      let stored = null;
+      try { stored = localStorage.getItem(THEME_KEY); } catch (e) {}
+      if (stored === "dark" || stored === "light") root.setAttribute("data-theme", stored);
+
+      themeBtn.addEventListener("click", () => {
+        applyTheme(currentTheme() === "dark" ? "light" : "dark", document.getElementById("frame"));
+      });
+
       const state = { mode: "validate", fileA: null, fileB: null };
 
       const modeValidate = document.getElementById("mode-validate");
@@ -253,24 +349,28 @@
       const optOops = document.getElementById("opt-oops");
       const optSemantic = document.getElementById("opt-semantic");
       const semanticOpts = document.getElementById("semantic-opts");
-      const optProvider = document.getElementById("opt-provider");
-      const optModel = document.getElementById("opt-model");
-      const optConfig = document.getElementById("opt-config");
+      const optProviderOllama = document.getElementById("opt-provider-ollama");
+      const optProviderNim = document.getElementById("opt-provider-nim");
+      const optModelOllama = document.getElementById("opt-model-ollama");
+      const optModelNim = document.getElementById("opt-model-nim");
+      const ollamaModelWrap = document.getElementById("ollama-model-wrap");
+      const nimModelWrap = document.getElementById("nim-model-wrap");
+      const nimKeyNote = document.getElementById("nim-key-note");
       const optSemanticWrap = document.getElementById("opt-semantic-wrap");
-
-      fetch("/api/configs").then(r => r.json()).then(data => {
-        if (!data.ok) return;
-        data.configs.forEach(c => {
-          const o = document.createElement("option");
-          o.value = c.id;
-          o.textContent = (c.name || c.id) + (c.cq_count ? " (" + c.cq_count + " CQs)" : "");
-          optConfig.appendChild(o);
-        });
-      }).catch(() => {});
+      const validateOpts = document.getElementById("validate-opts");
 
       optSemantic.addEventListener("change", () => {
         semanticOpts.classList.toggle("show", optSemantic.checked);
       });
+
+      function refreshProviderFields() {
+        const nim = optProviderNim.checked;
+        ollamaModelWrap.hidden = nim;
+        nimModelWrap.hidden = !nim;
+        nimKeyNote.hidden = !nim;
+      }
+      optProviderOllama.addEventListener("change", refreshProviderFields);
+      optProviderNim.addEventListener("change", refreshProviderFields);
 
       function refreshReady() {
         const ok = state.mode === "validate"
@@ -287,7 +387,7 @@
         drops.classList.toggle("compare", mode === "compare");
         labelA.textContent = mode === "compare" ? "Ontology A (candidate)" : "Ontology";
         runBtn.textContent = mode === "compare" ? "Compare" : "Validate";
-        optSemanticWrap.style.display = mode === "validate" ? "" : "none";
+        validateOpts.style.display = mode === "validate" ? "" : "none";
         if (mode !== "validate") {
           optSemantic.checked = false;
           semanticOpts.classList.remove("show");
@@ -339,17 +439,21 @@
         result.classList.remove("visible");
 
         const fd = new FormData();
-        fd.append("use_oops", optOops.checked ? "1" : "0");
-        fd.append("use_reasoner", optReasoner.checked ? "1" : "0");
-        fd.append("config_id", optConfig.value);
 
         let url;
         if (state.mode === "validate") {
           url = "/api/validate";
           fd.append("file", state.fileA);
+          fd.append("use_oops", optOops.checked ? "1" : "0");
+          fd.append("use_reasoner", optReasoner.checked ? "1" : "0");
           fd.append("use_semantic", sem ? "1" : "0");
-          fd.append("semantic_provider", optProvider.value);
-          fd.append("semantic_model", optModel.value.trim() || "gemma4:e4b");
+          const nim = optProviderNim.checked;
+          fd.append("semantic_provider", nim ? "nvidia_nim" : "ollama");
+          fd.append(
+            "semantic_model",
+            (nim ? optModelNim.value : optModelOllama.value).trim()
+              || (nim ? "mistralai/mistral-medium-3.5-128b" : "gemma4:26b")
+          );
         } else {
           url = "/api/compare";
           fd.append("file_a", state.fileA);
@@ -362,6 +466,7 @@
           if (!res.ok || !data.ok) {
             throw new Error(data.error || ("HTTP " + res.status));
           }
+          frame.addEventListener("load", () => applyTheme(currentTheme(), frame), { once: true });
           frame.srcdoc = data.html;
           paths.textContent = "Saved: " + data.report_html + "  ·  " + data.report_json;
           result.classList.add("visible");
