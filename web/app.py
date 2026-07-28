@@ -156,8 +156,21 @@ def _run_validate_fast(path: Path, *, use_oops: bool, use_reasoner: bool) -> dic
 def _run_semantic_and_patch(run_id: str, path: Path, *, semantic_provider: str, semantic_model: str) -> dict:
     """Runs just the semantic judge (re-parsing the graph fresh — rdflib
     Graphs aren't guaranteed thread-safe to share) and patches it into the
-    already-stored fast result for this run."""
-    semantic = validate.run_semantic_only(path, None, semantic_model, semantic_provider)
+    already-stored fast result for this run.
+
+    Never lets an exception (e.g. Ollama restarting mid-request, a dropped
+    connection) leave the run stuck in "pending" forever -- the poller has
+    no other way to learn the run died, so a crash here must still produce
+    a terminal (non-"pending") semantic state."""
+    try:
+        semantic = validate.run_semantic_only(path, None, semantic_model, semantic_provider)
+    except Exception as exc:  # noqa: BLE001
+        semantic = {
+            "ok": False, "error": f"Semantic judge crashed: {exc}",
+            "model": semantic_model, "provider": semantic_provider,
+            "phase1_total_claims": 0, "phase1_flagged": 0,
+            "phase2_resolved": [], "issues": [],
+        }
     result = _RUNS[run_id]
     result["semantic"] = semantic
     result["summary"] = summarize(result)
