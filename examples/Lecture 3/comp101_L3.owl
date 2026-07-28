@@ -267,7 +267,6 @@
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#Concept"/>
     <ctrl:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#C_CTRL02"/>
     <ctrl:bestPractice>Avoid excessive nesting by combining related Boolean conditions when possible.</ctrl:bestPractice>
-    <ctrl:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#C_CTRL16"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/control-structures#DT_CTRL04">
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
@@ -300,7 +299,6 @@
     <ctrl:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#C_CTRL04"/>
     <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#Concept"/>
-    <ctrl:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#C_CTRL15"/>
     <ctrl:definition>A loop placed inside another loop. During each iteration of the outer loop, the inner loop executes completely.</ctrl:definition>
     <ctrl:bestPractice>Keep nested loops as shallow as possible to improve readability and reduce unnecessary computation.</ctrl:bestPractice>
     <ctrl:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/control-structures#L03"/>
