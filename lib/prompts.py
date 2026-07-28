@@ -118,9 +118,11 @@ DEFAULT_RELATION_SEMANTICS = {
         "object concept/goal achievable — a means-to-end relationship."
     ),
     "exampleOf": (
-        "The subject is a specific instance/code pattern that concretely "
-        "demonstrates the object Concept or Algorithm. Direction: "
-        "specific → general."
+        "The subject is a specific instance or exemplar of the object, "
+        "which is the more general entity it concretely demonstrates "
+        "(e.g. PATH exampleOf Environment Variable — both may be the "
+        "same entity type; this is not restricted to Concept/Algorithm "
+        "targets). Direction: specific → general."
     ),
     "throwsError": (
         "Performing the subject operation can, under realistic conditions "
