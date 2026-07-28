@@ -606,10 +606,10 @@ def render_page(title: str, meta_line: str, body: str, nav_links: list[tuple[str
 </html>"""
 
 
-def render_html(results: list[dict]) -> str:
+def render_html(results: list[dict], run_id: str | None = None, decisions: dict | None = None) -> str:
     generated = datetime.now().isoformat(timespec="seconds")
     meta = f"Generated {escape(generated)} &middot; {len(results)} ontology file(s)"
-    return render_page("Ontology Validation Report", meta, render_body(results))
+    return render_page("Ontology Validation Report", meta, render_body(results, run_id, decisions))
 
 
 def write_html(results: list[dict], out_dir: Path, stamp: str) -> Path:

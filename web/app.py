@@ -17,7 +17,7 @@ from datetime import datetime
 from html import escape
 from pathlib import Path
 
-from fastapi import FastAPI, File, Form, UploadFile
+from fastapi import Body, FastAPI, File, Form, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -28,10 +28,12 @@ import validate  # noqa: E402
 from lib.graph_utils import detect_namespace, load_graph  # noqa: E402
 from lib.ontology_drift import compute_tbox_drift  # noqa: E402
 from lib.report import render_html, summarize, write_html, write_json  # noqa: E402
+from lib.review_store import record_decision as remember_review  # noqa: E402
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
 UPLOADS_DIR = ROOT / "uploads"
 RESULTS_DIR = ROOT / "results"
+CHANGES_DIR = ROOT / "results" / "changes_to_make"
 ONTOLOGY_EXTS = validate.ONTOLOGY_EXTS
 
 # In-memory per-run state, keyed by run_id (the upload's timestamp stamp).
@@ -40,6 +42,11 @@ ONTOLOGY_EXTS = validate.ONTOLOGY_EXTS
 # patches this dict in place, same split CLI/validate_fast + webapp already
 # use -- /api/validate/status/<run_id> is how the frontend polls for it.
 _RUNS: dict[str, dict] = {}
+
+# Per-run accept/dismiss button state, {run_id: {str(issue_idx): "accepted"|"dismissed"}}.
+# Same spirit as webapp/app.py's decisions.json but in-memory since runs here
+# already live in _RUNS rather than a per-run directory on disk.
+_DECISIONS: dict[str, dict] = {}
 
 app = FastAPI(title="COMP101 Ontology Review", version="0.2.0")
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -61,6 +68,19 @@ def _flag(value: str) -> bool:
 
 def strip_runtime(result: dict) -> dict:
     return {k: v for k, v in result.items() if not k.startswith("_")}
+
+
+def _changes_file(result: dict) -> Path:
+    from werkzeug.utils import secure_filename  # already a dependency (flask/webapp)
+
+    slug = secure_filename(result.get("name") or "ontology") or "ontology"
+    return CHANGES_DIR / f"{slug}.json"
+
+
+def _load_changes(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    return json.loads(path.read_text())
 
 
 def _render_drift_section(drift: dict, title: str = "T-Box vocabulary drift") -> str:
@@ -273,7 +293,7 @@ async def api_validate(
                 "mode": "validate",
                 "run_id": run_id,
                 "semantic_pending": semantic_pending,
-                "html": render_html(results),
+                "html": render_html(results, run_id=run_id, decisions=_DECISIONS.get(run_id, {})),
                 "result": result,
                 "report_html": str(html_path),
                 "report_json": str(json_path),
@@ -294,10 +314,70 @@ def api_validate_status(run_id: str):
         {
             "ok": True,
             "ready": ready,
-            "html": render_html([result]) if ready else None,
+            "html": render_html([result], run_id=run_id, decisions=_DECISIONS.get(run_id, {})) if ready else None,
             "result": result if ready else None,
         }
     )
+
+
+@app.post("/decision/{run_id}/{idx}")
+def record_decision(run_id: str, idx: int, action: str = Body(..., embed=True)):
+    """Accept or dismiss one semantic-judge finding for a run — same
+    contract as webapp/app.py's route of the same name/path (the review
+    controls' JS baked into lib/report.py's REPORT_CSS/REVIEW_SCRIPT is
+    shared by both UIs and posts to this exact path).
+
+    Accept: appends the finding to results/changes_to_make/<ontology>.json
+    (a human-reviewable queue of proposed edits — nothing here touches the
+    ontology file itself). Dismiss: just records disagreement. Either way,
+    also persists to the namespace-scoped review store so a future run
+    (this UI, the CLI, or a coworker's) skips re-judging this exact triple."""
+    result = _RUNS.get(run_id)
+    if result is None:
+        return JSONResponse({"ok": False, "error": f"No run '{run_id}'"}, status_code=404)
+    if action not in ("accept", "dismiss"):
+        return JSONResponse({"ok": False, "error": "action must be 'accept' or 'dismiss'"}, status_code=400)
+
+    issues = (result.get("semantic") or {}).get("issues", [])
+    if idx < 0 or idx >= len(issues):
+        return JSONResponse(
+            {"ok": False, "error": f"No semantic issue at index {idx} for run '{run_id}'"}, status_code=404
+        )
+    issue = issues[idx]
+
+    changes_path = _changes_file(result)
+    changes = _load_changes(changes_path)
+    changes = [c for c in changes if not (c["run_id"] == run_id and c["issue_index"] == idx)]
+
+    status = "accepted" if action == "accept" else "dismissed"
+    if action == "accept":
+        changes.append({
+            "run_id": run_id,
+            "issue_index": idx,
+            "queued_at": datetime.now().isoformat(timespec="seconds"),
+            "ontology": result.get("name"),
+            "namespace": result.get("namespace"),
+            "subject": issue.get("subject"),
+            "predicate": issue.get("predicate"),
+            "object": issue.get("object"),
+            "subject_uri": issue.get("subject_uri"),
+            "object_uri": issue.get("object_uri"),
+            "issue_summary": issue.get("issue_summary"),
+            "proposed_fix_action": issue.get("proposed_fix_action"),
+            "proposed_fix_triple": issue.get("proposed_fix_triple"),
+            "proposed_fix_rationale": issue.get("proposed_fix_rationale"),
+        })
+    CHANGES_DIR.mkdir(parents=True, exist_ok=True)
+    changes_path.write_text(json.dumps(changes, indent=2, ensure_ascii=False))
+
+    _DECISIONS.setdefault(run_id, {})[str(idx)] = status
+
+    ns = result.get("namespace")
+    if ns and issue.get("subject_uri") and issue.get("object_uri"):
+        remember_review(ns, issue["subject_uri"], issue.get("predicate", ""),
+                         issue["object_uri"], status, note=issue.get("issue_summary", ""))
+
+    return JSONResponse({"ok": True, "status": status})
 
 
 @app.post("/api/compare")
@@ -345,6 +425,7 @@ def main() -> None:
 
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    CHANGES_DIR.mkdir(parents=True, exist_ok=True)
     uvicorn.run("web.app:app", host="127.0.0.1", port=8765, reload=False)
 
 
