@@ -172,7 +172,6 @@ DEFAULT_RELATION_SEMANTICS = {
     "methodOf": "The subject Method belongs to the object DataType (e.g. list.append methodOf list).",
     "hasMethod": "Inverse of methodOf: this DataType declares the object Method.",
     "raisedBy": "Inverse of throwsError: this error is raised by the object carrier.",
-    "hasExample": "Inverse of exampleOf: the object is a concrete instance/code pattern that demonstrates this concept.",
     "precedes": "Soft temporal/causal precedence between misconceptions or beats (module-specific).",
 }
 
@@ -252,8 +251,14 @@ def format_skill_graph_wiring(config: dict | None) -> str | None:
         )
     elif sg.get("uses_concept"):
         lines.append(
-            f"  In this module, subjects of type {skill_cls} use "
-            f"{concept_edge} for concept links (legacy / OOP-style)."
+            f"  In this module, {skill_cls}→Concept links use "
+            f"{concept_edge} (legacy / OOP-style) — not requiresConcept."
+        )
+        lines.append(
+            "  This block configures the skill-graph checker only. It does "
+            "NOT mean only Skills may use that predicate — Algorithms and "
+            "other OWL-domain subjects may also use it when the relation "
+            "semantics / OWL domain allow."
         )
     return "\n".join(lines)
 
@@ -279,15 +284,21 @@ broader — the gloss encodes course-specific policy the T-Box intentionally \
 leaves open for extensibility. If you cannot tell from the provided text, \
 use "uncertain" — not "incorrect".
 
-requiresConcept vs usesConcept: if the subject is typed Skill, the only \
-valid relation of this pair is requiresConcept; usesConcept never applies \
-to Skill subjects. If you are judging a usesConcept edge and the subject \
-is a Skill, verdict is "incorrect". If you are judging a requiresConcept \
-edge and the subject is Method / BuiltInFunction / LanguageConstruct (not \
-a Skill), verdict is "incorrect".
+requiresConcept vs usesConcept: follow the MODULE relation meaning and \
+skill-graph wiring in the user message — do not apply a global ban.
+- If the module wires Skills with requiresConcept: Skill subjects must \
+not use usesConcept on that module.
+- If the module wires Skills with usesConcept (legacy L3/L4/OOP/ICS): \
+Skill→usesConcept is allowed and correct for type.
+- Never invent "only Skill may use usesConcept". Algorithms and other \
+OWL-domain subjects may also use usesConcept when the module gloss / \
+OWL domain lists them.
+- If judging requiresConcept and the subject is clearly a non-Skill \
+carrier (Method / BuiltInFunction / LanguageConstruct) in a \
+requiresConcept-wired module, verdict is "incorrect".
 
 Several claims in this batch may share the same subject or object — that \
-is expected graph structure (a Skill commonly has multiple requiresConcept \
+is expected graph structure (a Skill commonly has multiple concept \
 edges), not evidence of redundancy. Judge each edge only against the \
 relation meaning, not against how many siblings it has.
 
@@ -366,8 +377,9 @@ def build_phase1_user_prompt(
             lines.append(f"  - {name}: {gloss}")
     if relation_name in ("usesConcept", "requiresConcept") and not skill_graph_wiring:
         lines.append(
-            "Skill nodes use requiresConcept, never usesConcept "
-            "(if subject kind mismatches the relation, verdict is incorrect)."
+            "No module skill-graph wiring was supplied — judge subject kinds "
+            "only from the relation meaning and OWL domain/range above; do "
+            "not invent a global Skill/usesConcept ban."
         )
     if authoring_policy:
         lines.append("")
@@ -451,13 +463,21 @@ provided). This is NOT the same as "issue": absence of evidence in your \
 context is not evidence the edge is wrong. Never propose removing an \
 edge merely because you cannot confirm it.
 
-requiresConcept vs usesConcept: if the subject is typed Skill, the only \
-valid relation of this pair is requiresConcept; usesConcept never applies \
-to Skill subjects. Judging a usesConcept edge with a Skill subject → \
-verdict "issue" with fix_action="change_predicate" → requiresConcept. \
-Judging a requiresConcept edge whose subject is Method / BuiltInFunction \
-/ LanguageConstruct (not Skill) → "issue" with change_predicate → \
-usesConcept.
+requiresConcept vs usesConcept: follow the MODULE relation meaning and \
+skill-graph wiring in the user message — do not apply a global ban.
+- If the module wires Skills with requiresConcept: Skill subjects must \
+not use usesConcept; a usesConcept edge with a Skill subject is an \
+"issue" with change_predicate → requiresConcept.
+- If the module wires Skills with usesConcept (legacy L3/L4/OOP/ICS): \
+Skill→usesConcept is allowed — do NOT change_predicate to requiresConcept \
+just because the subject is a Skill.
+- Never invent "only Skill may use usesConcept". Algorithm→usesConcept \
+(and other OWL-domain subjects) is allowed when the module gloss / OWL \
+domain lists them. Do NOT rewrite Algorithm→usesConcept→Concept into \
+usesConstruct (usesConstruct targets ConceptCarrier, not Concept).
+- If judging requiresConcept whose subject is Method / BuiltInFunction \
+/ LanguageConstruct (not Skill) in a requiresConcept-wired module → \
+"issue" with change_predicate → usesConcept.
 
 For recommendedBefore: verdict "issue" requires showing that PATH or \
 dependsOn context does NOT already fix the order — absence of such \
@@ -579,7 +599,9 @@ def build_phase2_user_prompt(
             lines.append(f"  - {name}: {gloss}")
     if relation_name in ("usesConcept", "requiresConcept") and not skill_graph_wiring:
         lines.append(
-            "Skill nodes use requiresConcept, never usesConcept."
+            "No module skill-graph wiring was supplied — judge subject kinds "
+            "only from the relation meaning and OWL domain/range above; do "
+            "not invent a global Skill/usesConcept ban."
         )
     if authoring_policy:
         lines.append(f"Module authoring policy (do not contradict): {authoring_policy}")
