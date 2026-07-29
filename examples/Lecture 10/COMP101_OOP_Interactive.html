@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>COMP101 OOP — Object-Oriented Programming — Interactive</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0f1117;color:#eee;height:100vh;display:flex;flex-direction:column}
+#topbar{background:#5c1a3d;padding:10px 18px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+#topbar h1{font-size:15px;font-weight:700;color:#fff}
+#topbar span{font-size:12px;color:rgba(255,255,255,0.7)}
+#main{display:flex;flex:1;overflow:hidden}
+#sidebar{width:260px;background:#1a1d27;overflow-y:auto;padding:12px;flex-shrink:0;border-right:1px solid #2a2d3d}
+#cy{flex:1;background:#0f1117}
+.section-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;margin:12px 0 5px}
+.cb-row{display:flex;align-items:center;gap:7px;font-size:12px;padding:3px 0;cursor:pointer;user-select:none}
+.cb-row input{accent-color:#5c1a3d;width:13px;height:13px;cursor:pointer}
+.dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.line{width:18px;height:3px;border-radius:2px;flex-shrink:0}
+#detail{margin-top:12px;background:#12151f;border:1px solid #2a2d3d;border-radius:6px;padding:10px;font-size:11px;display:none}
+#detail h3{font-size:13px;margin-bottom:7px;color:#FFD700;word-break:break-word}
+.field{margin-bottom:5px;line-height:1.4;display:none}
+.field-label{color:#888;font-size:10px;text-transform:uppercase}
+.field-val{color:#ccc}
+#controls{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+button{background:#2a2d3d;border:1px solid #3a3d4d;color:#ccc;padding:5px 10px;border-radius:4px;font-size:11px;cursor:pointer}
+button:hover{background:#3a3d4d}
+select{background:#2a2d3d;border:1px solid #3a3d4d;color:#ccc;padding:4px 8px;border-radius:4px;font-size:11px;width:100%;cursor:pointer}
+#search{width:100%;padding:5px 8px;background:#2a2d3d;border:1px solid #3a3d4d;color:#eee;border-radius:4px;font-size:11px}
+#search::placeholder{color:#666}
+hr{border:none;border-top:1px solid #2a2d3d;margin:10px 0}
+</style>
+</head>
+<body>
+<div id="topbar">
+  <h1>COMP101 OOP — Object-Oriented Programming — Interactive Graph</h1>
+  <span>66 nodes &middot; 185 edges</span>
+</div>
+<div id="main">
+  <div id="sidebar">
+    <div class="section-title">Search</div>
+    <input id="search" type="text" placeholder="Find node by name…">
+    <hr>
+    <div class="section-title">Entity Types</div>
+    <label class="cb-row"><input type="checkbox" class="cb-type" data-type="Concept" checked><span class="dot" style="background:#1a3d5c"></span>Concept</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="DataType" checked><span class="dot" style="background:#3d3d00"></span>DataType</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="ErrorType" checked><span class="dot" style="background:#7a1a1a"></span>ErrorType</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="BuiltInFunction" checked><span class="dot" style="background:#7a4200"></span>BuiltInFunction</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="Method" checked><span class="dot" style="background:#1a5c3d"></span>Method</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="Skill" checked><span class="dot" style="background:#5c1a3d"></span>Skill</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="Lecture" checked><span class="dot" style="background:#2c2c60"></span>Lecture</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="LanguageConstruct" checked><span class="dot" style="background:#2c5c8a"></span>LanguageConstruct</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="OOPMechanism" checked><span class="dot" style="background:#6b3500"></span>OOPMechanism</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="ClassMember" checked><span class="dot" style="background:#2c5c3d"></span>ClassMember</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="MethodRole" checked><span class="dot" style="background:#4a3d00"></span>MethodRole</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="DesignAbstraction" checked><span class="dot" style="background:#500050"></span>DesignAbstraction</label><label class="cb-row"><input type="checkbox" class="cb-type" data-type="PythonInternals" checked><span class="dot" style="background:#003850"></span>PythonInternals</label>
+    <hr>
+    <div class="section-title">Relations</div>
+    <label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="depends_on" checked><span class="line" style="background:#c0392b"></span>depends on</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="uses_concept" checked><span class="line" style="background:#2980b9"></span>uses concept</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="contrasts_with" checked><span class="line" style="background:#8e44ad"></span>contrasts with</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="implemented_by" checked><span class="line" style="background:#27ae60"></span>implemented by</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="throws_error" checked><span class="line" style="background:#e67e22"></span>throws error</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="taught_in" checked><span class="line" style="background:#7f8c8d"></span>taught in</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="produces_type" checked><span class="line" style="background:#d4ac0d"></span>produces type</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="part_of" checked><span class="line" style="background:#e8590c"></span>part of</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="enables" checked><span class="line" style="background:#6c5ce7"></span>enables</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="example_of" checked><span class="line" style="background:#00897b"></span>example of</label><label class="cb-row"><input type="checkbox" class="cb-rel" data-rel="accepts_type" checked><span class="line" style="background:#d63384"></span>accepts type</label>
+    <hr>
+    <div class="section-title">Layout</div>
+    <div id="controls">
+      <select id="ls"><option value="dagre">Dagre (hierarchical)</option><option value="cose">CoSE (force-directed)</option><option value="circle">Circle</option><option value="breadthfirst">Breadth-first</option></select>
+      <button onclick="applyLayout()">Apply layout</button>
+      <button onclick="cy.fit()">Fit to screen</button>
+      <button onclick="clear_()">Clear selection</button>
+    </div>
+    <div id="detail">
+      <h3 id="d-name"></h3>
+      <div class="field" id="fw-type"><span class="field-label">Type</span><br><span class="field-val" id="d-type"></span></div>
+      <div class="field" id="fw-def"><span class="field-label">Definition</span><br><span class="field-val" id="d-def"></span></div>
+      <div class="field" id="fw-cog"><span class="field-label">Cognitive type</span><br><span class="field-val" id="d-cog"></span></div>
+      <div class="field" id="fw-bp"><span class="field-label">Best practice</span><br><span class="field-val" id="d-bp"></span></div>
+    </div>
+  </div>
+  <div id="cy"></div>
+</div>
+<script>
+const cy=cytoscape({container:document.getElementById('cy'),elements:[
+  {
+    "data": {
+      "id": "COOP001",
+      "label": "Class",
+      "type": "Concept",
+      "definition": "A blueprint/template that defines the attributes and methods all objects of that type will have. No instances exist until it is instantiated.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP002",
+      "label": "Object",
+      "type": "Concept",
+      "definition": "An instance of a class \u2014 the actual thing created from the blueprint. Each object has its own copy of instance attributes.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP007",
+      "label": "Instantiation",
+      "type": "Concept",
+      "definition": "The act of creating an object from a class by calling it like a function: Character('Arthur', 100, 15). Triggers __init__ automatically.",
+      "cognitive_type": "procedural",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP009",
+      "label": "Data Hiding",
+      "type": "Concept",
+      "definition": "The principle of restricting direct access to an object's internal state so that invariants can be enforced. In Python this is done by convention with a single leading underscore (_attr, 'internal use, don't touch') and, more strongly, via name mangling with a double leading underscore (__attr).",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP012",
+      "label": "Abstraction",
+      "type": "Concept",
+      "definition": "Simplifying how others use your code by exposing a clean public interface and hiding internal implementation detail. Focus on WHAT is exposed, not HOW it works internally.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP013",
+      "label": "Inheritance",
+      "type": "Concept",
+      "definition": "A mechanism where a child class acquires all attributes and methods of a parent class, enabling code reuse and specialisation.",
+      "cognitive_type": "conceptual",
+      "best_practice": "Keep parent class logic general; specialise only in the child class."
+    }
+  },
+  {
+    "data": {
+      "id": "COOP018",
+      "label": "Polymorphism",
+      "type": "Concept",
+      "definition": "The ability to use the same interface with objects of different types. The correct method is chosen at runtime based on the actual type of the object.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP019",
+      "label": "Duck Typing",
+      "type": "Concept",
+      "definition": "Python's implicit form of polymorphism: if an object has the required method, it can be used regardless of its class. 'If it walks like a duck and quacks like a duck, it is a duck.'",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP_ENC",
+      "label": "Encapsulation",
+      "type": "Concept",
+      "definition": "Bundling data and behaviour together inside a class, controlling access to enforce invariants.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP_OBJ_ID",
+      "label": "Object Identity",
+      "type": "Concept",
+      "definition": "The distinction between two objects being the same object in memory (is) versus having equal value (==). Without __eq__, == compares identity.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "COOP_STATIC",
+      "label": "Static Typing",
+      "type": "Concept",
+      "definition": "Type system where variable types are checked at compile time, not runtime. Python uses dynamic typing; static typing languages (Java, C++) contrast with Python's approach.",
+      "cognitive_type": "conceptual",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DT_OOP_BOOL",
+      "label": "bool",
+      "type": "DataType",
+      "definition": "Boolean \u2014 returned by __eq__ and comparison operators.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DT_OOP_INT",
+      "label": "int",
+      "type": "DataType",
+      "definition": "Integer \u2014 returned by __len__.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DT_OOP_STR",
+      "label": "str",
+      "type": "DataType",
+      "definition": "Python's text type \u2014 returned by __str__ and __repr__.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "E_OOP_ATTR",
+      "label": "AttributeError",
+      "type": "ErrorType",
+      "definition": "Raised when accessing an attribute that does not exist, or accessing a name-mangled attribute directly from outside the class.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "E_OOP_NOTIMPL",
+      "label": "NotImplementedError",
+      "type": "ErrorType",
+      "definition": "Raised manually inside a base-class method (before @abstractmethod is introduced) to force every subclass to override it; also raised if an @abstractmethod slips through and is called directly.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "E_OOP_RUNTIME",
+      "label": "RuntimeError",
+      "type": "ErrorType",
+      "definition": "Raised when an operation fails for reasons that don't fit a more specific exception type; in this lecture, specifically when zero-argument super() is called outside a proper instance method (no __class__ cell available to bind to).",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "E_OOP_TYPE",
+      "label": "TypeError",
+      "type": "ErrorType",
+      "definition": "Raised when wrong number of arguments passed to __init__, or incompatible types used in an operation.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "E_OOP_VALUE",
+      "label": "ValueError",
+      "type": "ErrorType",
+      "definition": "Raised when an operation receives an argument of the right type but an invalid value, e.g. a setter method rejecting an out-of-range value to enforce a class invariant.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "FOOP001",
+      "label": "super()",
+      "type": "BuiltInFunction",
+      "definition": "Returns a proxy object bound to the next class in the instance's Method Resolution Order (MRO) \u2014 the parent class in simple single inheritance, but not necessarily so once multiple inheritance is involved. Used inside a method to call the next implementation without hardcoding a class name.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "FOOP002",
+      "label": "isinstance()",
+      "type": "BuiltInFunction",
+      "definition": "Returns True if an object is an instance of a class or a subclass. Key tool for type-safe polymorphic code.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "FOOP003",
+      "label": "hasattr()",
+      "type": "BuiltInFunction",
+      "definition": "Returns True if an object has a named attribute. Core tool for duck-typing checks: test before you call.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MOOP001",
+      "label": "__init__",
+      "type": "Method",
+      "definition": "Constructor dunder method. Called automatically when a new object is created. Initialises all instance attributes via self.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MOOP002",
+      "label": "__str__",
+      "type": "Method",
+      "definition": "Returns a human-readable string representation of the object. Called implicitly by print() and str().",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MOOP003",
+      "label": "__repr__",
+      "type": "Method",
+      "definition": "Returns an unambiguous developer-facing string representation. Called by repr() and shown in the REPL.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MOOP004",
+      "label": "__eq__",
+      "type": "Method",
+      "definition": "Defines equality between two objects. Called implicitly by the == operator. Without it, == compares object identity, not value.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MOOP005",
+      "label": "__len__",
+      "type": "Method",
+      "definition": "Defines the length of an object. Called implicitly by len(). Allows user-defined classes to behave like built-in sequences.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP001",
+      "label": "Implementing Encapsulation",
+      "type": "Skill",
+      "definition": "Apply name mangling to hide internal state and write getter/setter methods that enforce class invariants.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP002",
+      "label": "Applying Inheritance",
+      "type": "Skill",
+      "definition": "Create subclasses that extend a parent class, call super().__init__() correctly, and override methods to specialise behaviour.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP003",
+      "label": "Applying Polymorphism",
+      "type": "Skill",
+      "definition": "Write code that operates on objects of different types through a shared interface, using method overriding and duck typing.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP004",
+      "label": "Writing Dunder Methods",
+      "type": "Skill",
+      "definition": "Implement special methods (__str__, __eq__, __len__) to integrate user-defined classes with Python built-in functions and operators.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP005",
+      "label": "Enforcing Class Invariants",
+      "type": "Skill",
+      "definition": "Use __init__ and setter methods to guarantee that object state always satisfies required constraints (e.g. hp is never negative).",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP006",
+      "label": "Choosing Method Roles",
+      "type": "Skill",
+      "definition": "Choose the correct method role -- instance method, @classmethod, @staticmethod, or @abstractmethod -- for a given design need, and predict what each is (and isn't) allowed to access.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "SKOOP007",
+      "label": "Choosing Design Relationships",
+      "type": "Skill",
+      "definition": "Choose between inheritance, composition, and an abstract interface when designing the relationship between two classes, and use mixins for reusable behaviour that doesn't fit a single hierarchy.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "L10",
+      "label": "Object-Oriented Programming",
+      "type": "Lecture",
+      "definition": "Lecture 10 of COMP101, covering object-oriented programming in Python: classes and objects, encapsulation, inheritance, polymorphism, method roles, dunder methods, and design abstractions.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "LC_OOP_CLASS",
+      "label": "class definition",
+      "type": "LanguageConstruct",
+      "definition": "The class keyword syntax. Defines a new class: class Name(Parent):",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP01",
+      "label": "Constructor",
+      "type": "OOPMechanism",
+      "definition": "The __init__ method called automatically when an object is created. Initialises all instance attributes. Part of every class definition.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP02",
+      "label": "Self Reference",
+      "type": "OOPMechanism",
+      "definition": "The conventional first parameter (self) in every instance method. Python passes the calling object automatically. Enables methods to read and write the object's own attributes.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP03",
+      "label": "Name Mangling",
+      "type": "OOPMechanism",
+      "definition": "An automatic interpreter transformation (not just a convention): any identifier with two leading underscores and at most one trailing underscore inside a class body is rewritten to _ClassName__attr. This is distinct from the single-underscore _attr convention (which is convention only, not rewritten) and from dunder names like __init__ (two leading AND two trailing underscores, also not rewritten).",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP04",
+      "label": "Method Overriding",
+      "type": "OOPMechanism",
+      "definition": "A subclass redefines a method that already exists in the parent class. The overriding method replaces or extends the parent's behaviour for that specific type.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP05",
+      "label": "super() Call",
+      "type": "OOPMechanism",
+      "definition": "Calling super() inside a method returns a proxy bound to the next class in the MRO, allowing a class to invoke the next implementation up the chain without hardcoding a class name.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP06",
+      "label": "Multiple Inheritance",
+      "type": "OOPMechanism",
+      "definition": "A Python class can inherit from more than one parent class simultaneously, acquiring attributes and methods from all of them. Method Resolution Order (MRO) determines lookup order.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "OM_OOP07",
+      "label": "Dunder Method",
+      "type": "OOPMechanism",
+      "definition": "Special methods surrounded by double underscores (__init__, __str__, __eq__). Called implicitly by Python operators and built-in functions rather than by direct name.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "CM_OOP01",
+      "label": "Instance Attribute",
+      "type": "ClassMember",
+      "definition": "An attribute bound to a specific object via self (self.hp). Each object has its own independent copy.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "CM_OOP02",
+      "label": "Class Attribute",
+      "type": "ClassMember",
+      "definition": "An attribute defined on the class body, shared across all instances unless shadowed by an instance attribute of the same name.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "CM_OOP03",
+      "label": "Subclass",
+      "type": "ClassMember",
+      "definition": "A class that inherits from one or more parent classes. Can add new attributes/methods or override existing ones via Method Overriding.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "CM_OOP04",
+      "label": "Superclass",
+      "type": "ClassMember",
+      "definition": "The parent class whose attributes and methods are inherited by a subclass. Contains the common shared behaviour that child classes specialise.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "CM_OOP05",
+      "label": "Method Signature",
+      "type": "ClassMember",
+      "definition": "The name and parameter list that define a method's interface contract: what it's called, how many arguments it takes, and what types are expected.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MR_OOP01",
+      "label": "Getter Method",
+      "type": "MethodRole",
+      "definition": "A public method that safely returns the value of a private attribute \u2014 one sanctioned way to read hidden state; @property (see Property Object) is the more idiomatic alternative.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MR_OOP02",
+      "label": "Setter Method",
+      "type": "MethodRole",
+      "definition": "A public method that safely sets a private attribute with optional validation. Enforces class invariants on mutation.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MR_OOP03",
+      "label": "Abstract Method",
+      "type": "MethodRole",
+      "definition": "A method declared in a parent class with no implementation body. Forces every subclass to provide its own implementation. Defined via @abstractmethod.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MR_OOP04",
+      "label": "Class Method",
+      "type": "MethodRole",
+      "definition": "A method that receives the class itself (not an instance) as its first argument. Defined with @classmethod. Used for alternative constructors or class-level operations.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "MR_OOP05",
+      "label": "Static Method",
+      "type": "MethodRole",
+      "definition": "A method with no implicit first argument \u2014 neither instance nor class. Defined with @staticmethod. Behaves like a plain function that lives in the class namespace.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP01",
+      "label": "Abstract Class",
+      "type": "DesignAbstraction",
+      "definition": "A class that cannot be instantiated directly and contains at least one abstract method. Enforces a contract: all concrete subclasses must implement the abstract methods.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP02",
+      "label": "Interface",
+      "type": "DesignAbstraction",
+      "definition": "A design abstraction defining a set of methods a class must implement without providing any implementation. Python achieves this via Abstract Base Classes or duck typing rather than a dedicated keyword.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP03",
+      "label": "Composition",
+      "type": "DesignAbstraction",
+      "definition": "The has-a design principle: building complex objects by containing instances of other objects rather than inheriting from them. Generally preferred over deep inheritance hierarchies.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP04",
+      "label": "Mixin",
+      "type": "DesignAbstraction",
+      "definition": "A class designed to add a specific behaviour to other classes via multiple inheritance, without being intended as a standalone class. Provides reusable behaviour slices.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP05",
+      "label": "Design Pattern",
+      "type": "DesignAbstraction",
+      "definition": "A named, reusable solution template for a recurring software design problem. Patterns (Factory, Strategy, Observer, etc.) are language-agnostic blueprints, not code.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP06",
+      "label": "UML Class Diagram",
+      "type": "DesignAbstraction",
+      "definition": "A standardised visual notation for class structure: shows classes, attributes, methods, and relationships (inheritance, composition, association) in a language-independent diagram.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "DA_OOP07",
+      "label": "Global State Problem",
+      "type": "DesignAbstraction",
+      "definition": "The anti-pattern where data is scattered across global variables, causing naming collisions, no shared behaviour, and copy-paste for every new feature. OOP solves this by bundling data with methods in a class.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP01",
+      "label": "Decorator",
+      "type": "PythonInternals",
+      "definition": "A callable that wraps a function or class, modifying its behaviour without changing its source code. Written with @ syntax. Enables aspect-oriented patterns (logging, timing, access control).",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP02",
+      "label": "Property Object",
+      "type": "PythonInternals",
+      "definition": "The object created by the @property decorator. Intercepts attribute access (get, set, delete) on an instance, letting you define attribute access as method calls while keeping dot-notation syntax.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP03",
+      "label": "Metaclass",
+      "type": "PythonInternals",
+      "definition": "The class of a class. In Python every class is itself an object, and its metaclass (default: type) controls how the class is created, what attributes it has, and how subclassing works.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP04",
+      "label": "__dict__",
+      "type": "PythonInternals",
+      "definition": "The dictionary that stores an object's (or class's) attribute namespace. Instance __dict__ holds per-object attributes; class __dict__ holds class-level attributes and methods.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP05",
+      "label": "__mro__",
+      "type": "PythonInternals",
+      "definition": "The Method Resolution Order tuple on a class. Lists the exact sequence Python searches for attributes and methods when a class uses inheritance, following the C3 linearisation algorithm.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "PI_OOP06",
+      "label": "__slots__",
+      "type": "PythonInternals",
+      "definition": "A class attribute that replaces the default __dict__ with a fixed set of allowed instance attribute names. Reduces per-instance memory overhead and prevents dynamic attribute creation.",
+      "cognitive_type": "",
+      "best_practice": ""
+    }
+  },
+  {
+    "data": {
+      "id": "e1",
+      "source": "CM_OOP01",
+      "target": "CM_OOP02",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e2",
+      "source": "CM_OOP01",
+      "target": "COOP002",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e3",
+      "source": "CM_OOP01",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e4",
+      "source": "CM_OOP01",
+      "target": "PI_OOP04",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e5",
+      "source": "CM_OOP02",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e6",
+      "source": "CM_OOP02",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e7",
+      "source": "CM_OOP02",
+      "target": "PI_OOP04",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e8",
+      "source": "CM_OOP03",
+      "target": "CM_OOP04",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e9",
+      "source": "CM_OOP03",
+      "target": "COOP013",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e10",
+      "source": "CM_OOP03",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e11",
+      "source": "CM_OOP04",
+      "target": "COOP013",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e12",
+      "source": "CM_OOP04",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e13",
+      "source": "CM_OOP05",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e14",
+      "source": "CM_OOP05",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e15",
+      "source": "COOP001",
+      "target": "LC_OOP_CLASS",
+      "rel": "implemented_by"
+    }
+  },
+  {
+    "data": {
+      "id": "e16",
+      "source": "COOP001",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e17",
+      "source": "COOP002",
+      "target": "COOP001",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e18",
+      "source": "COOP002",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e19",
+      "source": "COOP007",
+      "target": "COOP001",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e20",
+      "source": "COOP007",
+      "target": "OM_OOP01",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e21",
+      "source": "COOP007",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e22",
+      "source": "COOP009",
+      "target": "COOP_ENC",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e23",
+      "source": "COOP009",
+      "target": "OM_OOP03",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e24",
+      "source": "COOP009",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e25",
+      "source": "COOP009",
+      "target": "E_OOP_ATTR",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e26",
+      "source": "COOP012",
+      "target": "COOP_ENC",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e27",
+      "source": "COOP012",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e28",
+      "source": "COOP013",
+      "target": "DA_OOP02",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e29",
+      "source": "COOP013",
+      "target": "DA_OOP03",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e30",
+      "source": "COOP013",
+      "target": "COOP001",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e31",
+      "source": "COOP013",
+      "target": "LC_OOP_CLASS",
+      "rel": "implemented_by"
+    }
+  },
+  {
+    "data": {
+      "id": "e32",
+      "source": "COOP013",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e33",
+      "source": "COOP018",
+      "target": "OM_OOP04",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e34",
+      "source": "COOP018",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e35",
+      "source": "COOP018",
+      "target": "COOP013",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e36",
+      "source": "COOP019",
+      "target": "COOP_STATIC",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e37",
+      "source": "COOP019",
+      "target": "COOP018",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e38",
+      "source": "COOP019",
+      "target": "OM_OOP07",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e39",
+      "source": "COOP019",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e40",
+      "source": "COOP_ENC",
+      "target": "DA_OOP07",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e41",
+      "source": "COOP_ENC",
+      "target": "COOP001",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e42",
+      "source": "COOP_ENC",
+      "target": "LC_OOP_CLASS",
+      "rel": "implemented_by"
+    }
+  },
+  {
+    "data": {
+      "id": "e43",
+      "source": "COOP_ENC",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e44",
+      "source": "COOP_OBJ_ID",
+      "target": "COOP002",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e45",
+      "source": "COOP_OBJ_ID",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e46",
+      "source": "COOP_STATIC",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e47",
+      "source": "DA_OOP01",
+      "target": "COOP013",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e48",
+      "source": "DA_OOP01",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e49",
+      "source": "DA_OOP01",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e50",
+      "source": "DA_OOP02",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e51",
+      "source": "DA_OOP02",
+      "target": "COOP019",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e52",
+      "source": "DA_OOP03",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e53",
+      "source": "DA_OOP03",
+      "target": "CM_OOP01",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e54",
+      "source": "DA_OOP04",
+      "target": "OM_OOP06",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e55",
+      "source": "DA_OOP04",
+      "target": "DA_OOP05",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e56",
+      "source": "DA_OOP04",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e57",
+      "source": "DA_OOP05",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e58",
+      "source": "DA_OOP05",
+      "target": "COOP013",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e59",
+      "source": "DA_OOP05",
+      "target": "COOP_ENC",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e60",
+      "source": "DA_OOP06",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e61",
+      "source": "DA_OOP06",
+      "target": "COOP012",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e62",
+      "source": "DA_OOP06",
+      "target": "COOP013",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e63",
+      "source": "DA_OOP06",
+      "target": "COOP_ENC",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e64",
+      "source": "DA_OOP07",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e65",
+      "source": "DT_OOP_BOOL",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e66",
+      "source": "DT_OOP_INT",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e67",
+      "source": "DT_OOP_STR",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e68",
+      "source": "E_OOP_ATTR",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e69",
+      "source": "E_OOP_NOTIMPL",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e70",
+      "source": "E_OOP_RUNTIME",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e71",
+      "source": "E_OOP_TYPE",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e72",
+      "source": "E_OOP_VALUE",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e73",
+      "source": "FOOP001",
+      "target": "OM_OOP05",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e74",
+      "source": "FOOP001",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e75",
+      "source": "FOOP001",
+      "target": "E_OOP_RUNTIME",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e76",
+      "source": "FOOP001",
+      "target": "COOP013",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e77",
+      "source": "FOOP002",
+      "target": "DT_OOP_BOOL",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e78",
+      "source": "FOOP002",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e79",
+      "source": "FOOP002",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e80",
+      "source": "FOOP002",
+      "target": "COOP018",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e81",
+      "source": "FOOP002",
+      "target": "COOP019",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e82",
+      "source": "FOOP003",
+      "target": "DT_OOP_STR",
+      "rel": "accepts_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e83",
+      "source": "FOOP003",
+      "target": "DT_OOP_BOOL",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e84",
+      "source": "FOOP003",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e85",
+      "source": "FOOP003",
+      "target": "E_OOP_ATTR",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e86",
+      "source": "FOOP003",
+      "target": "COOP019",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e87",
+      "source": "LC_OOP_CLASS",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e88",
+      "source": "MOOP001",
+      "target": "OM_OOP01",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e89",
+      "source": "MOOP001",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e90",
+      "source": "MOOP001",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e91",
+      "source": "MOOP001",
+      "target": "OM_OOP02",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e92",
+      "source": "MOOP002",
+      "target": "OM_OOP07",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e93",
+      "source": "MOOP002",
+      "target": "DT_OOP_STR",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e94",
+      "source": "MOOP002",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e95",
+      "source": "MOOP002",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e96",
+      "source": "MOOP003",
+      "target": "OM_OOP07",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e97",
+      "source": "MOOP003",
+      "target": "DT_OOP_STR",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e98",
+      "source": "MOOP003",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e99",
+      "source": "MOOP003",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e100",
+      "source": "MOOP004",
+      "target": "OM_OOP07",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e101",
+      "source": "MOOP004",
+      "target": "DT_OOP_BOOL",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e102",
+      "source": "MOOP004",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e103",
+      "source": "MOOP004",
+      "target": "E_OOP_ATTR",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e104",
+      "source": "MOOP004",
+      "target": "COOP_OBJ_ID",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e105",
+      "source": "MOOP005",
+      "target": "OM_OOP07",
+      "rel": "example_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e106",
+      "source": "MOOP005",
+      "target": "DT_OOP_INT",
+      "rel": "produces_type"
+    }
+  },
+  {
+    "data": {
+      "id": "e107",
+      "source": "MOOP005",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e108",
+      "source": "MOOP005",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e109",
+      "source": "MR_OOP01",
+      "target": "MR_OOP02",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e110",
+      "source": "MR_OOP01",
+      "target": "PI_OOP02",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e111",
+      "source": "MR_OOP01",
+      "target": "COOP009",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e112",
+      "source": "MR_OOP01",
+      "target": "COOP_ENC",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e113",
+      "source": "MR_OOP01",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e114",
+      "source": "MR_OOP02",
+      "target": "COOP009",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e115",
+      "source": "MR_OOP02",
+      "target": "COOP_ENC",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e116",
+      "source": "MR_OOP02",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e117",
+      "source": "MR_OOP02",
+      "target": "E_OOP_VALUE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e118",
+      "source": "MR_OOP03",
+      "target": "DA_OOP01",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e119",
+      "source": "MR_OOP03",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e120",
+      "source": "MR_OOP03",
+      "target": "E_OOP_NOTIMPL",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e121",
+      "source": "MR_OOP04",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e122",
+      "source": "MR_OOP04",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e123",
+      "source": "MR_OOP05",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e124",
+      "source": "MR_OOP05",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e125",
+      "source": "OM_OOP01",
+      "target": "COOP007",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e126",
+      "source": "OM_OOP01",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e127",
+      "source": "OM_OOP01",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e128",
+      "source": "OM_OOP02",
+      "target": "CM_OOP01",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e129",
+      "source": "OM_OOP02",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e130",
+      "source": "OM_OOP02",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e131",
+      "source": "OM_OOP03",
+      "target": "COOP009",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e132",
+      "source": "OM_OOP03",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e133",
+      "source": "OM_OOP03",
+      "target": "E_OOP_ATTR",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e134",
+      "source": "OM_OOP04",
+      "target": "COOP018",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e135",
+      "source": "OM_OOP04",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e136",
+      "source": "OM_OOP05",
+      "target": "COOP013",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e137",
+      "source": "OM_OOP05",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e138",
+      "source": "OM_OOP06",
+      "target": "COOP013",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e139",
+      "source": "OM_OOP06",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e140",
+      "source": "OM_OOP06",
+      "target": "E_OOP_TYPE",
+      "rel": "throws_error"
+    }
+  },
+  {
+    "data": {
+      "id": "e141",
+      "source": "OM_OOP07",
+      "target": "OM_OOP03",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e142",
+      "source": "OM_OOP07",
+      "target": "COOP019",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e143",
+      "source": "OM_OOP07",
+      "target": "COOP001",
+      "rel": "part_of"
+    }
+  },
+  {
+    "data": {
+      "id": "e144",
+      "source": "OM_OOP07",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e145",
+      "source": "PI_OOP01",
+      "target": "COOP012",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e146",
+      "source": "PI_OOP01",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e147",
+      "source": "PI_OOP02",
+      "target": "MR_OOP02",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e148",
+      "source": "PI_OOP02",
+      "target": "COOP009",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e149",
+      "source": "PI_OOP02",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e150",
+      "source": "PI_OOP03",
+      "target": "COOP001",
+      "rel": "enables"
+    }
+  },
+  {
+    "data": {
+      "id": "e151",
+      "source": "PI_OOP03",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e152",
+      "source": "PI_OOP04",
+      "target": "PI_OOP06",
+      "rel": "contrasts_with"
+    }
+  },
+  {
+    "data": {
+      "id": "e153",
+      "source": "PI_OOP04",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e154",
+      "source": "PI_OOP05",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e155",
+      "source": "PI_OOP05",
+      "target": "OM_OOP06",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e156",
+      "source": "PI_OOP06",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e157",
+      "source": "SKOOP001",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e158",
+      "source": "SKOOP001",
+      "target": "MR_OOP01",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e159",
+      "source": "SKOOP001",
+      "target": "MR_OOP02",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e160",
+      "source": "SKOOP001",
+      "target": "OM_OOP03",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e161",
+      "source": "SKOOP002",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e162",
+      "source": "SKOOP002",
+      "target": "CM_OOP03",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e163",
+      "source": "SKOOP002",
+      "target": "OM_OOP05",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e164",
+      "source": "SKOOP003",
+      "target": "SKOOP002",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e165",
+      "source": "SKOOP003",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e166",
+      "source": "SKOOP003",
+      "target": "COOP019",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e167",
+      "source": "SKOOP003",
+      "target": "OM_OOP04",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e168",
+      "source": "SKOOP004",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e169",
+      "source": "SKOOP004",
+      "target": "OM_OOP07",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e170",
+      "source": "SKOOP005",
+      "target": "SKOOP001",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e171",
+      "source": "SKOOP005",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e172",
+      "source": "SKOOP005",
+      "target": "COOP_ENC",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e173",
+      "source": "SKOOP005",
+      "target": "MR_OOP02",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e174",
+      "source": "SKOOP006",
+      "target": "SKOOP002",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e175",
+      "source": "SKOOP006",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e176",
+      "source": "SKOOP006",
+      "target": "MR_OOP03",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e177",
+      "source": "SKOOP006",
+      "target": "MR_OOP04",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e178",
+      "source": "SKOOP006",
+      "target": "MR_OOP05",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e179",
+      "source": "SKOOP007",
+      "target": "SKOOP002",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e180",
+      "source": "SKOOP007",
+      "target": "SKOOP006",
+      "rel": "depends_on"
+    }
+  },
+  {
+    "data": {
+      "id": "e181",
+      "source": "SKOOP007",
+      "target": "L10",
+      "rel": "taught_in"
+    }
+  },
+  {
+    "data": {
+      "id": "e182",
+      "source": "SKOOP007",
+      "target": "DA_OOP01",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e183",
+      "source": "SKOOP007",
+      "target": "DA_OOP02",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e184",
+      "source": "SKOOP007",
+      "target": "DA_OOP03",
+      "rel": "uses_concept"
+    }
+  },
+  {
+    "data": {
+      "id": "e185",
+      "source": "SKOOP007",
+      "target": "DA_OOP04",
+      "rel": "uses_concept"
+    }
+  }
+],style:[{"selector": "node", "style": {"label": "data(label)", "font-size": "10px", "text-wrap": "wrap", "text-max-width": "90px", "text-valign": "center", "text-halign": "center", "color": "#fff", "font-weight": "bold", "width": "label", "height": "label", "padding": "7px", "shape": "roundrectangle", "border-width": 2, "border-color": "rgba(255,255,255,0.25)"}}, {"selector": "node[type=\"Concept\"]", "style": {"background-color": "#1a3d5c"}}, {"selector": "node[type=\"DataType\"]", "style": {"background-color": "#3d3d00"}}, {"selector": "node[type=\"Encoding\"]", "style": {"background-color": "#2c5c3d"}}, {"selector": "node[type=\"ErrorType\"]", "style": {"background-color": "#7a1a1a"}}, {"selector": "node[type=\"BuiltInFunction\"]", "style": {"background-color": "#7a4200"}}, {"selector": "node[type=\"Method\"]", "style": {"background-color": "#1a5c3d"}}, {"selector": "node[type=\"Skill\"]", "style": {"background-color": "#5c1a3d"}}, {"selector": "node[type=\"Lecture\"]", "style": {"background-color": "#2c2c60"}}, {"selector": "node[type=\"HardwareComponent\"]", "style": {"background-color": "#6b0000"}}, {"selector": "node[type=\"SystemLayer\"]", "style": {"background-color": "#00416b"}}, {"selector": "node[type=\"RuntimeEntity\"]", "style": {"background-color": "#006a8a"}}, {"selector": "node[type=\"SystemMechanism\"]", "style": {"background-color": "#4a006b"}}, {"selector": "node[type=\"SystemProperty\"]", "style": {"background-color": "#006640"}}, {"selector": "node[type=\"LanguageConstruct\"]", "style": {"background-color": "#2c5c8a"}}, {"selector": "node[type=\"OOPMechanism\"]", "style": {"background-color": "#6b3500"}}, {"selector": "node[type=\"ClassMember\"]", "style": {"background-color": "#2c5c3d"}}, {"selector": "node[type=\"MethodRole\"]", "style": {"background-color": "#4a3d00"}}, {"selector": "node[type=\"DesignAbstraction\"]", "style": {"background-color": "#500050"}}, {"selector": "node[type=\"PythonInternals\"]", "style": {"background-color": "#003850"}}, {"selector": "node[type=\"ErrorType\"]", "style": {"shape": "diamond"}}, {"selector": "node[type=\"DataType\"]", "style": {"shape": "ellipse"}}, {"selector": "node[type=\"Encoding\"]", "style": {"shape": "triangle"}}, {"selector": "node[type=\"Lecture\"]", "style": {"shape": "hexagon"}}, {"selector": "node[type=\"HardwareComponent\"]", "style": {"shape": "pentagon"}}, {"selector": "edge", "style": {"curve-style": "bezier", "width": 2, "target-arrow-shape": "triangle", "font-size": "9px", "label": "data(rel)", "text-rotation": "autorotate", "color": "#444", "text-background-color": "#fff", "text-background-opacity": 0.75, "text-background-padding": "2px"}}, {"selector": "edge[rel=\"depends_on\"]", "style": {"line-color": "#c0392b", "target-arrow-color": "#c0392b"}}, {"selector": "edge[rel=\"uses_concept\"]", "style": {"line-color": "#2980b9", "target-arrow-color": "#2980b9"}}, {"selector": "edge[rel=\"contrasts_with\"]", "style": {"line-color": "#8e44ad", "target-arrow-color": "#8e44ad"}}, {"selector": "edge[rel=\"implemented_by\"]", "style": {"line-color": "#27ae60", "target-arrow-color": "#27ae60"}}, {"selector": "edge[rel=\"throws_error\"]", "style": {"line-color": "#e67e22", "target-arrow-color": "#e67e22"}}, {"selector": "edge[rel=\"taught_in\"]", "style": {"line-color": "#7f8c8d", "target-arrow-color": "#7f8c8d"}}, {"selector": "edge[rel=\"method_of\"]", "style": {"line-color": "#16a085", "target-arrow-color": "#16a085"}}, {"selector": "edge[rel=\"produces_type\"]", "style": {"line-color": "#d4ac0d", "target-arrow-color": "#d4ac0d"}}, {"selector": "edge[rel=\"part_of\"]", "style": {"line-color": "#e8590c", "target-arrow-color": "#e8590c"}}, {"selector": "edge[rel=\"managed_by\"]", "style": {"line-color": "#0984e3", "target-arrow-color": "#0984e3"}}, {"selector": "edge[rel=\"enables\"]", "style": {"line-color": "#6c5ce7", "target-arrow-color": "#6c5ce7"}}, {"selector": "edge[rel=\"example_of\"]", "style": {"line-color": "#00897b", "target-arrow-color": "#00897b"}}, {"selector": "edge[rel=\"accepts_type\"]", "style": {"line-color": "#d63384", "target-arrow-color": "#d63384"}}, {"selector": "node:selected,node.highlighted", "style": {"border-width": 4, "border-color": "#FFD700"}}, {"selector": ".faded", "style": {"opacity": 0.1}}],layout:{name:'dagre',rankDir:'TB',nodeSep:55,rankSep:75,padding:30},minZoom:0.05,maxZoom:4,wheelSensitivity:0.3});
+const hiddenTypes=new Set(),hiddenRels=new Set();
+function refresh(){cy.batch(()=>{cy.nodes().forEach(n=>hiddenTypes.has(n.data('type'))?n.hide():n.show());cy.edges().forEach(e=>{const r=e.data('rel');if(hiddenRels.has(r)||cy.$('#'+e.data('source')).hidden()||cy.$('#'+e.data('target')).hidden())e.hide();else e.show();});});}
+document.querySelectorAll('.cb-type').forEach(cb=>cb.addEventListener('change',()=>{cb.checked?hiddenTypes.delete(cb.dataset.type):hiddenTypes.add(cb.dataset.type);refresh();}));
+document.querySelectorAll('.cb-rel').forEach(cb=>cb.addEventListener('change',()=>{cb.checked?hiddenRels.delete(cb.dataset.rel):hiddenRels.add(cb.dataset.rel);refresh();}));
+function applyLayout(){const n=document.getElementById('ls').value;cy.layout(n==='dagre'?{name:n,rankDir:'TB',nodeSep:55,rankSep:75,padding:30}:{name:n,padding:40}).run();}
+function clear_(){cy.elements().removeClass('highlighted faded');document.getElementById('detail').style.display='none';}
+function setF(vi,wi,val){const w=document.getElementById(wi);if(val){document.getElementById(vi).textContent=val;w.style.display='block';}else w.style.display='none';}
+cy.on('tap','node',e=>{const node=e.target,d=node.data();cy.elements().addClass('faded');node.closedNeighborhood().removeClass('faded').addClass('highlighted');node.addClass('highlighted');document.getElementById('d-name').textContent=d.label;setF('d-type','fw-type',d.type);setF('d-def','fw-def',d.definition);setF('d-cog','fw-cog',d.cognitive_type);setF('d-bp','fw-bp',d.best_practice);document.getElementById('detail').style.display='block';});
+cy.on('tap',e=>{if(e.target===cy)clear_();});
+document.getElementById('search').addEventListener('input',function(){const q=this.value.toLowerCase().trim();if(!q){clear_();return;}cy.elements().addClass('faded');cy.nodes().filter(n=>n.data('label').toLowerCase().includes(q)).removeClass('faded').addClass('highlighted').forEach(n=>n.closedNeighborhood().removeClass('faded'));});
+</script>
+</body>
+</html>

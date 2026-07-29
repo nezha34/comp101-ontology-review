@@ -2,9 +2,10 @@
   "lecture": 10,
   "author": "Asmae",
   "source_owl": "comp101_L10.owl",
+  "owl_version": "2.5",
   "namespace": "http://comp101.sase.um6p.ma/ontology/oop#",
   "title": "Object-Oriented Programming (Python)",
-  "extends": "COMP101_ONTOLOGY.json (static curriculum ontology) — cross-references into it (e.g. C035 Encapsulation, LC008 class definition, E007 AttributeError, F019 isinstance()) are foreign keys by ID, not duplicated locally.",
+  "extends": "COMP101_ONTOLOGY.json (static curriculum ontology) — no longer treated as an active cross-reference target for this module; this file is self-contained and validated on its own terms (see validate.py / configs/comp101_oop.json).",
 
   "entity_types": [
     {
@@ -52,13 +53,7 @@
     {
       "name": "ErrorType",
       "status": "old",
-      "definition": "A named Python exception class that can be raised when an operation fails (e.g. AttributeError, TypeError).",
-      "parent_class": null
-    },
-    {
-      "name": "Encoding",
-      "status": "old",
-      "definition": "A defined mapping between raw byte sequences and human-readable symbols or numeric values.",
+      "definition": "A named Python exception class that can be raised when an operation fails (e.g. AttributeError, TypeError, ValueError, NotImplementedError, RuntimeError).",
       "parent_class": null
     },
     {
@@ -89,6 +84,12 @@
       "name": "PythonInternals",
       "status": "new",
       "definition": "A CPython interpreter-level mechanism exposing how classes/objects are built and accessed (e.g. Decorator, Metaclass, __slots__, __mro__).",
+      "parent_class": null
+    },
+    {
+      "name": "Algorithm",
+      "status": "new",
+      "definition": "A specific algorithmic solution/procedure for a well-defined problem. Declared as of v2.4 solely so it can participate in the TypeProducer domain union (see relations -> producesType/acceptsType) and in the AllDisjointClasses axiom. Deliberately has zero individuals in this module — OOP doesn't introduce new algorithms — this is schema-level completeness, not a content gap.",
       "parent_class": null
     }
   ],
@@ -134,16 +135,25 @@
       "name": "producesType",
       "official_name": "PRODUCES_TYPE",
       "status": "old",
-      "definition": "A Method/BuiltInFunction actually yields a result of the given DataType.",
-      "domain": "Method",
+      "definition": "A Method/BuiltInFunction/Algorithm actually yields a result of the given DataType. Domain widened from Method-only to the TypeProducer union in v2.4.",
+      "domain": "TypeProducer",
       "range": "DataType",
       "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isProducedBy" }
+    },
+    {
+      "name": "acceptsType",
+      "official_name": "ACCEPTS_TYPE",
+      "status": "new",
+      "definition": "Performing the subject operation requires/accepts an argument of the given DataType. Added in v2.4, mirrors producesType's domain (TypeProducer) but for input rather than output. Only asserted where a BuiltInFunction/Method has one universally-fixed parameter type across every call (e.g. hasattr()'s name is always str) — not asserted for user-defined-signature methods like __init__/__eq__, whose parameter types vary per class.",
+      "domain": "TypeProducer",
+      "range": "DataType",
+      "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isAcceptedBy" }
     },
     {
       "name": "throwsError",
       "official_name": "THROWS_ERROR",
       "status": "old",
-      "definition": "Performing the subject operation can actually raise the named ErrorType under realistic conditions.",
+      "definition": "Performing the subject operation can actually raise the named ErrorType under realistic conditions covered by this course. Beginner-friendliness is a deliberate filter: e.g. super()'s real RuntimeError and hasattr()'s edge-case TypeError were considered and only added where the course actually expects students to hit them.",
       "domain": "Thing",
       "range": "ErrorType",
       "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "isThrownBy" }
@@ -152,7 +162,7 @@
       "name": "exampleOf",
       "official_name": "EXAMPLE_OF",
       "status": "old",
-      "definition": "A specific code pattern/instance concretely demonstrates a Concept or Algorithm.",
+      "definition": "The subject is a specific, concrete instance/exemplar of the general object concept or mechanism (e.g. __init__ exampleOf Constructor, Mixin exampleOf Design Pattern). Used since v2.2 in place of partOf for concrete-realization pairs that aren't true compositional containment.",
       "domain": "Thing",
       "range": "Thing",
       "characteristics": { "symmetric": false, "transitive": false, "functional": false, "inverse_of": "hasExample" }
@@ -198,11 +208,12 @@
   "official_relations_not_used_here": [
     "PREREQUISITE_OF (no cross-lecture ordering — this module has only L10)",
     "OPERATES_ON_TYPE (no Operator individuals in this module)",
-    "ACCEPTS_TYPE (no Operator/BuiltInFunction input-type edges asserted)",
-    "METHOD_OF (partOf is used instead — see notes)",
-    "TIME_COMPLEXITY (no Algorithm individuals in this module)",
+    "METHOD_OF (partOf/exampleOf used instead — see notes)",
+    "TIME_COMPLEXITY (no Algorithm individuals in this module — the class is declared but deliberately empty, see entity_types)",
     "SOLVES_PROBLEM (no Algorithm individuals in this module)"
   ],
 
-  "notes": "ImplementorType (declared as an owl:Class, unionOf LanguageConstruct/Method/OOPMechanism/PythonInternals) is a helper union used only as the range of implements / domain of implementedBy — not an instantiated entity type, no individuals are typed directly as ImplementorType. Datatype annotation properties definition, courseId, cognitiveType and commonCauses are present on most individuals but aren't modeled as relations here since they're plumbing (labels/IDs), not the 15 semantic relations. isRequiredBy, isUsedBy, isProducedBy, isThrownBy and hasPart are declared purely as the OWL inverses of dependsOn/usesConcept/producesType/throwsError/partOf for reasoner symmetry, not separate semantic relations. Operator and Algorithm (2 of the official 11 entity types) have no individuals in this lecture's module — they live only in the static curriculum ontology this file extends."
+  "graph_traversal": "As of v2.5, every relation in this module is bidirectionally materialized as real triples, not left to reasoner inference: all 10 inverse-property pairs (dependsOn/isRequiredBy, usesConcept/isUsedBy, throwsError/isThrownBy, producesType/isProducedBy, implementedBy/implements, enables/enabledBy, partOf/hasPart, exampleOf/hasExample, taughtIn/teaches, acceptsType/isAcceptedBy) have both directions asserted, and all 11 contrastsWith pairs have both directions asserted too (22 raw triples covering 11 unique relationships — dedupe by unordered pair if rendering, e.g. the HTML poster generator does this to avoid drawing doubled arrows). A raw SPARQL/triple-pattern query can now walk any edge from either endpoint without running a reasoner first.",
+
+  "notes": "ImplementorType (owl:equivalentClass of a unionOf LanguageConstruct/Method/OOPMechanism/PythonInternals) and TypeProducer (owl:equivalentClass of a unionOf Method/BuiltInFunction/Algorithm, added v2.4) are both helper union classes used only as property domain/range — neither is an instantiated entity type, no individuals are typed directly as either. Watch out: their equivalentClass-to-anonymous-blank-node encoding means naive 'count all owl:Class subjects' tooling (e.g. the OntoQA class_richness metric) will see 2 extra phantom classes beyond the 14 real entity types listed above; this is a metric-counting quirk, not a modeling error. Datatype annotation properties definition, courseId, cognitiveType and commonCauses are present on most individuals but aren't modeled as relations here since they're plumbing (labels/IDs), not the semantic relations. Encoding (an entity type in earlier versions) was removed in v2.2: it had zero individuals in this module and was ICS-ontology territory, not OOP. This module no longer tracks or documents overlap with the static curriculum ontology (COMP101_ONTOLOGY.json) as an open concern — that comparison is out of scope; this file and comp101_L10.owl are treated as self-contained and validated independently (see validate.py --config configs/comp101_oop.json, which passes structural/HermiT/OOPS/OntoQA/SPARQL-CQ/skill-graph checks as of v2.5)."
 }
