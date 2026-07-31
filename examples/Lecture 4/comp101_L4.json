@@ -4,7 +4,7 @@
   "source_owl": "comp101_L4.owl",
   "namespace": "http://comp101.sase.um6p.ma/ontology/functions#",
   "title": "Functions",
-  "notes": "COMP101 Functions (Lecture 4). OOPS P04/P05/P13 fixes applied: ConceptCarrier as domain/range hub; implementedBy is Concept→ConceptCarrier with inverse implementsConcept; Algorithm→carrier edges use usesConstruct ⊣ constructUsedBy.",
+  "notes": "COMP101 Functions (Lecture 4). Real algorithms: Quadratic Root Classification, Euclidean GCD Function, Iterative Factorial Function, Collatz Stopping-Time Function. Patterns: Helper Function, Early-Return Guard. Global Variable, Default Argument, UnboundLocalError; widened acceptsType/producesType.",
   "entity_types": [
     {
       "name": "Algorithm",
@@ -26,7 +26,7 @@
     },
     {
       "name": "ConceptCarrier",
-      "status": "new",
+      "status": "old",
       "definition": "Python surface that can realize or carry curriculum concepts (language constructs, operators, builtins, data types). Organizational superclass used as domain/range of realization and algorithm-construct properties.",
       "parent_class": null
     },
@@ -67,6 +67,12 @@
       "parent_class": "ConceptCarrier"
     },
     {
+      "name": "Pattern",
+      "status": "new",
+      "definition": "A reusable pedagogical programming pattern taught in this lecture (e.g. helper-function extraction).",
+      "parent_class": null
+    },
+    {
       "name": "Skill",
       "status": "old",
       "definition": "A transferable programming competency.",
@@ -77,9 +83,9 @@
     {
       "name": "acceptedBy",
       "status": "old",
-      "definition": "Inverse of accepts_type.",
+      "definition": "Inverse of acceptsType.",
       "domain": "DataType",
-      "range": "BuiltInFunction",
+      "range": "BuiltInFunction|Concept",
       "characteristics": {
         "symmetric": false,
         "transitive": false,
@@ -90,8 +96,8 @@
     {
       "name": "acceptsType",
       "status": "old",
-      "definition": "A function accepts this data type as input.",
-      "domain": "BuiltInFunction",
+      "definition": "Subject accepts or involves values of the object DataType as input. Used for BuiltInFunction callables and for pedagogical Concepts such as Function Input or Parameter.",
+      "domain": "BuiltInFunction|Concept",
       "range": "DataType",
       "characteristics": {
         "symmetric": false,
@@ -102,7 +108,7 @@
     },
     {
       "name": "constructUsedBy",
-      "status": "new",
+      "status": "old",
       "definition": "Inverse of usesConstruct: this ConceptCarrier is employed by the object Algorithm. A-Box may assert only usesConstruct; reasoners can infer this direction.",
       "domain": "ConceptCarrier",
       "range": "Algorithm",
@@ -181,9 +187,9 @@
     {
       "name": "isProducedBy",
       "status": "old",
-      "definition": "Inverse of produces_type.",
+      "definition": "Inverse of producesType.",
       "domain": "DataType",
-      "range": "Thing",
+      "range": "BuiltInFunction|Concept",
       "characteristics": {
         "symmetric": false,
         "transitive": false,
@@ -221,8 +227,8 @@
       "name": "isUsedBy",
       "status": "old",
       "definition": "Inverse of uses_concept.",
-      "domain": "Concept",
-      "range": null,
+      "domain": "Concept|Pattern",
+      "range": "Skill|Algorithm|LanguageConstruct|Operator|BuiltInFunction|Method",
       "characteristics": {
         "symmetric": false,
         "transitive": false,
@@ -246,8 +252,8 @@
     {
       "name": "producesType",
       "status": "old",
-      "definition": "Returns this data type.",
-      "domain": "Thing",
+      "definition": "Subject produces or involves values of the object DataType as output/return. Used for BuiltInFunction return types and for pedagogical Concepts such as Function Output or Return Value (including NoneType when nothing useful is returned).",
+      "domain": "BuiltInFunction|Concept",
       "range": "DataType",
       "characteristics": {
         "symmetric": false,
@@ -299,8 +305,8 @@
       "name": "usesConcept",
       "status": "old",
       "definition": "Indicates that an entity relies on or makes use of a programming concept.",
-      "domain": null,
-      "range": "Concept",
+      "domain": "Skill|Algorithm|LanguageConstruct|Operator|BuiltInFunction|Method",
+      "range": "Concept|Pattern",
       "characteristics": {
         "symmetric": false,
         "transitive": false,
@@ -310,8 +316,8 @@
     },
     {
       "name": "usesConstruct",
-      "status": "new",
-      "definition": "Algorithm is coded with / employs this ConceptCarrier (language construct, operator, builtin, or data type). Distinct from implementedBy (Concept → carrier realization). Inverse of constructUsedBy.",
+      "status": "old",
+      "definition": "Algorithm is coded with / employs this ConceptCarrier (language construct, operator, builtin, or data type). Distinct from implementedBy (Concept \u2192 carrier realization). Inverse of constructUsedBy.",
       "domain": "Algorithm",
       "range": "ConceptCarrier",
       "characteristics": {

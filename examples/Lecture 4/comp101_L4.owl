@@ -1,302 +1,647 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rdf:RDF
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:dcterms="http://purl.org/dc/terms/"
-   xmlns:func="http://comp101.sase.um6p.ma/ontology/functions#"
-   xmlns:owl="http://www.w3.org/2002/07/owl#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:func="http://comp101.sase.um6p.ma/ontology/functions#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
 >
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
-    <func:courseId>E_FUNC02</func:courseId>
-    <rdfs:label>NameError</rdfs:label>
-    <func:definition>Raised when trying to access a variable that is outside its scope or has not been defined.</func:definition>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC04">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <func:courseId>A_FUNC04</func:courseId>
+    <rdfs:label>Collatz Stopping-Time Function</rdfs:label>
+    <func:definition>Given a positive integer n, count how many Collatz (3n+1) steps are required to reach 1, encapsulated as a function with a clear parameter and integer return value.</func:definition>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC02</func:courseId>
+        <rdfs:label>Function Definition</rdfs:label>
+        <func:definition>The process of creating a function by specifying its name, parameters and body using the def keyword.</func:definition>
+        <func:cognitiveType>procedural</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+        <func:bestPractice>Choose descriptive function names that clearly describe the task performed.</func:bestPractice>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC03">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC03</func:courseId>
+        <rdfs:label>Function Call</rdfs:label>
+        <func:definition>Executing a previously defined function by writing its name followed by parentheses containing any required arguments.</func:definition>
+        <func:cognitiveType>procedural</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC04"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC05</func:courseId>
+        <rdfs:label>Parameter</rdfs:label>
+        <func:definition>A variable declared in a function definition that represents an expected input value.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01"/>
+        <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02"/>
+        <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC06</func:courseId>
+        <rdfs:label>Argument</rdfs:label>
+        <func:definition>The actual value passed to a function when it is called.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC03"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC07</func:courseId>
+        <rdfs:label>Return Value</rdfs:label>
+        <func:definition>The value produced by a function and sent back to the caller using the return statement.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01"/>
+        <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02"/>
+        <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
+        <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:solvesProblem>Generate customized greeting messages.</func:solvesProblem>
+    <func:taughtIn>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#L04">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
+        <func:courseId>L04</func:courseId>
+        <rdfs:label>Functions</rdfs:label>
+        <func:definition>Defining and using Python functions, parameters, return values and variable scope.</func:definition>
+      </owl:NamedIndividual>
+    </func:taughtIn>
+    <func:usesConstruct>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+        <func:courseId>LC_FUNC01</func:courseId>
+        <rdfs:label>def</rdfs:label>
+        <func:definition>Defines a new function by specifying its name, optional parameters and body.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC04"/>
+      </owl:NamedIndividual>
+    </func:usesConstruct>
+    <func:usesConstruct>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+        <func:courseId>LC_FUNC02</func:courseId>
+        <rdfs:label>return</rdfs:label>
+        <func:definition>Terminates the execution of a function and optionally sends a value back to the caller.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConstruct>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC02">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+    <func:courseId>F_FUNC02</func:courseId>
+    <rdfs:label>input()</rdfs:label>
+    <func:definition>Reads a line of text entered by the user.</func:definition>
+    <func:producesType>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <func:courseId>DT_FUNC03</func:courseId>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:definition>Sequence of Unicode characters.</func:definition>
+        <rdfs:label>str</rdfs:label>
+      </owl:NamedIndividual>
+    </func:producesType>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC18">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+    <rdfs:label>Default Argument</rdfs:label>
+    <func:courseId>C_FUNC18</func:courseId>
+    <func:definition>A parameter default value used when the caller omits the corresponding argument.</func:definition>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
+    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+    <func:cognitiveType>conceptual</func:cognitiveType>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC03">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <func:courseId>A_FUNC03</func:courseId>
+    <rdfs:label>Iterative Factorial Function</rdfs:label>
+    <func:definition>Compute n! for a non-negative integer n inside a single-purpose function that takes n as a parameter, uses a local accumulator in its body, and returns the product.</func:definition>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC01</func:courseId>
+        <rdfs:label>Function</rdfs:label>
+        <func:definition>A reusable named block of code that performs a specific task. A function may receive inputs through parameters and optionally return a result.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC04">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC04</func:courseId>
+        <rdfs:label>Function Body</rdfs:label>
+        <func:definition>The indented block of statements executed whenever the function is called.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
+        <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC03"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC09</func:courseId>
+        <rdfs:label>Local Variable</rdfs:label>
+        <func:definition>A variable created inside a function that exists only while the function executes.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
+        <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC17"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC05"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#P_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+        <rdfs:label>Early-Return Guard Pattern</rdfs:label>
+        <func:courseId>P_FUNC02</func:courseId>
+        <func:definition>Handle invalid or edge-case inputs at the start of a function with an immediate return (a guard), before running the main computation.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC04"/>
+        <func:cognitiveType>procedural</func:cognitiveType>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:solvesProblem>Compute the area of a rectangle.</func:solvesProblem>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC14">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+    <func:courseId>C_FUNC14</func:courseId>
+    <rdfs:label>Placeholder Implementation</rdfs:label>
+    <func:definition>A temporary function implementation used while designing a program. The pass statement allows the function to exist before its logic has been written.</func:definition>
+    <func:cognitiveType>procedural</func:cognitiveType>
+    <func:implementedBy>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC03">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+        <func:courseId>LC_FUNC03</func:courseId>
+        <rdfs:label>pass</rdfs:label>
+        <func:definition>Placeholder statement used when the body of a function has not yet been implemented.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:implementedBy>
+    <func:bestPractice>Use pass only while incrementally developing a program and replace it with a real implementation as soon as possible.</func:bestPractice>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC03">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+    <func:courseId>F_FUNC03</func:courseId>
+    <rdfs:label>len()</rdfs:label>
+    <func:definition>Returns the number of elements contained in an object.</func:definition>
+    <func:producesType>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <func:courseId>DT_FUNC01</func:courseId>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:definition>Integer numeric type.</func:definition>
+        <rdfs:label>int</rdfs:label>
+      </owl:NamedIndividual>
+    </func:producesType>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+  </owl:NamedIndividual>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isThrownBy">
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#throwsError">
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment>Associates a language construct, function, method, or concept with an error that may result from its incorrect use.</rdfs:comment>
+        <rdfs:label>throws_error</rdfs:label>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:comment>Inverse of throws_error.</rdfs:comment>
+    <rdfs:label>is_thrown_by</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:ObjectProperty>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC16">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+    <func:courseId>C_FUNC16</func:courseId>
+    <rdfs:label>Variable Visibility</rdfs:label>
+    <func:definition>The set of program locations from which a variable can be accessed. Variable visibility is determined by its scope.</func:definition>
+    <func:cognitiveType>conceptual</func:cognitiveType>
+    <func:dependsOn>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC08</func:courseId>
+        <rdfs:label>Scope</rdfs:label>
+        <func:definition>The region of a program where a variable is visible and can be accessed.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02"/>
+        <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC05"/>
+        <func:bestPractice>Return values instead of relying on variables defined inside a function.</func:bestPractice>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:dependsOn>
+    <func:throwsError>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+        <func:courseId>E_FUNC02</func:courseId>
+        <rdfs:label>NameError</rdfs:label>
+        <func:definition>Raised when trying to access a variable that is outside its scope or has not been defined.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:throwsError>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC01">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <func:courseId>A_FUNC01</func:courseId>
+    <rdfs:label>Quadratic Root Classification</rdfs:label>
+    <func:definition>Classify the number of real roots of a quadratic equation ax²+bx+c=0 by decomposing the work into helper functions (e.g. discriminant computation and root-count classification) that return values to the caller.</func:definition>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC11">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC11</func:courseId>
+        <rdfs:label>Problem Decomposition</rdfs:label>
+        <func:definition>Breaking a larger programming task into smaller reusable functions that each perform a single responsibility.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:bestPractice>Each function should solve one clearly defined subproblem.</func:bestPractice>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC15</func:courseId>
+        <rdfs:label>Function Interface</rdfs:label>
+        <func:definition>The externally visible part of a function consisting of its name, expected parameters and returned value. The interface determines how other parts of the program interact with the function.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+        <func:bestPractice>Keep function interfaces simple and easy to understand.</func:bestPractice>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#P_FUNC01">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+        <rdfs:label>Helper Function Pattern</rdfs:label>
+        <func:courseId>P_FUNC01</func:courseId>
+        <func:definition>Extract a focused reusable function that performs one clear task so a larger problem can be solved by composing helpers instead of duplicating code.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
+        <func:cognitiveType>procedural</func:cognitiveType>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:solvesProblem>Determine the number of real roots of a quadratic equation.</func:solvesProblem>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
+  </owl:NamedIndividual>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#solvesProblem">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <rdfs:label>solves_problem</rdfs:label>
+    <rdfs:comment>Describes the programming problem addressed by an algorithm.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#teaches">
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
+    <rdfs:label>teaches</rdfs:label>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#taughtIn">
+        <rdfs:label>taught_in</rdfs:label>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment>Associates an ontology entity with the lecture in which it is introduced or explicitly taught.</rdfs:comment>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:comment>Inverse of taught_in.</rdfs:comment>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isUsedBy">
+    <rdfs:range>
+      <owl:Class rdf:nodeID="N4ea7659aa6864ea6ae6fd1ffb69faa46">
+        <owl:unionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain>
+      <rdf:Description rdf:nodeID="N9f5d54b65f7547ce8e93316a5120de02">
+        <owl:unionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+        </owl:unionOf>
+      </rdf:Description>
+    </rdfs:domain>
+    <rdfs:label>is_used_by</rdfs:label>
+    <rdfs:comment>Inverse of uses_concept.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#usesConcept">
+        <rdfs:domain>
+          <owl:Class rdf:nodeID="Na0340f25bc85424e9984feb2c8fb3529">
+            <owl:unionOf rdf:parseType="Collection">
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+            </owl:unionOf>
+          </owl:Class>
+        </rdfs:domain>
+        <rdfs:range>
+          <rdf:Description rdf:nodeID="N7f44b41e7fc94209a4938627f7be4a86">
+            <owl:unionOf rdf:parseType="Collection">
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+            </owl:unionOf>
+          </rdf:Description>
+        </rdfs:range>
+        <rdfs:label>uses_concept</rdfs:label>
+        <rdfs:comment>Indicates that an entity relies on or makes use of a programming concept.</rdfs:comment>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#commonCauses">
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+    <rdfs:label>common_causes</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:comment>Describes common situations that typically lead to an error.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isRequiredBy">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdfs:comment>Inverse of depends_on.</rdfs:comment>
+    <rdfs:label>is_required_by</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#dependsOn">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:label>depends_on</rdfs:label>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment>Indicates that understanding one educational entity requires prior understanding of another.</rdfs:comment>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC04">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+    <func:courseId>SK_FUNC04</func:courseId>
+    <rdfs:label>Decompose Problems into Functions</rdfs:label>
+    <func:definition>Transform a larger programming problem into several smaller functions with clearly defined responsibilities that collaborate to solve the overall task.</func:definition>
+    <func:dependsOn>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC01">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+        <func:courseId>SK_FUNC01</func:courseId>
+        <rdfs:label>Design Reusable Functions</rdfs:label>
+        <func:definition>Design functions that perform a single well-defined task and can be reused with different inputs without modifying their implementation.</func:definition>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:dependsOn>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC11"/>
+    <func:usesConcept>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <func:courseId>C_FUNC10</func:courseId>
+        <rdfs:label>Code Reuse</rdfs:label>
+        <func:definition>Using the same function multiple times instead of duplicating the same sequence of instructions.</func:definition>
+        <func:cognitiveType>conceptual</func:cognitiveType>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+        <func:bestPractice>Avoid copying and pasting code by extracting repeated logic into functions.</func:bestPractice>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:usesConcept>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#P_FUNC01"/>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC02">
+    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <func:courseId>A_FUNC02</func:courseId>
+    <rdfs:label>Euclidean GCD Function</rdfs:label>
+    <func:definition>Expose the Euclidean GCD procedure as a reusable function with two integer parameters and an integer return value, so callers can compute gcd(a, b) without duplicating the loop logic.</func:definition>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09"/>
+    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#P_FUNC02"/>
+    <func:solvesProblem>Convert temperatures between measurement scales.</func:solvesProblem>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
+    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC01">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
     <func:courseId>F_FUNC01</func:courseId>
     <rdfs:label>print()</rdfs:label>
     <func:definition>Displays one or more values on the standard output.</func:definition>
     <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01"/>
-    <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02"/>
+    <func:acceptsType>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <func:courseId>DT_FUNC02</func:courseId>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:definition>Boolean type containing only True and False.</func:definition>
+        <rdfs:label>bool</rdfs:label>
+      </owl:NamedIndividual>
+    </func:acceptsType>
     <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC11">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC11</func:courseId>
-    <rdfs:label>Problem Decomposition</rdfs:label>
-    <func:definition>Breaking a larger programming task into smaller reusable functions that each perform a single responsibility.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:bestPractice>Each function should solve one clearly defined subproblem.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:NamedIndividual>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#bestPractice">
+    <rdfs:label>best_practice</rdfs:label>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:comment>Stores a recommended programming practice associated with an educational entity.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC03">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
     <func:courseId>SK_FUNC03</func:courseId>
     <rdfs:label>Reason About Function Execution</rdfs:label>
     <func:definition>Predict and explain how a function executes by tracing parameter values, local variables, return statements and scope.</func:definition>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC02"/>
+    <func:dependsOn>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC02">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+        <func:courseId>SK_FUNC02</func:courseId>
+        <rdfs:label>Manage Function Inputs and Outputs</rdfs:label>
+        <func:definition>Correctly design, call and use functions by matching parameters with arguments and by returning and using computed values.</func:definition>
+        <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC01"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC12"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC13"/>
+        <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#P_FUNC02"/>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:dependsOn>
     <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC03"/>
     <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC04"/>
     <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
     <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09"/>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <func:courseId>DT_FUNC02</func:courseId>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:definition>Boolean type containing only True and False.</func:definition>
-    <rdfs:label>bool</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC07</func:courseId>
-    <rdfs:label>Return Value</rdfs:label>
-    <func:definition>The value produced by a function and sent back to the caller using the return statement.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isRequiredBy">
-    <rdfs:comment>Inverse of depends_on.</rdfs:comment>
-    <rdfs:label>is_required_by</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+  </owl:NamedIndividual>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#definition">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#dependsOn"/>
+    <rdfs:label>definition</rdfs:label>
+    <rdfs:comment>Provides the pedagogical definition of an ontology entity.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:Ontology rdf:about="http://comp101.sase.um6p.ma/ontology/functions">
+    <dc:title>COMP101 L4 — Functions</dc:title>
+    <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
+    <owl:versionInfo>1.0</owl:versionInfo>
+    <rdfs:label>comp101_L4_functions</rdfs:label>
+    <rdfs:comment>Week 4 / Lecture 4 (COMP101): Functions — defining/using functions, scope, recursion basics.</rdfs:comment>
+  </owl:Ontology>
+  <rdf:Description rdf:nodeID="N7420a6c2d5b04b0296e822f8e7c3fecc">
+    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
+    <rdf:rest rdf:parseType="Collection">
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+    </rdf:rest>
   </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <func:courseId>DT_FUNC03</func:courseId>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:definition>Sequence of Unicode characters.</func:definition>
-    <rdfs:label>str</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#acceptedBy">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>accepted_by</rdfs:label>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#acceptsType"/>
-    <rdfs:comment>Inverse of accepts_type.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <func:courseId>SK_FUNC04</func:courseId>
-    <rdfs:label>Decompose Problems into Functions</rdfs:label>
-    <func:definition>Transform a larger programming problem into several smaller functions with clearly defined responsibilities that collaborate to solve the overall task.</func:definition>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC01"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC11"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N5b6b49f2b3a6462c9ff7a926ac31a0d8">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <rdf:rest rdf:nodeID="N5067baee38a6453f8033e1ce49844206"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#dependsOn">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
-    <rdfs:label>depends_on</rdfs:label>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:comment>Indicates that understanding one educational entity requires prior understanding of another.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#timeComplexity">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#timeComplexity">
     <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
     <rdfs:label>time_complexity</rdfs:label>
     <rdfs:comment>Specifies the asymptotic time complexity of an algorithm.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <func:courseId>LC_FUNC02</func:courseId>
-    <rdfs:label>return</rdfs:label>
-    <func:definition>Terminates the execution of a function and optionally sends a value back to the caller.</func:definition>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#teaches">
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
-    <rdfs:label>teaches</rdfs:label>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#taughtIn"/>
-    <rdfs:comment>Inverse of taught_in.</rdfs:comment>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#courseId">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>course_id</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:comment>Stores the unique identifier assigned to an entity within the COMP101 ontology.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#contrastsWith">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
     <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC12">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC12</func:courseId>
-    <rdfs:label>Function Input</rdfs:label>
-    <func:definition>The collection of argument values supplied to a function when it is called. Function inputs determine how the function behaves for a particular execution.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isUsedBy">
-    <rdfs:range rdf:nodeID="N3d0a575bafcb4633b98eb42f512ef7b0"/>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <rdfs:label>is_used_by</rdfs:label>
-    <rdfs:comment>Inverse of uses_concept.</rdfs:comment>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#usesConcept"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <func:courseId>DT_FUNC01</func:courseId>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:definition>Integer numeric type.</func:definition>
-    <rdfs:label>int</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC15</func:courseId>
-    <rdfs:label>Function Interface</rdfs:label>
-    <func:definition>The externally visible part of a function consisting of its name, expected parameters and returned value. The interface determines how other parts of the program interact with the function.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
-    <func:bestPractice>Keep function interfaces simple and easy to understand.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:label>contrasts_with</rdfs:label>
+    <rdfs:comment>Relates two concepts that represent alternative, opposite, or commonly confused ideas.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#cognitiveType">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:label>cognitive_type</rdfs:label>
+    <rdfs:domain>
+      <rdf:Description rdf:nodeID="N80c32d5281794d3a93043a6c8e8229e9">
+        <owl:unionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+        </owl:unionOf>
+      </rdf:Description>
+    </rdfs:domain>
+    <rdfs:comment>Indicates the nature of the knowledge represented by a concept, such as conceptual or procedural.</rdfs:comment>
+  </owl:DatatypeProperty>
+  <owl:AllDisjointClasses rdf:nodeID="N4656f8aad2194ca59f40d27b2a9b1960">
+    <owl:members rdf:parseType="Collection">
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
+      <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Pattern"/>
+    </owl:members>
+  </owl:AllDisjointClasses>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Pattern">
+    <rdfs:label>Pattern</rdfs:label>
+    <rdfs:comment>A reusable pedagogical programming pattern taught in this lecture (e.g. helper-function extraction).</rdfs:comment>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#implementsConcept">
+    <rdfs:label>implements_concept</rdfs:label>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#implementedBy">
+        <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        <rdfs:label>implemented_by</rdfs:label>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+        <rdfs:comment>Concept is realized/expressed by this ConceptCarrier (language construct, operator, builtin, or data type). Inverse of implementsConcept. Domain is Concept only (not Algorithm).</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#implementsConcept"/>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:comment>Inverse of implementedBy: a ConceptCarrier realizes or expresses this Concept. A-Box may assert only implementedBy; reasoners can infer this direction.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#hasMethods">
+    <rdfs:label>has_methods</rdfs:label>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#methodOf">
+        <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#hasMethods"/>
+        <rdfs:label>method_of</rdfs:label>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <rdfs:comment>This method belongs to a data type.</rdfs:comment>
+        <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:comment>Inverse of method_of.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
     <func:courseId>E_FUNC01</func:courseId>
     <rdfs:label>TypeError</rdfs:label>
     <func:definition>Raised when a function receives an incorrect number or type of arguments.</func:definition>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <func:courseId>SK_FUNC02</func:courseId>
-    <rdfs:label>Manage Function Inputs and Outputs</rdfs:label>
-    <func:definition>Correctly design, call and use functions by matching parameters with arguments and by returning and using computed values.</func:definition>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC01"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC12"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC13"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#solvesProblem">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdfs:label>solves_problem</rdfs:label>
-    <rdfs:comment>Describes the programming problem addressed by an algorithm.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#acceptsType">
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <rdfs:label>accepts_type</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdfs:comment>A function accepts this data type as input.</rdfs:comment>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#acceptedBy"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>ConceptCarrier</rdfs:label>
-    <rdfs:comment>Python surface that can realize or carry curriculum concepts (language constructs, operators, builtins, data types). Organizational superclass used as domain/range of realization and algorithm-construct properties.</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC04</func:courseId>
-    <rdfs:label>Function Body</rdfs:label>
-    <func:definition>The indented block of statements executed whenever the function is called.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
-    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC03"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <func:courseId>A_FUNC01</func:courseId>
-    <rdfs:label>Quadratic Root Classification</rdfs:label>
-    <func:definition>Determines the number of real roots of a quadratic equation by decomposing the solution into reusable functions.</func:definition>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC11"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
-    <func:solvesProblem>Determine the number of real roots of a quadratic equation.</func:solvesProblem>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC03</func:courseId>
-    <rdfs:label>Function Call</rdfs:label>
-    <func:definition>Executing a previously defined function by writing its name followed by parentheses containing any required arguments.</func:definition>
-    <func:cognitiveType>procedural</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#courseId">
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:label>course_id</rdfs:label>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:comment>Stores the unique identifier assigned to an entity within the COMP101 ontology.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>LanguageConstruct</rdfs:label>
-    <rdfs:comment>A Python language construct.</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC09</func:courseId>
-    <rdfs:label>Local Variable</rdfs:label>
-    <func:definition>A variable created inside a function that exists only while the function executes.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#hasMethods">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>has_methods</rdfs:label>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#methodOf"/>
-    <rdfs:comment>Inverse of method_of.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC13">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC13">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
     <func:courseId>C_FUNC13</func:courseId>
     <rdfs:label>Function Output</rdfs:label>
@@ -304,484 +649,186 @@
     <func:cognitiveType>conceptual</func:cognitiveType>
     <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Algorithm</rdfs:label>
-    <rdfs:comment>A programming algorithm taught during the lecture.</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <func:courseId>F_FUNC02</func:courseId>
-    <rdfs:label>input()</rdfs:label>
-    <func:definition>Reads a line of text entered by the user.</func:definition>
-    <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isProducedBy">
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#producesType"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdfs:label>is_produced_by</rdfs:label>
-    <rdfs:comment>Inverse of produces_type.</rdfs:comment>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N526bf252703441f2b2c01e5b1aceaee0">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <owl:unionOf rdf:nodeID="Nef4d6c5442b9408aafba91ca6255f3ca"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <func:courseId>A_FUNC04</func:courseId>
-    <rdfs:label>Parameterized Greeting</rdfs:label>
-    <func:definition>Produces personalized greeting messages using parameters and function calls.</func:definition>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
-    <func:solvesProblem>Generate customized greeting messages.</func:solvesProblem>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#F_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <func:courseId>F_FUNC03</func:courseId>
-    <rdfs:label>len()</rdfs:label>
-    <func:definition>Returns the number of elements contained in an object.</func:definition>
     <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#commonCauses">
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:label>common_causes</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:comment>Describes common situations that typically lead to an error.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <func:courseId>DT_FUNC04</func:courseId>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:definition>Special Python type representing the absence of a returned value.</func:definition>
-    <rdfs:label>NoneType</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nc8c9376b5d8d4789a9766f2b731393c8">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdf:rest rdf:nodeID="Nc6798c8f877d4898a14977dd1506e18b"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC10</func:courseId>
-    <rdfs:label>Code Reuse</rdfs:label>
-    <func:definition>Using the same function multiple times instead of duplicating the same sequence of instructions.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:bestPractice>Avoid copying and pasting code by extracting repeated logic into functions.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ErrorType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>ErrorType</rdfs:label>
-    <rdfs:comment>A Python exception type.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#constructUsedBy">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>construct_used_by</rdfs:label>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdfs:comment>Inverse of usesConstruct: this ConceptCarrier is employed by the object Algorithm. A-Box may assert only usesConstruct; reasoners can infer this direction.</rdfs:comment>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#usesConstruct"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <func:courseId>A_FUNC03</func:courseId>
-    <rdfs:label>Rectangle Area Computation</rdfs:label>
-    <func:definition>Computes the area of a rectangle by encapsulating the computation inside a reusable function.</func:definition>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
-    <func:solvesProblem>Compute the area of a rectangle.</func:solvesProblem>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#A_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <func:courseId>A_FUNC02</func:courseId>
-    <rdfs:label>Temperature Conversion</rdfs:label>
-    <func:definition>Converts temperatures from Fahrenheit to Celsius using a reusable function.</func:definition>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC07"/>
-    <func:solvesProblem>Convert temperatures between measurement scales.</func:solvesProblem>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:usesConstruct rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC02"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#methodOf">
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#hasMethods"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>method_of</rdfs:label>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdfs:comment>This method belongs to a data type.</rdfs:comment>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC05</func:courseId>
-    <rdfs:label>Parameter</rdfs:label>
-    <func:definition>A variable declared in a function definition that represents an expected input value.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02"/>
-    <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N9e482442704c4e3cb8b249d040268a0a">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
-    <rdf:rest rdf:nodeID="Nedefda4b6231434f9f31b9b1589720e2"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#L04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
-    <func:courseId>L04</func:courseId>
-    <rdfs:label>Functions</rdfs:label>
-    <func:definition>Defining and using Python functions, parameters, return values and variable scope.</func:definition>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nef4d6c5442b9408aafba91ca6255f3ca">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <rdf:rest rdf:nodeID="N7a2fd470afdf4d47b353ce285da18eef"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC08</func:courseId>
-    <rdfs:label>Scope</rdfs:label>
-    <func:definition>The region of a program where a variable is visible and can be accessed.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02"/>
-    <func:bestPractice>Return values instead of relying on variables defined inside a function.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#usesConstruct">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-    <rdfs:comment>Algorithm is coded with / employs this ConceptCarrier (language construct, operator, builtin, or data type). Distinct from implementedBy (Concept → carrier realization). Inverse of constructUsedBy.</rdfs:comment>
-    <rdfs:label>uses_construct</rdfs:label>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#constructUsedBy"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Na50d4251fe824e4b897e0b44c8e8e3a8">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
-    <rdf:rest rdf:nodeID="N8dc6fdeff756488e9e3127e9f4317141"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC02">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC02</func:courseId>
-    <rdfs:label>Function Definition</rdfs:label>
-    <func:definition>The process of creating a function by specifying its name, parameters and body using the def keyword.</func:definition>
-    <func:cognitiveType>procedural</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:bestPractice>Choose descriptive function names that clearly describe the task performed.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isThrownBy">
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#throwsError"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:comment>Inverse of throws_error.</rdfs:comment>
-    <rdfs:label>is_thrown_by</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#contrastsWith">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:label>contrasts_with</rdfs:label>
-    <rdfs:comment>Relates two concepts that represent alternative, opposite, or commonly confused ideas.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#taughtIn">
-    <rdfs:label>taught_in</rdfs:label>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Lecture"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:comment>Associates an ontology entity with the lecture in which it is introduced or explicitly taught.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Skill</rdfs:label>
-    <rdfs:comment>A transferable programming competency.</rdfs:comment>
+    <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02"/>
+    <func:producesType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
+    <func:producesType>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC04">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <func:courseId>DT_FUNC04</func:courseId>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+        <func:definition>Special Python type representing the absence of a returned value.</func:definition>
+        <rdfs:label>NoneType</rdfs:label>
+      </owl:NamedIndividual>
+    </func:producesType>
+  </owl:NamedIndividual>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction">
+    <rdfs:label>BuiltInFunction</rdfs:label>
+    <rdfs:comment>A native Python built-in function.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier">
+    <rdfs:label>ConceptCarrier</rdfs:label>
+    <rdfs:comment>Python surface that can realize or carry curriculum concepts (language constructs, operators, builtins, data types). Organizational superclass used as domain/range of realization and algorithm-construct properties.</rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#implementsConcept">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:label>implements_concept</rdfs:label>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#implementedBy"/>
-    <rdfs:comment>Inverse of implementedBy: a ConceptCarrier realizes or expresses this Concept. A-Box may assert only implementedBy; reasoners can infer this direction.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N5067baee38a6453f8033e1ce49844206">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC06</func:courseId>
-    <rdfs:label>Argument</rdfs:label>
-    <func:definition>The actual value passed to a function when it is called.</func:definition>
-    <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC03"/>
-    <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC05"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC01"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <func:courseId>LC_FUNC03</func:courseId>
-    <rdfs:label>pass</rdfs:label>
-    <func:definition>Placeholder statement used when the body of a function has not yet been implemented.</func:definition>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#definition">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:label>definition</rdfs:label>
-    <rdfs:comment>Provides the pedagogical definition of an ontology entity.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC03">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept">
+    <rdfs:label>Concept</rdfs:label>
+    <rdfs:comment>An abstract programming concept.</rdfs:comment>
+  </owl:Class>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC03">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
     <func:courseId>E_FUNC03</func:courseId>
     <rdfs:label>IndentationError</rdfs:label>
     <func:definition>Raised when the indentation of a function body is incorrect.</func:definition>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#usesConcept">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:domain rdf:nodeID="N526bf252703441f2b2c01e5b1aceaee0"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <rdfs:label>uses_concept</rdfs:label>
-    <rdfs:comment>Indicates that an entity relies on or makes use of a programming concept.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N86cd5814b5e54694925ec17b1ff0120f">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-    <rdf:rest rdf:nodeID="N58beccd42d5444af9a9ffe6058c5e70e"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N58beccd42d5444af9a9ffe6058c5e70e">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
-    <rdf:rest rdf:nodeID="Nc8c9376b5d8d4789a9766f2b731393c8"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <func:courseId>LC_FUNC01</func:courseId>
-    <rdfs:label>def</rdfs:label>
-    <func:definition>Defines a new function by specifying its name, optional parameters and body.</func:definition>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#producesType">
-    <rdfs:comment>Returns this data type.</rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:label>produces_type</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#isProducedBy"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:NamedIndividual>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC17">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC01</func:courseId>
-    <rdfs:label>Function</rdfs:label>
-    <func:definition>A reusable named block of code that performs a specific task. A function may receive inputs through parameters and optionally return a result.</func:definition>
+    <rdfs:label>Global Variable</rdfs:label>
+    <func:courseId>C_FUNC17</func:courseId>
+    <func:definition>A variable defined outside any function, visible across the module unless shadowed by a local name.</func:definition>
+    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
     <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC01"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC14">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC14</func:courseId>
-    <rdfs:label>Placeholder Implementation</rdfs:label>
-    <func:definition>A temporary function implementation used while designing a program. The pass statement allows the function to exist before its logic has been written.</func:definition>
-    <func:cognitiveType>procedural</func:cognitiveType>
-    <func:implementedBy rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LC_FUNC03"/>
-    <func:bestPractice>Use pass only while incrementally developing a program and replace it with a real implementation as soon as possible.</func:bestPractice>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Operator</rdfs:label>
-    <rdfs:comment>A Python operator.</rdfs:comment>
+    <func:contrastsWith rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC09"/>
+    <func:throwsError>
+      <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC05">
+        <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
+        <rdfs:label>UnboundLocalError</rdfs:label>
+        <func:courseId>E_FUNC05</func:courseId>
+        <func:definition>Raised when a local variable is read before being assigned in that function.</func:definition>
+        <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
+      </owl:NamedIndividual>
+    </func:throwsError>
+  </owl:NamedIndividual>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct">
+    <rdfs:label>LanguageConstruct</rdfs:label>
+    <rdfs:comment>A Python language construct.</rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#SK_FUNC01">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
-    <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <func:courseId>SK_FUNC01</func:courseId>
-    <rdfs:label>Design Reusable Functions</rdfs:label>
-    <func:definition>Design functions that perform a single well-defined task and can be reused with different inputs without modifying their implementation.</func:definition>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC01"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC10"/>
-    <func:usesConcept rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC15"/>
-    <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N8dc6fdeff756488e9e3127e9f4317141">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <rdf:rest rdf:nodeID="N7c9a9db6c46346849989f885a700df2b"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>BuiltInFunction</rdfs:label>
-    <rdfs:comment>A native Python built-in function.</rdfs:comment>
-    <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Lecture">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Lecture</rdfs:label>
-    <rdfs:comment>A COMP101 lecture.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#bestPractice">
-    <rdfs:label>best_practice</rdfs:label>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdfs:comment>Stores a recommended programming practice associated with an educational entity.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N7a2fd470afdf4d47b353ce285da18eef">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdf:rest rdf:nodeID="Nea391993b5aa42c2affec17ea3f690f5"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Ne2f33360f49c44938628d0de7cd2b086">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
-    <rdf:rest rdf:nodeID="N5b6b49f2b3a6462c9ff7a926ac31a0d8"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nea391993b5aa42c2affec17ea3f690f5">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <rdf:rest rdf:nodeID="Ne2f33360f49c44938628d0de7cd2b086"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N7c9a9db6c46346849989f885a700df2b">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <rdf:rest rdf:nodeID="Nf6659183a2b84dad9e6ac90598c31c1c"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nc1c08496f361435fab5eabeb10e889aa">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
-    <rdf:rest rdf:nodeID="N91e569960a314e1aa42e0ab6e59bd3e3"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DataType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#DataType">
     <rdfs:label>DataType</rdfs:label>
     <rdfs:comment>A Python data type.</rdfs:comment>
     <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#implementedBy">
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <rdfs:label>implemented_by</rdfs:label>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
-    <rdfs:comment>Concept is realized/expressed by this ConceptCarrier (language construct, operator, builtin, or data type). Inverse of implementsConcept. Domain is Concept only (not Algorithm).</rdfs:comment>
-    <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#implementsConcept"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <rdfs:label>Concept</rdfs:label>
-    <rdfs:comment>An abstract programming concept.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC16">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+  </owl:Class>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC12">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <func:courseId>C_FUNC16</func:courseId>
-    <rdfs:label>Variable Visibility</rdfs:label>
-    <func:definition>The set of program locations from which a variable can be accessed. Variable visibility is determined by its scope.</func:definition>
+    <func:courseId>C_FUNC12</func:courseId>
+    <rdfs:label>Function Input</rdfs:label>
+    <func:definition>The collection of argument values supplied to a function when it is called. Function inputs determine how the function behaves for a particular execution.</func:definition>
     <func:cognitiveType>conceptual</func:cognitiveType>
-    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC08"/>
-    <func:throwsError rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC02"/>
+    <func:dependsOn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#C_FUNC06"/>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nc9a921301e564fd1b2eb1e846ba16025">
-    <owl:members rdf:nodeID="Na50d4251fe824e4b897e0b44c8e8e3a8"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#cognitiveType">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    <rdfs:label>cognitive_type</rdfs:label>
-    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
-    <rdfs:comment>Indicates the nature of the knowledge represented by a concept, such as conceptual or procedural.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC04">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#NamedIndividual"/>
+    <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC01"/>
+    <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC02"/>
+    <func:acceptsType rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DT_FUNC03"/>
+  </owl:NamedIndividual>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Lecture">
+    <rdfs:label>Lecture</rdfs:label>
+    <rdfs:comment>A COMP101 lecture.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Skill">
+    <rdfs:label>Skill</rdfs:label>
+    <rdfs:comment>A transferable programming competency.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#acceptedBy">
+    <rdfs:label>accepted_by</rdfs:label>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+    <rdfs:range>
+      <rdf:Description rdf:nodeID="Nd7128ecce5fa4ab5886e21323d0e5115">
+        <owl:unionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        </owl:unionOf>
+      </rdf:Description>
+    </rdfs:range>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#acceptsType">
+        <rdfs:domain>
+          <rdf:Description rdf:nodeID="N9ecc5b6609f0471c95a8b6140d88a4f2">
+            <owl:unionOf rdf:parseType="Collection">
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+            </owl:unionOf>
+          </rdf:Description>
+        </rdfs:domain>
+        <rdfs:label>accepts_type</rdfs:label>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+        <rdfs:comment>Subject accepts or involves values of the object DataType as input. Used for BuiltInFunction callables and for pedagogical Concepts such as Function Input or Parameter.</rdfs:comment>
+        <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#acceptedBy"/>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:comment>Inverse of acceptsType.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#constructUsedBy">
+    <rdfs:label>construct_used_by</rdfs:label>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+    <rdfs:comment>Inverse of usesConstruct: this ConceptCarrier is employed by the object Algorithm. A-Box may assert only usesConstruct; reasoners can infer this direction.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#usesConstruct">
+        <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+        <rdfs:comment>Algorithm is coded with / employs this ConceptCarrier (language construct, operator, builtin, or data type). Distinct from implementedBy (Concept → carrier realization). Inverse of constructUsedBy.</rdfs:comment>
+        <rdfs:label>uses_construct</rdfs:label>
+        <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#constructUsedBy"/>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:NamedIndividual rdf:about="http://comp101.sase.um6p.ma/ontology/functions#E_FUNC04">
     <rdf:type rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
     <func:courseId>E_FUNC04</func:courseId>
     <rdfs:label>SyntaxError</rdfs:label>
     <func:definition>Raised when a function definition or call does not follow Python syntax rules.</func:definition>
     <func:taughtIn rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#L04"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N17b5c3fb645f4ac2a73709ba0ffd408e">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <rdf:rest rdf:nodeID="Nd9bd1650c16249a884a2a2afe54cd2b0"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N91e569960a314e1aa42e0ab6e59bd3e3">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <rdf:rest rdf:nodeID="N294ed5076c8242fd95004344039adccf"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#throwsError">
-    <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ErrorType"/>
-    <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
-    <rdfs:comment>Associates a language construct, function, method, or concept with an error that may result from its incorrect use.</rdfs:comment>
-    <rdfs:label>throws_error</rdfs:label>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nedefda4b6231434f9f31b9b1589720e2">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Operator"/>
-    <rdf:rest rdf:nodeID="N86cd5814b5e54694925ec17b1ff0120f"/>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
-    <dc:title>COMP101 L4 — Functions</dc:title>
-    <dcterms:license rdf:resource="https://creativecommons.org/licenses/by/4.0/"/>
-    <owl:versionInfo>1.0</owl:versionInfo>
-    <rdfs:label>comp101_L4_functions</rdfs:label>
-    <rdfs:comment>Week 4 / Lecture 4 (COMP101): Functions — defining/using functions, scope, recursion basics.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
+  </owl:NamedIndividual>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Operator">
+    <rdfs:label>Operator</rdfs:label>
+    <rdfs:comment>A Python operator.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#ConceptCarrier"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#isProducedBy">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="http://comp101.sase.um6p.ma/ontology/functions#producesType">
+        <rdfs:comment>Subject produces or involves values of the object DataType as output/return. Used for BuiltInFunction return types and for pedagogical Concepts such as Function Output or Return Value (including NoneType when nothing useful is returned).</rdfs:comment>
+        <rdfs:domain>
+          <rdf:Description rdf:nodeID="N907d506f8107417dac3a8f268a0f8136">
+            <owl:unionOf rdf:parseType="Collection">
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+              <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+            </owl:unionOf>
+          </rdf:Description>
+        </rdfs:domain>
+        <rdfs:label>produces_type</rdfs:label>
+        <owl:inverseOf rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#isProducedBy"/>
+        <rdfs:range rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+      </owl:ObjectProperty>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#DataType"/>
+    <rdfs:label>is_produced_by</rdfs:label>
+    <rdfs:comment>Inverse of producesType.</rdfs:comment>
+    <rdfs:range>
+      <rdf:Description rdf:nodeID="N96a19a58d31f4b6b9542de1b73cba6c9">
+        <owl:unionOf rdf:parseType="Collection">
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
+          <rdf:Description rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Concept"/>
+        </owl:unionOf>
+      </rdf:Description>
+    </rdfs:range>
+  </owl:ObjectProperty>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Method">
     <rdfs:label>Method</rdfs:label>
     <rdfs:comment>A method belonging to a Python object.</rdfs:comment>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nd9bd1650c16249a884a2a2afe54cd2b0">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Algorithm"/>
-    <rdf:rest rdf:nodeID="N8d717c5f12b445e0b50ca0bd95e8af0f"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N8d717c5f12b445e0b50ca0bd95e8af0f">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#LanguageConstruct"/>
-    <rdf:rest rdf:nodeID="Nc1c08496f361435fab5eabeb10e889aa"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nc6798c8f877d4898a14977dd1506e18b">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Skill"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N3d0a575bafcb4633b98eb42f512ef7b0">
-    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Class"/>
-    <owl:unionOf rdf:nodeID="N17b5c3fb645f4ac2a73709ba0ffd408e"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="N294ed5076c8242fd95004344039adccf">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#Method"/>
-    <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
-  </rdf:Description>
-  <rdf:Description rdf:nodeID="Nf6659183a2b84dad9e6ac90598c31c1c">
-    <rdf:first rdf:resource="http://comp101.sase.um6p.ma/ontology/functions#BuiltInFunction"/>
-    <rdf:rest rdf:nodeID="N9e482442704c4e3cb8b249d040268a0a"/>
-  </rdf:Description>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#ErrorType">
+    <rdfs:label>ErrorType</rdfs:label>
+    <rdfs:comment>A Python exception type.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="http://comp101.sase.um6p.ma/ontology/functions#Algorithm">
+    <rdfs:label>Algorithm</rdfs:label>
+    <rdfs:comment>A programming algorithm taught during the lecture.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  </owl:Class>
 </rdf:RDF>

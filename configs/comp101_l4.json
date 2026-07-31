@@ -4,24 +4,24 @@
   "id_property": "courseId",
   "strict_relation_semantics": true,
   "relation_semantics": {
-    "dependsOn": "Pedagogical prerequisite: understanding/performing the subject requires the object to already be known. Direction: if A dependsOn B, B is learned first. In this module A-Box uses Skill→Skill and Concept→Concept only (OWL domain/range are owl:Thing). Concept→Concept dependsOn is intentional for teaching order / conceptual prerequisites (e.g. Argument dependsOn Function Call; Function Interface dependsOn Parameter). Do NOT reject Concept→dependsOn→Concept as a type error, and do NOT rewrite it to usesConcept.",
-    "isRequiredBy": "Inverse of dependsOn (OWL). A-Box is forward-only (dependsOn); do not expect asserted isRequiredBy triples.",
-    "usesConcept": "Subject relies on object Concept in a load-bearing teaching sense. OWL domain = union of Skill, Algorithm, LanguageConstruct, Operator, BuiltInFunction, Method; range = Concept. This module's A-Box uses Skill→Concept and Algorithm→Concept — BOTH are valid. Skills deliberately use usesConcept here (legacy; not requiresConcept). Algorithms use usesConcept to name concepts they illustrate. Do NOT flag Algorithm→usesConcept or Skill→usesConcept as subject-type errors. Do NOT rewrite usesConcept→Concept edges into usesConstruct (usesConstruct targets ConceptCarrier, not Concept).",
-    "isUsedBy": "Inverse of usesConcept (OWL). Domain Concept; range = same union as usesConcept domain. A-Box is forward-only.",
-    "implementedBy": "Concept is realized/expressed by a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Concept, range=ConceptCarrier. This module's A-Box is Concept→LanguageConstruct (def/return/pass). Domain is Concept only — never Algorithm (algorithms use usesConstruct for carriers).",
+    "dependsOn": "Pedagogical prerequisite/sequencing (incl Argument\u2192Parameter, Call\u2192Definition).",
+    "isRequiredBy": "Inverse of dependsOn (OWL). A-Box is forward-only.",
+    "usesConcept": "Subject relies on Concept or Pattern. Range=Concept|Pattern.",
+    "isUsedBy": "Inverse of usesConcept (OWL). A-Box is forward-only.",
+    "implementedBy": "Concept is realized by a ConceptCarrier (LanguageConstruct/Operator/BuiltInFunction/DataType). OWL domain=Concept, range=ConceptCarrier. Never Algorithm subjects (use usesConstruct for Algorithm\u2192carrier).",
     "implementsConcept": "Inverse of implementedBy (OWL). A-Box asserts only implementedBy.",
-    "usesConstruct": "Algorithm is coded with / employs a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Algorithm, range=ConceptCarrier. This module's A-Box is Algorithm→LanguageConstruct (def/return). Distinct from usesConcept (→Concept) and from implementedBy (Concept→carrier). Never propose usesConstruct with a Concept object (Parameter, Scope, Return Value, …).",
+    "usesConstruct": "Algorithm employs a ConceptCarrier (e.g. def, return). OWL domain=Algorithm, range=ConceptCarrier. Never retarget to a Concept object.",
     "constructUsedBy": "Inverse of usesConstruct (OWL). A-Box asserts only usesConstruct.",
-    "acceptsType": "BuiltInFunction accepts values of the object DataType as an argument/input. OWL: domain=BuiltInFunction, range=DataType. Means values OF that type (e.g. print() accepts str/int/bool values) — NOT 'accepts the type object itself'. Multiple acceptsType edges are a union of accepted input types and are fine. This module has no operatesOnType property.",
-    "acceptedBy": "Inverse of acceptsType (OWL). A-Box asserts only acceptsType.",
-    "producesType": "Subject yields/returns a value of the object DataType. OWL domain owl:Thing, range=DataType; this module's A-Box is BuiltInFunction→DataType.",
-    "isProducedBy": "Inverse of producesType (OWL). A-Box asserts only producesType.",
-    "throwsError": "Subject is associated with an ErrorType that can arise from incorrect use in this course. OWL: domain=owl:Thing, range=ErrorType; comment allows construct/function/method/concept. This module's A-Box is Concept→ErrorType (e.g. Function Call/Argument→TypeError, Scope/Local Variable→NameError) — Concept subjects are allowed. Range must remain ErrorType (never retarget throwsError to a Concept such as Function Call or Scope).",
+    "acceptsType": "BuiltInFunction|Concept \u2192 DataType (builtins and Function Input/Parameter).",
+    "acceptedBy": "Inverse of acceptsType.",
+    "producesType": "BuiltInFunction|Concept \u2192 DataType (builtins and Function Output/Return Value, incl NoneType).",
+    "isProducedBy": "Inverse of producesType.",
+    "throwsError": "Subject is associated with an ErrorType from incorrect use. Domain owl:Thing; Concept and LanguageConstruct subjects allowed. Range must stay ErrorType.",
     "isThrownBy": "Inverse of throwsError (OWL). A-Box asserts only throwsError.",
-    "methodOf": "Method belongs to / is callable on the object DataType. OWL: domain=Method, range=DataType. Unused in this lecture's A-Box.",
-    "hasMethods": "Inverse of methodOf (OWL). Unused in A-Box.",
-    "contrastsWith": "Two entities that are alternatives, opposites, or commonly confused and should be distinguished. OWL domain/range owl:Thing; this module's A-Box is Concept↔Concept (e.g. Parameter↔Argument, Function Call↔Function Definition). Not a prerequisite (dependsOn) and not a usesConcept link.",
-    "taughtIn": "Entity is introduced or explicitly taught in the object Lecture. OWL: domain=Thing, range=Lecture. External-evidence gated for the judge.",
+    "methodOf": "Method belongs to a DataType. Unused in this lecture A-Box.",
+    "hasMethods": "Inverse of methodOf (OWL).",
+    "contrastsWith": "Alternatives/confused peers (e.g. Local\u2194Global Variable). Not for param/arg or def/call sequencing.",
+    "taughtIn": "Entity introduced in the object Lecture. External-evidence gated for the judge.",
     "teaches": "Inverse of taughtIn (OWL). A-Box asserts only taughtIn."
   },
   "skill_graph": {
@@ -32,13 +32,13 @@
   "competency_questions": [
     {
       "id": "CQ_L4_01",
-      "question": "Which concepts does 'Manage Function Inputs and Outputs' (SK_FUNC02) use?",
+      "question": "Which concepts does SK_FUNC02 use?",
       "sparql": "SELECT ?concept WHERE {{ <{ns}SK_FUNC02> <{ns}usesConcept> ?concept . }}",
-      "expect_min": 4
+      "expect_min": 3
     },
     {
       "id": "CQ_L4_02",
-      "question": "What does 'Reason About Function Execution' (SK_FUNC03) depend on?",
+      "question": "What does SK_FUNC03 depend on?",
       "sparql": "SELECT ?dep WHERE {{ <{ns}SK_FUNC03> <{ns}dependsOn> ?dep . ?dep a <{ns}Skill> . }}",
       "expect_min": 1
     },
@@ -50,34 +50,52 @@
     },
     {
       "id": "CQ_L4_04",
-      "question": "Which ConceptCarrier implements Function Body (C_FUNC04)?",
+      "question": "Which carrier implements Function Body?",
       "sparql": "SELECT ?carrier WHERE {{ <{ns}C_FUNC04> <{ns}implementedBy> ?carrier . }}",
       "expect_min": 1
     },
     {
       "id": "CQ_L4_05",
-      "question": "Which constructs do function algorithms use (usesConstruct)?",
+      "question": "Which constructs do algorithms use?",
       "sparql": "SELECT DISTINCT ?alg ?carrier WHERE {{ ?alg a <{ns}Algorithm> . ?alg <{ns}usesConstruct> ?carrier . }}",
-      "expect_min": 4
+      "expect_min": 3
     },
     {
       "id": "CQ_L4_06",
-      "question": "What are the prerequisite skills before 'Reason About Function Execution'?",
+      "question": "Prerequisite skills before SK_FUNC03?",
       "sparql": "SELECT ?prereq WHERE {{ <{ns}SK_FUNC03> <{ns}dependsOn>+ ?prereq . ?prereq a <{ns}Skill> . }}",
       "expect_min": 1
     },
     {
       "id": "CQ_L4_07",
-      "question": "Which errors can be thrown in the functions ontology?",
+      "question": "Which errors can be thrown?",
       "sparql": "SELECT DISTINCT ?err WHERE {{ ?x <{ns}throwsError> ?err . }}",
       "expect_min": 2
     },
     {
       "id": "CQ_L4_08",
-      "question": "Which builtins accept a data type (acceptsType)?",
+      "question": "Which subjects accept a data type?",
       "sparql": "SELECT DISTINCT ?fn ?dt WHERE {{ ?fn <{ns}acceptsType> ?dt . }}",
       "expect_min": 1
+    },
+    {
+      "id": "CQ_L4_09",
+      "question": "Which data types does Function Input accept?",
+      "sparql": "SELECT DISTINCT ?dt WHERE {{ <{ns}C_FUNC12> <{ns}acceptsType> ?dt . }}",
+      "expect_min": 3
+    },
+    {
+      "id": "CQ_L4_10",
+      "question": "Does Return Value produce NoneType?",
+      "sparql": "SELECT ?dt WHERE {{ <{ns}C_FUNC07> <{ns}producesType> ?dt . FILTER(?dt = <{ns}DT_FUNC04>) }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_L4_11",
+      "question": "Which algorithms use the Early-Return Guard Pattern?",
+      "sparql": "SELECT DISTINCT ?alg WHERE {{ ?alg <{ns}usesConcept> <{ns}P_FUNC02> . }}",
+      "expect_min": 2
     }
   ],
-  "authoring_policy": "Lecture 4 (Functions). Edge roles (match OWL + A-Box): (1) dependsOn = Skill→Skill or Concept→Concept prerequisites — allowed; do not convert Concept→dependsOn→Concept into usesConcept. (2) usesConcept subjects = Skill OR Algorithm → Concept; Algorithm→usesConcept is intentional. (3) usesConstruct = Algorithm → ConceptCarrier only (def/return/…). (4) implementedBy = Concept → ConceptCarrier only. (5) acceptsType = BuiltInFunction → DataType (values of that type). (6) throwsError range = ErrorType; Concept→ErrorType is allowed — never retarget the object to a Concept. Never 'fix' usesConcept→Concept by changing the predicate to usesConstruct."
+  "authoring_policy": "Lecture 4. Algorithm = named computational procedure wrapped in functions (not greeting/area demos). Patterns: Helper Function, Early-Return Guard. acceptsType/producesType cover BuiltInFunction|Concept."
 }

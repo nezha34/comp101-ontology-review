@@ -4,25 +4,25 @@
   "id_property": "courseId",
   "strict_relation_semantics": true,
   "relation_semantics": {
-    "dependsOn": "Pedagogical prerequisite: understanding/performing the subject requires the object to already be known. Direction: if A dependsOn B, B is learned first. In this module A-Box uses Skill→Skill and Concept→Concept only (OWL domain/range are owl:Thing). Concept→Concept dependsOn is intentional for teaching order / conceptual prerequisites (including 'part of the idea' prerequisites like Function Interface→Parameter style chains). Do NOT reject Concept→dependsOn→Concept as a type error, and do NOT rewrite it to usesConcept or partOf.",
+    "dependsOn": "Pedagogical prerequisite. Control\u2194Boolean skills are mutual dependsOn by design.",
     "isRequiredBy": "Inverse of dependsOn (OWL). A-Box is forward-only (dependsOn); do not expect asserted isRequiredBy triples.",
-    "usesConcept": "Subject relies on object Concept in a load-bearing teaching sense. OWL domain = union of Skill, Algorithm, LanguageConstruct, Operator, BuiltInFunction, Method; range = Concept. This module's A-Box uses Skill→Concept and Algorithm→Concept heavily — BOTH are valid. Skills deliberately use usesConcept here (legacy; not requiresConcept). Algorithms use usesConcept to name concepts they illustrate. Do NOT flag Algorithm→usesConcept or Skill→usesConcept as subject-type errors. Do NOT rewrite usesConcept→Concept edges into usesConstruct (different range: ConceptCarrier).",
+    "usesConcept": "Subject relies on object Concept or Pattern. Range=Concept|Pattern. Skill/Algorithm usesConcept valid.",
     "isUsedBy": "Inverse of usesConcept (OWL). Domain Concept; range = same union as usesConcept domain. A-Box is forward-only.",
-    "implementedBy": "Concept is realized/expressed by a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Concept, range=ConceptCarrier. A-Box: Concept→LanguageConstruct / Operator / DataType. Domain is Concept only — never Algorithm (algorithms use usesConstruct for carriers). Multiple carriers per concept are normal.",
+    "implementedBy": "Concept is realized/expressed by a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Concept, range=ConceptCarrier. A-Box: Concept\u2192LanguageConstruct / Operator / DataType. Domain is Concept only \u2014 never Algorithm (algorithms use usesConstruct for carriers). Multiple carriers per concept are normal.",
     "implementsConcept": "Inverse of implementedBy (OWL). A-Box asserts only implementedBy.",
-    "usesConstruct": "Algorithm is coded with / employs a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Algorithm, range=ConceptCarrier. Distinct from usesConcept (→Concept) and from implementedBy (Concept→carrier). Never propose usesConstruct with a Concept object.",
+    "usesConstruct": "Algorithm is coded with / employs a ConceptCarrier (LanguageConstruct, Operator, BuiltInFunction, or DataType). OWL: domain=Algorithm, range=ConceptCarrier. Distinct from usesConcept (\u2192Concept) and from implementedBy (Concept\u2192carrier). Never propose usesConstruct with a Concept object.",
     "constructUsedBy": "Inverse of usesConstruct (OWL). A-Box asserts only usesConstruct.",
-    "acceptsType": "BuiltInFunction accepts values of the object DataType as an argument/input. OWL: domain=BuiltInFunction, range=DataType. Comment: 'A function accepts this data type as input' means values OF that type (e.g. len() accepts str values; int() accepts str values for conversion) — NOT 'accepts the type object itself', and NOT operatesOnType (that property is Operator→DataType only). Multiple acceptsType edges from one function are a union of accepted input types and are fine.",
+    "acceptsType": "BuiltInFunction \u2192 DataType (values of that type as inputs).",
     "acceptedBy": "Inverse of acceptsType (OWL). A-Box asserts only acceptsType.",
-    "operatesOnType": "Operator works on values of the object DataType. OWL: domain=Operator, range=DataType. Never use for BuiltInFunction subjects (those use acceptsType / producesType).",
+    "operatesOnType": "Operator|Concept \u2192 DataType. Index/Element Traversal use this for supporting types.",
     "operatedOnBy": "Inverse of operatesOnType (OWL). A-Box asserts only operatesOnType.",
-    "producesType": "Subject yields/returns a value of the object DataType. OWL domain is owl:Thing, range=DataType; this module's A-Box is BuiltInFunction→DataType (e.g. range()→range, len()→int). Matching the modelled return type is enough.",
+    "producesType": "Subject yields values of the object DataType.",
     "isProducedBy": "Inverse of producesType (OWL). A-Box asserts only producesType.",
-    "throwsError": "Subject is associated with an ErrorType that can arise from incorrect use in this course. OWL: domain=owl:Thing, range=ErrorType; comment allows language construct, function, method, OR concept. This module's A-Box includes LanguageConstruct→ErrorType, BuiltInFunction→ErrorType, and Concept→ErrorType — Concept subjects are allowed when the ontology links a taught concept to a typical error. Range must remain ErrorType (never retarget to another Concept).",
+    "throwsError": "Subject is associated with an ErrorType that can arise from incorrect use in this course. OWL: domain=owl:Thing, range=ErrorType; comment allows language construct, function, method, OR concept. This module's A-Box includes LanguageConstruct\u2192ErrorType, BuiltInFunction\u2192ErrorType, and Concept\u2192ErrorType \u2014 Concept subjects are allowed when the ontology links a taught concept to a typical error. Range must remain ErrorType (never retarget to another Concept).",
     "isThrownBy": "Inverse of throwsError (OWL). A-Box asserts only throwsError.",
     "methodOf": "Method belongs to / is callable on the object DataType. OWL: domain=Method, range=DataType. Unused in this lecture's A-Box.",
     "hasMethods": "Inverse of methodOf (OWL). Unused in A-Box.",
-    "contrastsWith": "Two entities that are alternatives, opposites, or commonly confused and should be distinguished. OWL domain/range owl:Thing; this module's A-Box is Concept↔Concept only. Not a prerequisite (dependsOn) and not a usesConcept link.",
+    "contrastsWith": "Two entities that are alternatives, opposites, or commonly confused and should be distinguished. OWL domain/range owl:Thing; this module's A-Box is Concept\u2194Concept only. Not a prerequisite (dependsOn) and not a usesConcept link.",
     "taughtIn": "Entity is introduced or explicitly taught in the object Lecture. OWL: domain=Thing, range=Lecture. External-evidence gated for the judge.",
     "teaches": "Inverse of taughtIn (OWL). A-Box asserts only taughtIn."
   },
@@ -34,14 +34,14 @@
   "competency_questions": [
     {
       "id": "CQ_L3_01",
-      "question": "Which concepts does 'Control Program Execution' (SK_CTRL01) use?",
+      "question": "Which concepts does 'Control Program Execution' use?",
       "sparql": "SELECT ?concept WHERE {{ <{ns}SK_CTRL01> <{ns}usesConcept> ?concept . }}",
-      "expect_min": 4
+      "expect_min": 3
     },
     {
       "id": "CQ_L3_02",
-      "question": "What does 'Evaluate Boolean Conditions' (SK_CTRL02) depend on?",
-      "sparql": "SELECT ?dep WHERE {{ <{ns}SK_CTRL02> <{ns}dependsOn> ?dep . ?dep a <{ns}Skill> . }}",
+      "question": "What does 'Trace Program Execution' depend on?",
+      "sparql": "SELECT ?dep WHERE {{ <{ns}SK_CTRL03> <{ns}dependsOn> ?dep . ?dep a <{ns}Skill> . }}",
       "expect_min": 1
     },
     {
@@ -52,34 +52,64 @@
     },
     {
       "id": "CQ_L3_04",
-      "question": "Which ConceptCarriers implement the Iteration concept (C_CTRL04)?",
-      "sparql": "SELECT ?carrier WHERE {{ <{ns}C_CTRL04> <{ns}implementedBy> ?carrier . }}",
+      "question": "Which ConceptCarrier implements Traversal?",
+      "sparql": "SELECT ?carrier WHERE {{ <{ns}C_CTRL09> <{ns}implementedBy> ?carrier . }}",
       "expect_min": 1
     },
     {
       "id": "CQ_L3_05",
-      "question": "Which constructs do control-structure algorithms use (usesConstruct)?",
+      "question": "Which constructs do algorithms use?",
       "sparql": "SELECT DISTINCT ?alg ?carrier WHERE {{ ?alg a <{ns}Algorithm> . ?alg <{ns}usesConstruct> ?carrier . }}",
-      "expect_min": 4
+      "expect_min": 3
     },
     {
       "id": "CQ_L3_06",
-      "question": "Which operators operate on a data type (operatesOnType)?",
+      "question": "Which subjects operate on a data type (operatesOnType)?",
       "sparql": "SELECT DISTINCT ?op ?dt WHERE {{ ?op <{ns}operatesOnType> ?dt . }}",
       "expect_min": 5
     },
     {
       "id": "CQ_L3_07",
-      "question": "Which errors can be thrown in the control-structures ontology?",
+      "question": "Which errors can be thrown?",
       "sparql": "SELECT DISTINCT ?err WHERE {{ ?x <{ns}throwsError> ?err . }}",
       "expect_min": 2
     },
     {
       "id": "CQ_L3_08",
-      "question": "Which builtins accept a data type (acceptsType)?",
+      "question": "Which builtins accept a data type?",
       "sparql": "SELECT DISTINCT ?fn ?dt WHERE {{ ?fn <{ns}acceptsType> ?dt . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_L3_09",
+      "question": "Which data types does Index Traversal operate on?",
+      "sparql": "SELECT DISTINCT ?dt WHERE {{ <{ns}C_CTRL10> <{ns}operatesOnType> ?dt . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_L3_10",
+      "question": "What does enumerate() accept/produce?",
+      "sparql": "SELECT DISTINCT ?p ?dt WHERE {{ <{ns}F_CTRL06> ?p ?dt . FILTER(?p = <{ns}acceptsType> || ?p = <{ns}producesType>) }}",
       "expect_min": 3
+    },
+    {
+      "id": "CQ_L3_11",
+      "question": "Which operators implement Membership Testing?",
+      "sparql": "SELECT DISTINCT ?op WHERE {{ <{ns}C_CTRL17> <{ns}implementedBy> ?op . }}",
+      "expect_min": 2
+    },
+    {
+      "id": "CQ_L3_12",
+      "question": "Which algorithm uses the Accumulator Pattern?",
+      "sparql": "SELECT DISTINCT ?alg WHERE {{ ?alg <{ns}usesConcept> <{ns}P_CTRL01> . }}",
+      "expect_min": 1
+    },
+    {
+      "id": "CQ_L3_13",
+      "question": "Which algorithms use the Early-Exit Loop Pattern?",
+      "sparql": "SELECT DISTINCT ?alg WHERE {{ ?alg <{ns}usesConcept> <{ns}P_CTRL02> . }}",
+      "expect_min": 2
     }
   ],
-  "authoring_policy": "Lecture 3 (Control Structures). Edge roles (match OWL + A-Box): (1) dependsOn = Skill→Skill or Concept→Concept prerequisites — allowed; do not convert to usesConcept. (2) usesConcept subjects = Skill OR Algorithm (also allowed by OWL: LanguageConstruct/Operator/BuiltInFunction/Method) → Concept; Algorithms illustrating concepts via usesConcept are intentional. (3) usesConstruct = Algorithm → ConceptCarrier only (def/for/while/print/…). (4) implementedBy = Concept → ConceptCarrier only — never Algorithm. (5) acceptsType = BuiltInFunction → DataType (values of that type as inputs; not operatesOnType). (6) operatesOnType = Operator → DataType only. (7) throwsError range = ErrorType; Concept subjects are allowed by OWL comment/A-Box. Never 'fix' a usesConcept→Concept edge by changing it to usesConstruct."
+  "authoring_policy": "Lecture 3. Algorithm = named computational procedure (not syntax demos). Patterns: Accumulator, Early-Exit Loop, Sentinel-Controlled Loop. Index contrastsWith Element Traversal. enumerate() is BuiltInFunction. operatesOnType domain Operator|Concept."
 }
