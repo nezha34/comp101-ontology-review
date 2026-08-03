@@ -4,7 +4,7 @@
   "id_property": "courseId",
   "strict_relation_semantics": true,
   "relation_semantics": {
-    "dependsOn": "Pedagogical prerequisite. Control\u2194Boolean skills are mutual dependsOn by design.",
+    "dependsOn": "Pedagogical prerequisite / teaching-order edge (A dependsOn B \u21d2 B before A). Skill DAG: Evaluate Boolean Conditions \u2192 Control Program Execution \u2192 Trace Program Execution.",
     "isRequiredBy": "Inverse of dependsOn (OWL). A-Box is forward-only (dependsOn); do not expect asserted isRequiredBy triples.",
     "usesConcept": "Subject relies on object Concept or Pattern. Range=Concept|Pattern. Skill/Algorithm usesConcept valid.",
     "isUsedBy": "Inverse of usesConcept (OWL). Domain Concept; range = same union as usesConcept domain. A-Box is forward-only.",
